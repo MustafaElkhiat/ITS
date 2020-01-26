@@ -768,6 +768,8 @@ public class ControllerHelper extends HelperBase {
     }
 
     public long addUser() throws IOException {
+        List<Privilege> privilegeList = hibernateHelper.retreiveData("from Privilege");
+        List<Region> regionList = hibernateHelper.retreiveData("from Region");
         String name = request.getParameter("name");
         String username = request.getParameter("username");
         String phoneNum = request.getParameter("phone_num");
@@ -776,8 +778,32 @@ public class ControllerHelper extends HelperBase {
         hibernateHelper.saveData(user);
         String privileges = request.getParameter("privileges");
         String regions = request.getParameter("regions");
-        for (int i = 0; i < privileges.split(",").length; i++) {
-            Privilege privilege = (Privilege) hibernateHelper.retreiveData(Privilege.class, Long.valueOf(privileges.split(",")[i]));
+        for (Privilege privilege : privilegeList) {
+            UserPrivilege userPrivilege = new UserPrivilege(user, privilege);
+            for (int i = 0; i < privileges.split(",").length; i++) {
+                Privilege pri = (Privilege) hibernateHelper.retreiveData(Privilege.class, Long.valueOf(privileges.split(",")[i]));
+                if (pri.getId() == privilege.getId()) {
+                    userPrivilege.setValid(true);
+                    break;
+                }
+            }
+            hibernateHelper.saveData(userPrivilege);
+        }
+
+        for (Region region : regionList) {
+            TSUserRegion tsUserRegion = new TSUserRegion(user, region);
+            for (int i = 0; i < regions.split(",").length; i++) {
+                Region reg = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regions.split(",")[i]));
+                if (reg.getId() == region.getId()) {
+                    tsUserRegion.setValid(true);
+                    break;
+                }
+            }
+            hibernateHelper.saveData(tsUserRegion);
+        }
+
+        /*for (int i = 0; i < privileges.split(",").length; i++) {
+
             UserPrivilege userPrivilege = new UserPrivilege(user, privilege);
             hibernateHelper.saveData(userPrivilege);
         }
@@ -785,11 +811,14 @@ public class ControllerHelper extends HelperBase {
             Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regions.split(",")[i]));
             TSUserRegion tsUserRegion = new TSUserRegion(user, region);
             hibernateHelper.saveData(tsUserRegion);
-        }
+        }*/
         return user.getId();
     }
 
     public long editUser() throws IOException {
+        List<Privilege> privilegeList = hibernateHelper.retreiveData("from Privilege");
+        List<Region> regionList = hibernateHelper.retreiveData("from Region");
+
         User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         String name = request.getParameter("name");
         String username = request.getParameter("username");
@@ -802,10 +831,47 @@ public class ControllerHelper extends HelperBase {
         hibernateHelper.updateData(user);
         String privileges = request.getParameter("privileges");
         String regions = request.getParameter("regions");
-        List<UserPrivilege> userPrivilegeList = hibernateHelper.retreiveData("from UserPrivilege where edited = false and user = " + user.getId());
+        List<UserPrivilege> userPrivilegeList = hibernateHelper.retreiveData("from UserPrivilege where user = " + user.getId());
+        List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where TSUser = " + user.getId());
+        for (Privilege privilege : privilegeList) {
+            for (UserPrivilege userPrivilege : userPrivilegeList) {
+                if(userPrivilege.getPrivilege().getId() == privilege.getId()){
+                    for (int i = 0; i < privileges.split(",").length; i++) {
+                        Privilege pri = (Privilege) hibernateHelper.retreiveData(Privilege.class, Long.valueOf(privileges.split(",")[i]));
+                        if (pri.getId() == privilege.getId()) {
+                            userPrivilege.setValid(true);
+                            break;
+                        } else if (pri.getId() != privilege.getId() && privileges.split(",")[privileges.split(",").length - 1].equals(privileges.split(",")[i])) {
+                            userPrivilege.setValid(false);
+                        }
+                    }
+                    hibernateHelper.updateData(userPrivilege);
+                }
+            }
+        }
+
+        for (Region region : regionList) {
+            for (TSUserRegion userRegion : userRegionList) {
+                if(userRegion.getRegion().getId() == region.getId()){
+                    for (int i = 0; i < regions.split(",").length; i++) {
+                        Region reg = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regions.split(",")[i]));
+                        if (reg.getId() == region.getId()) {
+                            userRegion.setValid(true);
+                            break;
+                        } else if (reg.getId() != region.getId() && regions.split(",")[regions.split(",").length - 1].equals(regions.split(",")[i])) {
+                            userRegion.setValid(false);
+                        }
+                    }
+                    hibernateHelper.updateData(userRegion);
+                }
+            }
+
+        }
+
+/*
         if (userPrivilegeList.size() > 0) {
             for (UserPrivilege userPrivilege : userPrivilegeList) {
-                userPrivilege.setEdited(true);
+                userPrivilege.setValid(true);
                 hibernateHelper.updateData(userPrivilege);
             }
         }
@@ -817,7 +883,7 @@ public class ControllerHelper extends HelperBase {
         List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where edited = false and TSUser = " + user.getId());
         if (userRegionList.size() > 0) {
             for (TSUserRegion userRegion : userRegionList) {
-                userRegion.setEdited(true);
+                userRegion.setValid(true);
                 hibernateHelper.updateData(userRegion);
             }
         }
@@ -826,6 +892,8 @@ public class ControllerHelper extends HelperBase {
             TSUserRegion tsUserRegion = new TSUserRegion(user, region);
             hibernateHelper.saveData(tsUserRegion);
         }
+
+ */
         return user.getId();
     }
 

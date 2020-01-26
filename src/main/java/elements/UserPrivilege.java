@@ -12,9 +12,9 @@ public class UserPrivilege {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
-    @Column(name = "edited")
+    @Column(name = "valid")
     @Type(type = "true_false")
-    private boolean edited = false;
+    private boolean valid = false;
     @ManyToOne
     private User user;
     @ManyToOne
@@ -52,12 +52,11 @@ public class UserPrivilege {
         this.privilege = privilege;
     }
 
-    public boolean isEdited() {
-        return edited;
+    public boolean isValid() {
+        return valid;
     }
 
-    public void setEdited(boolean edited) {
-        this.edited = edited;
-
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 }

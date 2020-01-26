@@ -14,7 +14,7 @@
 <%
     HibernateHelper hibernateHelper = new HibernateHelper(request, response);
     User user = (User) request.getSession().getAttribute("user");
-    List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where edited = false and TSUser = " + user.getId());
+    List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId());
     String region = "";
     if (tsUserRegionList.size() == 1) {
         region = tsUserRegionList.get(0).getRegion().getRegion();

@@ -24,7 +24,7 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToNewTicketSection() throws ServletException, IOException {
-        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where edited = false and TSUser = " + user.getId() + " order by region");
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
         request = getUserPrivilege(user, request);
         /*if (tsUserRegionList.size() == 1) {
             List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + tsUserRegionList.get(0).getRegion().getId() + " order by location");
@@ -82,7 +82,7 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToRegionOptions() throws ServletException, IOException {
-        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where edited = false and TSUser = " + user.getId());
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId());
         request.setAttribute("regionList", tsUserRegionList);
         request.getRequestDispatcher("region_options.jsp").forward(request, response);
     }
@@ -155,7 +155,7 @@ public class DirectiveHelper extends HelperBase {
         request = getUserPrivilege(user, request);
         Device device = (Device) hibernateHelper.retreiveData(Device.class, Long.valueOf(request.getParameter("device_")));
         Region region = device.getDepartment().getLocation().getRegion();
-        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where edited = false and region = " + region.getId() + " order by region");
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and region = " + region.getId() + " order by region");
         request.setAttribute("tsUserRegionList", tsUserRegionList);
         request.setAttribute("currentUser", user);
         request.getRequestDispatcher("assign_to_section.jsp").forward(request, response);
@@ -312,7 +312,7 @@ public class DirectiveHelper extends HelperBase {
 
     public void goToDevices() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
-        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where edited = false and TSUser = " + user.getId() + " order by region");
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
         List<Location> locationList = hibernateHelper.retreiveData("from Location");
         DeviceType switchType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 5);
         DeviceType routerType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 6);
@@ -418,7 +418,7 @@ public class DirectiveHelper extends HelperBase {
 
     public void goToAddDevice() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
-        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where edited = false and TSUser = " + user.getId() + " order by region");
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
         /*if (tsUserRegionList.size() == 1) {
             List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + tsUserRegionList.get(0).getRegion().getId() + " order by location");
             request.setAttribute("locationList", locationList);
@@ -432,7 +432,7 @@ public class DirectiveHelper extends HelperBase {
 
     public void goToEditDevice() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
-        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where edited = false and TSUser = " + user.getId() + " order by region");
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
         Device device = (Device) hibernateHelper.retreiveData(Device.class, Long.valueOf(request.getParameter("device")));
         List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + tsUserRegionList.get(0).getRegion().getId() + " order by location");
         List<Department> departmentList = hibernateHelper.retreiveData("from Department where location = " + device.getLocation().getId() + " order by department");
@@ -477,7 +477,7 @@ public class DirectiveHelper extends HelperBase {
     }
 
     private HttpServletRequest getUserPrivilege(User user, HttpServletRequest request) {
-        List<UserPrivilege> userPrivilegeList = hibernateHelper.retreiveData("from UserPrivilege where edited = false and user = " + user.getId());
+        List<UserPrivilege> userPrivilegeList = hibernateHelper.retreiveData("from UserPrivilege where valid = true and user = " + user.getId());
         List<Privilege> privilegeList = hibernateHelper.retreiveData("from Privilege");
 
         for (Privilege privilege : privilegeList) {
@@ -510,7 +510,7 @@ public class DirectiveHelper extends HelperBase {
     public void goToUsers() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
         List<User> userList = hibernateHelper.retreiveData("from User order by role");
-        List<UserPrivilege> userPrivilegeList = hibernateHelper.retreiveData("from UserPrivilege where edited = false");
+        List<UserPrivilege> userPrivilegeList = hibernateHelper.retreiveData("from UserPrivilege where valid = true");
         List<Privilege> privilegeList = hibernateHelper.retreiveData("from Privilege");
         request.setAttribute("userPrivilegeList", userPrivilegeList);
         request.setAttribute("privilegeList", privilegeList);
@@ -521,8 +521,8 @@ public class DirectiveHelper extends HelperBase {
     public void goToEditUser() throws ServletException, IOException {
 
         User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
-        List<UserPrivilege> userPrivilegeList = hibernateHelper.retreiveData("from UserPrivilege where edited = false and user = " + user.getId());
-        List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where edited = false and TSUser = " + user.getId() + " order by region");
+        List<UserPrivilege> userPrivilegeList = hibernateHelper.retreiveData("from UserPrivilege where valid = true and user = " + user.getId());
+        List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
         List<Role> roleList = hibernateHelper.retreiveData("from Role");
         List<Region> regionList = hibernateHelper.retreiveData("from Region order by region");
         List<Privilege> privilegeList = hibernateHelper.retreiveData("from Privilege");
