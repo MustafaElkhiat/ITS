@@ -35,6 +35,12 @@ $(document).ready(function () {
         $("#content_place").load('Directive', {d: 28}, function () {
             deviceTabsSearchSorting();
             viewDevice();
+            $(".fa-print").click(function () {
+                $(this).parent().parent().find('table').printThis({
+                    importCSS: true,
+                    base: true
+                });
+            });
             $("#add_device").click(add_device);
         });
     });
