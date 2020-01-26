@@ -11,19 +11,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    HibernateHelper hibernateHelper = new HibernateHelper(request, response);
-    User user = (User) request.getSession().getAttribute("user");
-    List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId());
-    String region = "";
-    if (tsUserRegionList.size() == 1) {
-        region = tsUserRegionList.get(0).getRegion().getRegion();
-    } else if (tsUserRegionList.size() > 1) {
-        region = "Technology Sector";
-    }
-    //User user = (User) new HibernateHelper(request,response).retreiveData(User.class,(long)1);
-%>
-
 <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
 
 
@@ -36,14 +23,14 @@
         <div class="form-inline ml-auto my-2 my-lg-0">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item text-white mr-2 table-style"><i class="mr-2 fas fa-2x fa-user-tie"></i> <span
-                        class="my-auto table-cell-style pr-2 font-weight-bold"><%=user.getName()%></span></li>
+                        class="my-auto table-cell-style pr-2 font-weight-bold">${user.name}</span></li>
             </ul>
 
         </div>
         <div class="form-inline ml-auto my-2 my-lg-0">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item text-white mr-2 table-style"><i class="mr-2 fas fa-2x fa-map-marker-alt"></i><span
-                        class="my-auto table-cell-style pr-2 font-weight-bold"><%=region%></span></li>
+                        class="my-auto table-cell-style pr-2 font-weight-bold">${region}</span></li>
             </ul>
 
         </div>

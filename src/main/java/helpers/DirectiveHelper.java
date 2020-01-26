@@ -503,7 +503,17 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToDashboard() throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId());
+        String region = "";
+        if (tsUserRegionList.size() == 1) {
+            region = tsUserRegionList.get(0).getRegion().getRegion();
+        } else if (tsUserRegionList.size() > 1) {
+            region = "Technology Sector";
+        }
         request = getUserPrivilege(user, request);
+        request.setAttribute("user", user);
+        request.setAttribute("region", region);
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }
 
