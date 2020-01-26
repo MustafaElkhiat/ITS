@@ -1,0 +1,304 @@
+/*
+ * Sidebar
+ */
+.text-left {
+    text-align: left !important;
+}
+
+.sidebar {
+
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height: 89%;
+    box-shadow: -1px 0 9px 0px rgb(0, 0, 0);
+}
+
+textarea {
+    resize: none;
+}
+
+.mycard-body {
+    max-height: 160px;
+    overflow-y: scroll;
+}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 48px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+    .sidebar-sticky {
+        position: -webkit-sticky;
+        position: sticky;
+    }
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    cursor: pointer;
+    color: #333;
+}
+
+.sidebar .nav-link .feather {
+    margin-right: 4px;
+    color: #999;
+}
+
+.sidebar .nav-link.active {
+    color: #fff;
+}
+
+.nav-tabs .nav-link {
+    color: #fff;
+}
+
+.nav-tabs .nav-link.active {
+    color: #fff !important;
+}
+
+.sidebar-heading {
+    font-size: .75rem;
+    text-transform: uppercase;
+}
+
+.table tr, .table th, .table td {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.table tr .text-left, .table th .text-left, .table td .text-left {
+    text-align: left !important;
+}
+
+.table tr .text-right, .table th .text-right, .table td .text-right {
+    text-align: right !important;
+}
+
+/*[type=email], [type=file], [type=number], [type=password], [type=tel], [type=url], code, samp, var {
+    direction: rtl;
+    text-align: right;
+}*/
+
+.table-style {
+    display: table;
+}
+
+.table-cell-style {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+/*
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    .card {
+        width: 100%;
+        height: 100%;
+    }
+
+    @page {
+
+        size: A5;
+        size: landscape;
+        margin: 0 !important;
+    }
+
+    .no-margin-print {
+        margin: 0;
+    }
+}*/
+
+@media print {
+    @page {
+        size: A5;
+        size: auto;
+        margin: auto !important;
+        padding: auto !important;
+    }
+
+    .A5-portrait {
+        width: 7.85in;
+        height: 10in;
+    }
+}
+
+.A5-portrait {
+    width: 7.85in;
+    height: 10in;
+}
+
+
+.link, .fa-print {
+    cursor: pointer;
+}
+
+.link:hover, .link a:hover {
+    color: #007bff !important;
+}
+
+.blue {
+    color: #007bff;
+}
+
+body {
+    overflow: hidden;
+    background-color: #f8f9fa;
+    font-family: 'Exo', sans-serif;
+}
+
+#content_place {
+    padding-top: 1px;
+    height: 89vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.daterangepicker .calendar-table .prev span {
+    transform: rotate(-45deg) !important;
+    -webkit-transform: rotate(-45deg) !important;
+}
+
+.daterangepicker .calendar-table .next span {
+    transform: rotate(135deg) !important;
+    -webkit-transform: rotate(135deg) !important;
+}
+
+.daterangepicker .drp-buttons {
+    text-align: left !important;
+}
+
+select {
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+
+.none-display {
+    display: none;
+}
+
+.block-display {
+    display: block;
+}
+
+.bg-gray {
+    background-color: #8c8e90 !important;
+}
+
+.bg-lightGray {
+    background-color: #9fa2a5 !important;
+}
+
+.viewbox-container {
+    z-index: 1500;
+}
+
+.datepicker {
+    z-index: 1150;
+}
+
+.custom-inputtext {
+    display: inline-block;
+    width: 88%;
+}
+
+.black-border, .black-border tr td, .black-border tr th {
+    border: 1px solid rgba(0, 0, 0, 1) !important;
+}
+
+.btn-full-width {
+    width: 100%;
+}
+
+.card-outline-primary {
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.card-outline-warning {
+    color: #ffc107;
+    border-color: #ffc107
+}
+
+.card-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+.card-outline-success {
+    color: #28a745;
+    border-color: #28a745;
+}
+
+.card-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.height-200 {
+    height: 200px;
+}
+
+.scroll {
+    overflow: scroll;
+}
+
+#timeline {
+    height: 100px;
+}
+
+@media (min-width: 992px) {
+    #modal_lg {
+        max-width: 90% !important;
+    }
+}
+
+@media (min-width: 576px) {
+    #modal_lg {
+        max-width: 80% !important;
+    }
+}
+
+.input-group > input, .input-group > label {
+    height: 3.125rem;
+    padding: .75rem;
+}
+
+.devices {
+    overflow-x: scroll;
+}
+
+.fit-content {
+    width: fit-content;
+}
+
+.inline_flex {
+    display: inline-flex;
+}
+
+.checkbox-wrap {
+    border: 1px solid #777;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 0 5px 5px;
+}
+
+.checkbox-wrap label.title {
+    font-size: 12px;
+    color: blue;
+    padding: 2px 8px 0;
+    margin: 0;
+    display: block;
+}
+
+.nav-item .nav-link {
+    padding: .5rem .5rem !important;
+}

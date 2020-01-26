@@ -1,0 +1,38 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="shortcut icon" href="photos/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="photos/favicon.ico" type="image/x-icon">
+
+    <title>Sign In</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/Exo.css"/>
+    <link rel="stylesheet" href="css/floating-labels.css"/>
+    <link rel="stylesheet" href="css/custom.css"/>
+</head>
+<body class="text-center">
+<form class="form-signin" action="Controller" method="post">
+    <input type="hidden" name="n" value="1">
+    <img class="mb-4" src="photos/sescotranspng-160.png" alt="" width="" height="">
+    <h1 class="h3 mb-3 font-weight-normal">Sign In</h1>
+    <div class="form-label-group">
+
+        <input type="text" id="inputEmail" name="username" class="form-control" placeholder="UserName" required=""
+               autofocus="">
+        <label for="inputEmail">UserName</label>
+    </div>
+    <div class="form-label-group">
+
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password"
+               required="">
+        <label for="inputPassword">Password</label>
+    </div>
+    <div class="checkbox mb-3 sr-only">
+        <label>
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+</form>
+</body>
+</html>
