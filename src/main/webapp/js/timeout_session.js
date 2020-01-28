@@ -1,9 +1,9 @@
-var timeoutInMiliseconds = 15 * 60 * 1000;
+var timeoutInMilliseconds = 15 * 60 * 1000;
 var timeoutId;
 
 function startTimer() {
     // window.setTimeout returns an Id that can be used to start and stop a timer
-    timeoutId = window.setTimeout(doInactive, timeoutInMiliseconds)
+    timeoutId = window.setTimeout(doInactive, timeoutInMilliseconds)
 }
 function stopTimer() {
     window.clearTimeout(timeoutId);
