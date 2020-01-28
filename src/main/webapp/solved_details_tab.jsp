@@ -16,7 +16,7 @@
             <jsp:include page="search_field.jsp">
                 <jsp:param name="id" value="search_solved"/>
             </jsp:include>
-            <table id="solved_table" class="table table-striped table-striped">
+            <table id="solved_table" class="table table-striped table-bordered">
                 <thead>
                 <tr class="table-bordered bg-lightGray">
                     <th>#<i class="fas float-left my-2"></i></th>

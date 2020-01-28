@@ -21,7 +21,7 @@
                 <jsp:param name="id" value="search_Printer"/>
             </jsp:include>
             <div class="scroll">
-                <table id="Printer_table" class="table table-striped table-striped" style="width: 2000px;">
+                <table id="Printer_table" class="table table-striped table-bordered" style="width: 2000px;">
                     <thead>
                     <tr class="table-bordered bg-lightGray">
                         <th>#<i class="fas float-left my-2"></i></th>

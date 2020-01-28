@@ -11,14 +11,16 @@ function stopTimer() {
 function doInactive() {
     // does whatever you need it to actually do - probably signs them out or stops polling the server for info
     //alert("لقد تخطيت الفترة المسموحة من فضلك اعد تسجيل الدخول");
-    var ip = "localhost";
-    var port = "12000";
+    //var ip = "localhost";
+    //var port = "12000";
+    var ip = "10.0.96.51";
+    var port = "9999";
     bootbox.alert({
         message: "You have exceeded the allowed period Please log back in",
         locale: 'en',
         closeButton: false,
         callback: function () {
-            window.location = "http://" + ip + ":" + port + "/TicketSystem/";
+            window.location = "http://" + ip + ":" + port + "/ITS/";
 
         }
     });

@@ -16,7 +16,7 @@
             <jsp:include page="search_field.jsp">
                 <jsp:param name="id" value="search_in_progress"/>
             </jsp:include>
-            <table id="in_progress_table" class="table table-striped table-striped">
+            <table id="in_progress_table" class="table table-striped table-bordered">
                 <thead>
                 <tr class="table-bordered bg-lightGray">
                     <th>#<i class="fas float-left my-2"></i></th>

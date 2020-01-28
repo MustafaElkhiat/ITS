@@ -21,7 +21,7 @@
                 <jsp:param name="id" value="search_PC"/>
             </jsp:include>
             <div class="scroll">
-                <table id="PC_table" class="table table-striped table-striped" style="width: 3000px;">
+                <table id="PC_table" class="table table-striped table-bordered" style="width: 3000px;">
                     <thead>
                     <tr class="table-bordered bg-lightGray">
                         <th>#<i class="fas float-left my-2"></i></th>

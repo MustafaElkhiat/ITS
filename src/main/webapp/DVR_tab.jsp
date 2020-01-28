@@ -21,7 +21,7 @@
                 <jsp:param name="id" value="search_DVR"/>
             </jsp:include>
             <div class="scroll">
-                <table id="DVR_table" class="table table-striped table-striped" style="width: 1500px;">
+                <table id="DVR_table" class="table table-striped table-bordered" style="width: 1500px;">
                     <thead>
                     <tr class="table-bordered bg-lightGray">
                         <th>#<i class="fas float-left my-2"></i></th>
