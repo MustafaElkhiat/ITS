@@ -25,7 +25,9 @@
     <link rel="stylesheet" href="css/google_chart_util.css"/>
     <link rel="stylesheet" href="css/floating-labels.css"/>
     <link rel="stylesheet" href="css/custom.css"/>
-
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/update_tab_padeg.js"></script>
+    <script src="js/ticket_tab_content.js"></script>
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>
@@ -55,74 +57,15 @@
                 <%-- <a class="nav-link font-weight-bold" id="waiting_list" data-toggle="pill" role="tab"
                     aria-selected="false"><i class="far fa-clipboard"></i> Waiting List</a>--%>
             </div>
-
-            <%--
-            <div class="sidebar-sticky mt-4">
-
-
-                <ul class="nav nav-pills flex-column">
-                    <%
-                    if (user.getRole().getId() == weightUser.getId()) {
-                    %>
-
-                    <li class="nav-item">
-                        <a class="nav-link link text-center" id="demo"><i
-                                class="fas fa-angle-double-left"></i>
-                            وزنة أولى</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link link text-center" id="demo2"><i
-                                class="fas fa-angle-double-left"></i> وزنة ثانية</a>
-                    </li>
-                    <%
-                    } else if (user.getRole().getId() == manager.getId()) {
-                    %>
-                    <li class="nav-item">
-                        <a class="nav-link link text-center" id="create_user"><i
-                                class="fas fa-angle-double-left"></i>
-                            انشاء حساب </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link link text-center" id="create_client"><i
-                                class="fas fa-angle-double-left"></i> انشاء عميل</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link link text-center" id="create_ship"><i
-                                class="fas fa-angle-double-left"></i> انشاء مركب</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link link text-center" id="create_goods"><i
-                                class="fas fa-angle-double-left"></i> انشاء بضاعة</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link link text-center" id="client_balance_report"><i
-                                class="fas fa-angle-double-left"></i> تقرير أرصدة عملاء </a>
-                    </li>
-                    <%
-                    }
-                    %>
-                    <li class="nav-item">
-                        <a class="nav-link link text-center" id="vehicle"><i
-                                class="fas fa-angle-double-left"></i> تقرير السيارات </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link link text-center" id="amount_report"><i
-                                class="fas fa-angle-double-left"></i> تقرير الكميات </a>
-                    </li>
-                </ul>
-            </div>--%>
         </nav>
         <div class="col-10">
 
             <div id="content_place" class="mx-3 no-margin-print pt-2">
-
-                <jsp:include page="ticket_section.jsp"/>
-
+                <jsp:include page="dashboard_details.jsp"/>
             </div>
         </div>
     </div>
 </div>
-<script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/datepicker.js"></script>
@@ -141,7 +84,6 @@
 <script src="js/Google_Charts_loader.js"></script>
 <script src="js/Google_Charts.js"></script>
 <script src="js/google_chart_timeline.js"></script>
-<script src="js/update_tab_padeg.js"></script>
 <script src="js/saveDevices.js"></script>
 <script src="js/dashboard.js"></script>
 

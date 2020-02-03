@@ -150,6 +150,9 @@ public class Directive extends HttpServlet {
                 case(42):
                     directiveHelper.goToOSOptions();
                     break;
+                case(43):
+                    directiveHelper.goToDashboardDetails();
+                    break;
 
             }
         }

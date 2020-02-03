@@ -452,24 +452,29 @@ public class ControllerHelper extends HelperBase {
         }
     }
 
-    public Object getTicketAssignToSum(User user) {
+    public Object getTicketAssignToSum() {
+        User user = (User) hibernateHelper.retreiveData(User.class,Long.valueOf(request.getParameter("user")));
         return hibernateHelper.retreiveData("select count(assignedBy) from TicketAssignedTo where assignedBy = " + user.getId()).get(0);
     }
 
-    public Object getTicketAssignedToUserSum(User user) {
+    public Object getTicketAssignedToUserSum() {
+        User user = (User) hibernateHelper.retreiveData(User.class,Long.valueOf(request.getParameter("user")));
         return hibernateHelper.retreiveData("select count(assignedTo) from TicketAssignedTo where done = false and assignedTo = " + user.getId()).get(0);
     }
 
-    public Object getTicketSolvedByUserSum(User user) {
+    public Object getTicketSolvedByUserSum() {
+        User user = (User) hibernateHelper.retreiveData(User.class,Long.valueOf(request.getParameter("user")));
         return hibernateHelper.retreiveData("select count(solvedBy) from Ticket where done = true and solvedBy = " + user.getId()).get(0);
     }
 
-    public Object getTicketInProgressByUserSum(User user) {
+    public Object getTicketInProgressByUserSum() {
+        User user = (User) hibernateHelper.retreiveData(User.class,Long.valueOf(request.getParameter("user")));
         Status inProgressStatus = (Status) hibernateHelper.retreiveData(Status.class, (long) 2);
         return hibernateHelper.retreiveData("select count(TSUser) from TicketStatus where done = false and status = " + inProgressStatus.getId() + " and TSUser = " + user.getId()).get(0);
     }
 
-    public Object getTicketPendingByUserSum(User user) {
+    public Object getTicketPendingByUserSum() {
+        User user = (User) hibernateHelper.retreiveData(User.class,Long.valueOf(request.getParameter("user")));
         Status pendingStatus = (Status) hibernateHelper.retreiveData(Status.class, (long) 3);
         return hibernateHelper.retreiveData("select count(TSUser) from TicketStatus where done = false and status = " + pendingStatus.getId() + " and TSUser = " + user.getId()).get(0);
     }

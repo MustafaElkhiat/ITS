@@ -11,6 +11,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<input type="hidden" id="user" value="${current_user.id}"/>
 <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
 
 
@@ -23,7 +24,7 @@
         <div class="form-inline ml-auto my-2 my-lg-0">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item text-white mr-2 table-style"><i class="mr-2 fas fa-2x fa-user-tie"></i> <span
-                        class="my-auto table-cell-style pr-2 font-weight-bold">${user.name}</span></li>
+                        class="my-auto table-cell-style pr-2 font-weight-bold">${current_user.name}</span></li>
             </ul>
 
         </div>

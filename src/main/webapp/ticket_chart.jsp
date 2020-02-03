@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div id="chart_div"></div>
+<div id="${user.id}_chart_div"></div>
 <script>
     // Load the Visualization API and the corechart package.
     google.charts.load('current', {'packages': ['corechart']});
@@ -33,7 +33,7 @@
 
         // Set chart options
         var options = {
-            title: 'Ticket Ratio',
+            title: "${user.name}'s Ticket Ratio",
             pieHole: 0.4,
             width: 400,
             height: 250,
@@ -57,7 +57,7 @@
 
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.PieChart(document.getElementById('${user.id}_chart_div'));
         chart.draw(data, options);
     }
 </script>

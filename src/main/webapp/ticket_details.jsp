@@ -21,3 +21,11 @@
 
     </div>
 </div>
+<script>
+    initialValues("${param.user}");
+    assign_to_details_tab("${param.user}");
+    in_progress_details_tab("${param.user}");
+    pending_details_tab("${param.user}");
+    solved_details_tab("${param.user}");
+    need_to_solve_details_tab("${param.user}");
+</script>

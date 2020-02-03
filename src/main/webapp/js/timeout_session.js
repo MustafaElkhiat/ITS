@@ -21,7 +21,6 @@ function doInactive() {
         closeButton: false,
         callback: function () {
             window.location = "http://" + ip + ":" + port + "/ITS/";
-
         }
     });
     stopTimer();

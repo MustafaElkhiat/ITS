@@ -236,7 +236,8 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToAssignedToTab() throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
+        //User user = (User) request.getSession().getAttribute("user");
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         request.setAttribute("tickets", getTickets());
         request.setAttribute("ticketsAssignedByList", getTicketsAssignedByUser(user));
         request.getRequestDispatcher("assigned_to_tab.jsp").forward(request, response);
@@ -250,7 +251,8 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToNeedToSolveTab() throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
+        //User user = (User) request.getSession().getAttribute("user");
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         request.setAttribute("tickets", getTickets());
         request.setAttribute("ticketsAssignedToList", getTicketsAssignedToUser(user));
         request.getRequestDispatcher("need_to_solve_tab.jsp").forward(request, response);
@@ -264,7 +266,8 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToSolvedTab() throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
+        //User user = (User) request.getSession().getAttribute("user");
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         request.setAttribute("ticketsSolvedList", getTicketsSolvedByUser(user));
         request.getRequestDispatcher("solved_tab.jsp").forward(request, response);
     }
@@ -276,7 +279,8 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToInProgressTab() throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
+        //User user = (User) request.getSession().getAttribute("user");
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         request.setAttribute("ticketsInProgressList", getTicketsInProgressByUser(user));
         request.getRequestDispatcher("in_progress_tab.jsp").forward(request, response);
     }
@@ -288,7 +292,8 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToPendingTab() throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
+        //User user = (User) request.getSession().getAttribute("user");
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         request.setAttribute("ticketsPendingList", getTicketsPendingByUser(user));
         request.getRequestDispatcher("pending_tab.jsp").forward(request, response);
     }
@@ -300,13 +305,15 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToTicketChart() throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
+        //User user = (User) request.getSession().getAttribute("user");
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         System.out.println(user.getName());
-        request.setAttribute("assignToUserCount", controllerHelper.getTicketAssignedToUserSum(user));
-        request.setAttribute("assignToCount", controllerHelper.getTicketAssignToSum(user));
-        request.setAttribute("inProgressCount", controllerHelper.getTicketInProgressByUserSum(user));
-        request.setAttribute("pendingCount", controllerHelper.getTicketPendingByUserSum(user));
-        request.setAttribute("solvedCount", controllerHelper.getTicketSolvedByUserSum(user));
+        request.setAttribute("user", user);
+        request.setAttribute("assignToUserCount", controllerHelper.getTicketAssignedToUserSum());
+        request.setAttribute("assignToCount", controllerHelper.getTicketAssignToSum());
+        request.setAttribute("inProgressCount", controllerHelper.getTicketInProgressByUserSum());
+        request.setAttribute("pendingCount", controllerHelper.getTicketPendingByUserSum());
+        request.setAttribute("solvedCount", controllerHelper.getTicketSolvedByUserSum());
         request.getRequestDispatcher("ticket_chart.jsp").forward(request, response);
     }
 
@@ -511,12 +518,19 @@ public class DirectiveHelper extends HelperBase {
         } else if (tsUserRegionList.size() > 1) {
             region = "Technology Sector";
         }
+        List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and region = 1");
         request = getUserPrivilege(user, request);
-        request.setAttribute("user", user);
+        request.setAttribute("current_user", user);
+        request.setAttribute("userRegionList", userRegionList);
         request.setAttribute("region", region);
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }
 
+    public void goToDashboardDetails() throws ServletException, IOException {
+        List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and region = 1");
+        request.setAttribute("userRegionList", userRegionList);
+        request.getRequestDispatcher("dashboard_details.jsp").forward(request, response);
+    }
     public void goToUsers() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
         List<User> userList = hibernateHelper.retreiveData("from User order by role");
@@ -545,4 +559,6 @@ public class DirectiveHelper extends HelperBase {
         request.getRequestDispatcher("edit_user.jsp").forward(request, response);
 
     }
+
+
 }

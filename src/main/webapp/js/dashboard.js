@@ -1,15 +1,7 @@
 $(document).ready(function () {
     $("#dashboard").click(function () {
         stopTimers();
-        $("#content_place").load('ticket_section.jsp', function () {
-            initialValues();
-            loadTicketChart();
-            assign_to_tab();
-            in_progress_tab();
-            pending_tab();
-            solved_tab();
-            need_to_solve_tab();
-        });
+        $("#content_place").load('Directive', {d: 43});
     });
     $("#new_ticket").click(function () {
         stopTimers();
@@ -19,16 +11,12 @@ $(document).ready(function () {
     });
     $("#my_ticket").click(function () {
         stopTimers();
-        $("#content_place").load('ticket_details.jsp', function () {
-            initialValues();
-            assign_to_details_tab();
-            in_progress_details_tab();
-            pending_details_tab();
-            solved_details_tab();
-            need_to_solve_details_tab();
-            $("#search_REF").searchTable("table_REF");
-            $("#mytable_REF").sortTableNow();
-        })
+        var user = $("#user").val();
+        $("#content_place").load('ticket_details.jsp', {user: user}, function () {
+                $("#search_REF").searchTable("table_REF");
+                $("#mytable_REF").sortTableNow();
+            }
+        )
     });
     $("#devices").click(function () {
         stopTimers();
@@ -50,7 +38,7 @@ $(document).ready(function () {
             $("#search_user").searchTable("user_table_body");
             $("#user_table").sortTableNow();
             $(".user").click(function () {
-                $("#content_place").load('Directive', {d: 41, user: $(this).attr("user-id")},editUser);
+                $("#content_place").load('Directive', {d: 41, user: $(this).attr("user-id")}, editUser);
             });
             $("#add_user").click(function () {
                 $("#content_place").load('Directive', {d: 38}, addUser);
@@ -60,13 +48,6 @@ $(document).ready(function () {
 
     });
 
-    initialValues();
-    loadTicketChart();
-    assign_to_tab();
-    in_progress_tab();
-    pending_tab();
-    solved_tab();
-    need_to_solve_tab();
     setupTimers();
 });
 
@@ -127,97 +108,7 @@ var printerConnection = function () {
         }
     });
 }
-var assign_to_tab = function () {
-    $("#assign-to-tab").click(function () {
-        $("#assign-to").load('Directive', {d: 16}, ticket_click);
-    });
-}
-var assign_to_details_tab = function () {
-    $("#assign-to-tab").click(function () {
-        $("#assign-to").load('Directive', {d: 23}, function () {
-            ticket_click();
-            $("#search_assign_to").searchTable("assign_to_table_body");
-            $("#assign_to_table").sortTableNow();
-        });
-    });
-}
-var solved_tab = function () {
-    $("#solved-tab").click(function () {
-        $("#solved").load('Directive', {d: 17}, ticket_click);
-    });
-}
-var solved_details_tab = function () {
-    $("#solved-tab").click(function () {
-        $("#solved").load('Directive', {d: 26}, function () {
-            ticket_click();
-            $("#search_solved").searchTable("solved_table_body");
-            $("#solved_table").sortTableNow();
-        });
-    });
-}
-var in_progress_tab = function () {
-    $("#in-progress-tab").click(function () {
-        $("#in-progress").load('Directive', {d: 18}, ticket_edit);
-    });
-}
-var in_progress_details_tab = function () {
-    $("#in-progress-tab").click(function () {
-        $("#in-progress").load('Directive', {d: 24}, function () {
-            ticket_edit();
-            $("#search_in_progress").searchTable("in_progress_table_body");
-            $("#in_progress_table").sortTableNow();
-        });
-    });
-}
-var pending_tab = function () {
-    $("#pending-tab").click(function () {
-        $("#pending").load('Directive', {d: 19}, ticket_edit);
-    });
-}
-var pending_details_tab = function () {
-    $("#pending-tab").click(function () {
-        $("#pending").load('Directive', {d: 25}, function () {
-            ticket_edit();
-            $("#search_pending").searchTable("pending_table_body");
-            $("#pending_table").sortTableNow();
-        });
-    });
-}
-var need_to_solve_tab = function () {
-    $("#need-to-solve-tab").click(function () {
-        $("#need-to-solve").load('Directive', {d: 21}, ticket_edit);
-    });
-}
-var need_to_solve_details_tab = function () {
-    $("#need-to-solve-tab").click(function () {
-        $("#need-to-solve").load('Directive', {d: 27}, function () {
-            ticket_edit();
-            $("#search_need_to_solve").searchTable("need_to_solve_table_body");
-            $("#need_to_solve_table").sortTableNow();
-        });
-    });
-}
-var ticket_click = function () {
-    $(".ticket").click(function () {
-        var ticket_id = $(this).attr("ticket-id");
-        $("#content_place").load('Directive', {d: 15, ticket: ticket_id}, function () {
-            $("#dashboard").removeClass("active");
-            $("#my_ticket").removeClass("active");
-            stopTimers();
-        });
-    });
-}
-var ticket_edit = function () {
-    $(".ticket_edit").click(function () {
-        var ticket_id = $(this).attr("ticket-id");
-        $("#content_place").load('Directive', {d: 20, ticket: ticket_id}, function () {
-            afterLoadingActionSection(false);
-            $("#dashboard").removeClass("active");
-            $("#my_ticket").removeClass("active");
-            stopTimers();
-        });
-    });
-}
+
 /*
 var new_ticket = function () {
     $("#location_").change(function () {
@@ -662,7 +553,7 @@ var editUser = function () {
                 url: "Controller",
                 data: {
                     n: "26",
-                    user:$("#user").val(),
+                    user: $("#user").val(),
                     name: $("#name").val(),
                     username: $("#username").val(),
                     phone_num: $("#phone_num").val(),
