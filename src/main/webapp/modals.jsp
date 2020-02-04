@@ -69,20 +69,15 @@
             </div>
             <div class="modal-body">
                 <form id="department_modal_form" class="needs-validation" novalidate>
-                    <div class="form-label-group">
-                        <input type="text" id="department" name="department" class="form-control"
-                               placeholder="Department"
-                               required=""
-                               autofocus="">
-                        <label for="department">Department</label>
+                    <div class="select-wrap">
+                        <label>Department</label>
+                        <div class="input-group">
+                            <select class="form-control department_select" id="department_select" name="department" required autofocus>
+                                <jsp:include page="department_options.jsp"/>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-label-group">
-                        <input type="text" id="department_abb" name="department_abb" class="form-control"
-                               placeholder="Abbreviation"
-                               required=""
-                               autofocus="">
-                        <label for="department_abb">Abbreviation</label>
-                    </div>
+
                     <div class="row">
                         <div class="col">
                             <div class="select-wrap">

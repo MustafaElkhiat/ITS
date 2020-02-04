@@ -54,13 +54,13 @@
                         </c:choose>
                         <tr class="${edit_device_privilege} FP link" device-id="${device.id}">
                             <td>${count}</td>
-                            <td>${device.department.location.region.abbreviation}-${device.department.location.abbreviation}-${device.department.abbreviation}-${device.deviceType.abbreviation}-${device.device}</td>
+                            <td>${device.locationDepartment.location.region.abbreviation}-${device.locationDepartment.location.abbreviation}-${device.locationDepartment.department.abbreviation}-${device.deviceType.abbreviation}-${device.device}</td>
                             <td>${device.vendor}</td>
                             <td>${device.model}</td>
                             <td>${device.mac_address}</td>
                             <td>${device.ip_address}</td>
-                            <td>${device.location.location}</td>
-                            <td>${device.department.department}</td>
+                            <td>${device.locationDepartment.location.location}</td>
+                            <td>${device.locationDepartment.department.department}</td>
                             <td>${device.office}</td>
                             <td>${device.serialNum}</td>
                             <td>${device.subnet}</td>

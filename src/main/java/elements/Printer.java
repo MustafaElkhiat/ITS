@@ -18,8 +18,8 @@ public class Printer extends Device {
     public Printer() {
     }
 
-    public Printer(String device, String mac_address, String ip_address, Department department, DeviceType deviceType, String tonerNumber, PrinterConnection printerConnection, Employee employee) {
-        super(device, mac_address, ip_address, department, deviceType);
+    public Printer(String device, String mac_address, String ip_address, LocationDepartment locationDepartment, DeviceType deviceType, String tonerNumber, PrinterConnection printerConnection, Employee employee) {
+        super(device, mac_address, ip_address, locationDepartment, deviceType);
         this.tonerNumber = tonerNumber;
         this.printerConnection = printerConnection;
         this.employee = employee;

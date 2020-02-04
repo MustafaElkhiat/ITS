@@ -13,10 +13,10 @@
 <c:forEach items="${deviceTypeList}" var="deviceType">
     <c:choose>
         <c:when test="${param.selected == deviceType.id}">
-            <option selected value="${deviceType.id}">${deviceType.deviceType}</option>
+            <option selected value="${deviceType.id}">${deviceType.deviceType}   (${deviceType.abbreviation})</option>
         </c:when>
         <c:otherwise>
-            <option value="${deviceType.id}">${deviceType.deviceType}</option>
+            <option value="${deviceType.id}">${deviceType.deviceType}   (${deviceType.abbreviation})</option>
         </c:otherwise>
     </c:choose>
 </c:forEach>

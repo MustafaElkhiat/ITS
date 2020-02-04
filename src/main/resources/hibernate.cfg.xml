@@ -75,6 +75,7 @@ Contributor(s):
         <mapping class="elements.SubCategory"/>
         <mapping class="elements.Location"/>
         <mapping class="elements.Department"/>
+        <mapping class="elements.LocationDepartment"/>
         <mapping class="elements.Device"/>
         <mapping class="elements.TicketAssignedTo"/>
         <mapping class="elements.TicketStatus"/>

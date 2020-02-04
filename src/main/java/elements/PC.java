@@ -48,8 +48,8 @@ public class PC extends Device {
         this.pcType = pcType;
     }
 
-    public PC(String device, String mac_address, String ip_address, Department department, DeviceType deviceType, String loginName, String computerName, String HD, String RAM, String CPU, String monitor, String monitorSerialNum, boolean internet, Employee employee, OS os, PCType pcType) {
-        super(device, mac_address, ip_address, department, deviceType);
+    public PC(String device, String mac_address, String ip_address, LocationDepartment locationDepartment, DeviceType deviceType, String loginName, String computerName, String HD, String RAM, String CPU, String monitor, String monitorSerialNum, boolean internet, Employee employee, OS os, PCType pcType) {
+        super(device, mac_address, ip_address,locationDepartment, deviceType);
         this.loginName = loginName;
         this.computerName = computerName;
         this.HD = HD;
@@ -63,8 +63,8 @@ public class PC extends Device {
         this.pcType = pcType;
     }
 
-    public PC(String device, Department department, DeviceType deviceType, String loginName, String computerName, String HD, String RAM, String CPU, String monitor, String monitorSerialNum, boolean internet, Employee employee, OS os, PCType pcType) {
-        super(device, department, deviceType);
+    public PC(String device, LocationDepartment locationDepartment, DeviceType deviceType, String loginName, String computerName, String HD, String RAM, String CPU, String monitor, String monitorSerialNum, boolean internet, Employee employee, OS os, PCType pcType) {
+        super(device, locationDepartment, deviceType);
         this.loginName = loginName;
         this.computerName = computerName;
         this.HD = HD;

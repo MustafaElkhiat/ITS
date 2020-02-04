@@ -36,26 +36,24 @@ public class Device {
     @Column(name = "ip_address")
     private String ip_address;
     @ManyToOne
-    private Location location;
-    @ManyToOne
-    private Department department;
+    private LocationDepartment locationDepartment;
     @ManyToOne
     private DeviceType deviceType;
 
     public Device() {
     }
 
-    public Device(String device, String mac_address, String ip_address, Department department, DeviceType deviceType) {
+    public Device(String device, String mac_address, String ip_address, LocationDepartment locationDepartment, DeviceType deviceType) {
         this.device = device;
         this.mac_address = mac_address;
         this.ip_address = ip_address;
-        this.department = department;
+        this.locationDepartment = locationDepartment;
         this.deviceType = deviceType;
     }
 
-    public Device(String device, Department department, DeviceType deviceType) {
+    public Device(String device, LocationDepartment locationDepartment, DeviceType deviceType) {
         this.device = device;
-        this.department = department;
+        this.locationDepartment = locationDepartment;
         this.deviceType = deviceType;
     }
 
@@ -139,12 +137,12 @@ public class Device {
         this.ip_address = ip_address;
     }
 
-    public Department getDepartment() {
-        return department;
+    public LocationDepartment getLocationDepartment() {
+        return locationDepartment;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setLocationDepartment(LocationDepartment locationDepartment) {
+        this.locationDepartment = locationDepartment;
     }
 
     public DeviceType getDeviceType() {
@@ -155,11 +153,5 @@ public class Device {
         this.deviceType = deviceType;
     }
 
-    public Location getLocation() {
-        return location;
-    }
 
-    public void setLocation(Location location) {
-        this.location = location;
-    }
 }

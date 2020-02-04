@@ -32,7 +32,7 @@
                     <tr class="ticket link" ticket-id="${ticketsSolved.id}">
                         <td>${count}</td>
                         <td>${ticketsSolved.id}</td>
-                        <td>${ticketsSolved.device.department.location.region.abbreviation}-${ticketsSolved.device.department.location.abbreviation}-${ticketsSolved.device.department.abbreviation}-${ticketsSolved.device.deviceType.abbreviation}-${ticketsSolved.device.device}</td>
+                        <td>${ticketsSolved.device.locationDepartment.location.region.abbreviation}-${ticketsSolved.device.locationDepartment.location.abbreviation}-${ticketsSolved.device.locationDepartment.department.abbreviation}-${ticketsSolved.device.deviceType.abbreviation}-${ticketsSolved.device.device}</td>
                         <td>${ticketsSolved.problem}</td>
                         <td>${ticketsSolved.subCategory.category.category}</td>
                         <td>${ticketsSolved.subCategory.sub_category}</td>

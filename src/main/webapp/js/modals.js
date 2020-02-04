@@ -42,9 +42,8 @@ var saveDepartment = function () {
             url: "Controller",
             data: {
                 n: "5",
-                added_department: $("#department").val(),
-                department_abb: $("#department_abb").val(),
-                select_location: $("#department_abb").parent().parent().find("#location_").val()
+                added_department: $("#department_select").val(),
+                select_location: $("#department_select").parent().parent().parent().find("#location_").val()
             },
             type: "POST",
 
@@ -55,6 +54,8 @@ var saveDepartment = function () {
                     $(".department_").load('Directive', {d: 5, location: $("#location_").val()});
                     //$("#select_location_").load('Directive', {d: 4});
                     $("#department_modal_form").trigger("reset");
+                }else if(result == 0){
+                    error("Department hasn't been added","This department is already on this Location")
                 }
             }
         });

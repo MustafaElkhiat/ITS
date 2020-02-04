@@ -14,7 +14,7 @@
             <tbody>
             <tr>
                 <th>Device</th>
-                <td>${device.department.location.region.abbreviation}-${device.department.location.abbreviation}-${device.department.abbreviation}-${device.deviceType.abbreviation}-${device.device}</td>
+                <td>${device.locationDepartment.location.region.abbreviation}-${device.locationDepartment.location.abbreviation}-${device.locationDepartment.department.abbreviation}-${device.deviceType.abbreviation}-${device.device}</td>
             </tr>
             <tr>
                 <th>Device Type</th>

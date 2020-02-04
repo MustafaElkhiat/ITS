@@ -13,16 +13,16 @@ public class Department {
     private String department;
     @Column(name = "abb")
     private String abbreviation;
-    @ManyToOne
-    private Location location;
+    /*@ManyToOne
+    private Location location;*/
 
     public Department() {
     }
 
-    public Department(String department, String abbreviation, Location location) {
+    public Department(String department, String abbreviation) {
         this.department = department;
         this.abbreviation = abbreviation;
-        this.location = location;
+        //this.location = location;
     }
 
     public long getId() {
@@ -41,14 +41,15 @@ public class Department {
         this.department = department;
     }
 
-    public Location getLocation() {
-        return location;
-    }
+    /*
+        public Location getLocation() {
+            return location;
+        }
 
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
+        public void setLocation(Location location) {
+            this.location = location;
+        }
+    */
     public String getAbbreviation() {
         return abbreviation;
     }

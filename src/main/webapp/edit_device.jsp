@@ -105,7 +105,7 @@
                         <div class="input-group">
                             <select class="form-control region_" id="region_" name="region" required autofocus>
                                 <jsp:include page="region_options.jsp">
-                                    <jsp:param name="selected" value="${device.location.region.id}"/>
+                                    <jsp:param name="selected" value="${device.locationDepartment.location.region.id}"/>
                                 </jsp:include>
                             </select>
                             <c:if test="${P_1}">  <%-- 1 Add Region--%>
@@ -121,12 +121,12 @@
                 </div>
                 <div id="location_section" class="col-3 location_section">
                     <jsp:include page="location_section.jsp">
-                        <jsp:param name="selected" value="${device.location.id}"/>
+                        <jsp:param name="selected" value="${device.locationDepartment.location.id}"/>
                     </jsp:include>
                 </div>
                 <div id="department_section" class="col-3 department_section">
                     <jsp:include page="department_section.jsp">
-                        <jsp:param name="selected" value="${device.department.id}"/>
+                        <jsp:param name="selected" value="${device.locationDepartment.department.id}"/>
                     </jsp:include>
                 </div>
                 <div id="device_type_section" class="col-3 device_type_section">

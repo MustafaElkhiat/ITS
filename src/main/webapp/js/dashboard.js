@@ -219,41 +219,42 @@ var loadDepartmentSection = function (locationSection, location) {
         d: 2,
         location: location
     }, function () {
-        afterLoadingDepartmentSection($(this));
+        afterLoadingDepartmentSection($(this), location);
     });
 
 }
-var afterLoadingDepartmentSection = function (departmentSection) {
+var afterLoadingDepartmentSection = function (departmentSection, location) {
     departmentSection.find(".department_").change(function () {
         var department = $(this).val();
-        loadDeviceTypeSection(departmentSection, department);
+        loadDeviceTypeSection(departmentSection, location, department);
         $(this).parent().parent().parent().parent().parent().find("#device_data").empty();
         emptySections();
     });
 
 }
 
-var loadDeviceTypeSection = function (departmentSection, department) {
+var loadDeviceTypeSection = function (departmentSection, location, department) {
     departmentSection.parent().parent().find(".device_type_section").load('Directive', {
         d: 3,
     }, function () {
-        afterLoadingDeviceTypeSection($(this), department)
+        afterLoadingDeviceTypeSection($(this), location, department)
     });
 }
 
-var afterLoadingDeviceTypeSection = function (deviceTypeSection, department) {
+var afterLoadingDeviceTypeSection = function (deviceTypeSection, location, department) {
     deviceTypeSection.find(".device_type_").change(function () {
             var deviceType = $(this).val();
-            loadDeviceSection(deviceTypeSection, department, deviceType);
+            loadDeviceSection(deviceTypeSection, location, department, deviceType);
             device_data(deviceType, department);
             emptySections();
         }
     );
 }
 
-var loadDeviceSection = function (deviceTypeSection, department, deviceType) {
+var loadDeviceSection = function (deviceTypeSection, location, department, deviceType) {
     deviceTypeSection.parent().parent().find("#device_section").load('Directive', {
         d: 6,
+        location: location,
         department: department,
         device_type: deviceType
     }, afterLoadingDeviceSection);
@@ -266,7 +267,7 @@ var afterLoadingDeviceSection = function () {
 
 
     $("#device_").change(function () {
-        var device = $(this).val();
+        var device = $("#device_info").parent().find("#device_").val();
         $("#device_info").load('Directive', {d: 7, device: device});
         $("#problem_comment_section").load('Directive', {d: 10}, function () {
             $("#category_").change(function () {

@@ -13,10 +13,10 @@
 <c:forEach items="${departmentList}" var="department">
     <c:choose>
         <c:when test="${param.selected == department.id}">
-            <option selected value="${department.id}">${department.department}</option>
+            <option selected value="${department.id}">${department.department}   (${department.abbreviation})</option>
         </c:when>
         <c:otherwise>
-            <option value="${department.id}">${department.department}</option>
+            <option value="${department.id}">${department.department}   (${department.abbreviation})</option>
         </c:otherwise>
     </c:choose>
 </c:forEach>

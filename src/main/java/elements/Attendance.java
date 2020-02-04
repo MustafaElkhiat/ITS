@@ -15,8 +15,8 @@ public class Attendance extends Device {
     public Attendance() {
     }
 
-    public Attendance(String device, String mac_address, String ip_address, Department department, DeviceType deviceType, String subnet, String gateway) {
-        super(device, mac_address, ip_address, department, deviceType);
+    public Attendance(String device, String mac_address, String ip_address, LocationDepartment locationDepartment, DeviceType deviceType, String subnet, String gateway) {
+        super(device, mac_address, ip_address, locationDepartment, deviceType);
         this.subnet = subnet;
         this.gateway = gateway;
     }

@@ -257,11 +257,16 @@ public class ControllerHelper extends HelperBase {
 
     public int addDepartment() throws IOException {
         Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("select_location")));
-        String added_department = request.getParameter("added_department");
-        String abb = request.getParameter("department_abb");
-        Department department = new Department(added_department, abb, location);
-        hibernateHelper.saveData(department);
-        return (1);
+        Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("added_department")));
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department =" + department.getId());
+        if (locationDepartmentList.size() == 0) {
+            LocationDepartment locationDepartment = new LocationDepartment(location, department);
+            hibernateHelper.saveData(locationDepartment);
+            return (1);
+        } else {
+            return (0);
+        }
+
     }
 
     public int addDeviceType() throws IOException {
@@ -280,8 +285,9 @@ public class ControllerHelper extends HelperBase {
         String ip_address = request.getParameter("ip_address");
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
         DeviceType deviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, Long.valueOf(request.getParameter("device_type")));
-        Device device = new Device(added_device, mac_address, ip_address, department, deviceType);
-        hibernateHelper.saveData(device);
+        //List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = "+lo)
+        //Device device = new Device(added_device, mac_address, ip_address, department, deviceType);
+        //hibernateHelper.saveData(device);
         return (1);
     }
 
@@ -453,28 +459,28 @@ public class ControllerHelper extends HelperBase {
     }
 
     public Object getTicketAssignToSum() {
-        User user = (User) hibernateHelper.retreiveData(User.class,Long.valueOf(request.getParameter("user")));
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         return hibernateHelper.retreiveData("select count(assignedBy) from TicketAssignedTo where assignedBy = " + user.getId()).get(0);
     }
 
     public Object getTicketAssignedToUserSum() {
-        User user = (User) hibernateHelper.retreiveData(User.class,Long.valueOf(request.getParameter("user")));
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         return hibernateHelper.retreiveData("select count(assignedTo) from TicketAssignedTo where done = false and assignedTo = " + user.getId()).get(0);
     }
 
     public Object getTicketSolvedByUserSum() {
-        User user = (User) hibernateHelper.retreiveData(User.class,Long.valueOf(request.getParameter("user")));
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         return hibernateHelper.retreiveData("select count(solvedBy) from Ticket where done = true and solvedBy = " + user.getId()).get(0);
     }
 
     public Object getTicketInProgressByUserSum() {
-        User user = (User) hibernateHelper.retreiveData(User.class,Long.valueOf(request.getParameter("user")));
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         Status inProgressStatus = (Status) hibernateHelper.retreiveData(Status.class, (long) 2);
         return hibernateHelper.retreiveData("select count(TSUser) from TicketStatus where done = false and status = " + inProgressStatus.getId() + " and TSUser = " + user.getId()).get(0);
     }
 
     public Object getTicketPendingByUserSum() {
-        User user = (User) hibernateHelper.retreiveData(User.class,Long.valueOf(request.getParameter("user")));
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         Status pendingStatus = (Status) hibernateHelper.retreiveData(Status.class, (long) 3);
         return hibernateHelper.retreiveData("select count(TSUser) from TicketStatus where done = false and status = " + pendingStatus.getId() + " and TSUser = " + user.getId()).get(0);
     }
@@ -482,6 +488,7 @@ public class ControllerHelper extends HelperBase {
     public long savePC() throws ParseException, IOException {
         Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
         DeviceType deviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, Long.valueOf(request.getParameter("device_type")));
         PCType pcType = (PCType) hibernateHelper.retreiveData(PCType.class, Long.valueOf(request.getParameter("pc_type")));
         Employee employee = (Employee) hibernateHelper.retreiveData(Employee.class, Long.valueOf(request.getParameter("employee")));
@@ -500,30 +507,35 @@ public class ControllerHelper extends HelperBase {
         String cpu = request.getParameter("cpu");
         String monitor = request.getParameter("monitor");
         String monitor_serial = request.getParameter("monitor_serial");
-        Date purchase_date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("purchase_date"));
+        String purchase_date_string = request.getParameter("purchase_date");
+        Date purchase_date = null;
+        if (!purchase_date_string.equals("")) {
+            purchase_date = new SimpleDateFormat("yyyy-MM-dd").parse(purchase_date_string);
+        }
         boolean need_to_upgrade = Boolean.valueOf(request.getParameter("need_to_upgrade"));
         boolean internet = Boolean.valueOf(request.getParameter("internet"));
+        System.out.println("device_id : " + request.getParameter("device_id"));
         PC pc = null;
         if (request.getParameter("device_id") == null) {
-            pc = new PC(device, mac_address, ip_address, department, deviceType, login_name, computer_name, hd, ram, cpu, monitor, monitor_serial, internet, employee, os, pcType);
+            pc = new PC(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType, login_name, computer_name, hd, ram, cpu, monitor, monitor_serial, internet, employee, os, pcType);
         } else {
             pc = (PC) hibernateHelper.retreiveData(PC.class, Long.valueOf(request.getParameter("device_id")));
         }
-        pc.setLocation(location);
         pc.setVendor(vendor);
         pc.setModel(model);
         pc.setSerialNum(serial_num);
         pc.setOffice(office);
         pc.setPurchaseDate(purchase_date);
         pc.setNeedToUpgrade(need_to_upgrade);
+
         if (request.getParameter("device_id") == null) {
             hibernateHelper.saveData(pc);
             return pc.getId();
         } else {
+            pc.setLocationDepartment(locationDepartmentList.get(0));
             pc.setDevice(device);
             pc.setMac_address(mac_address);
             pc.setIp_address(ip_address);
-            pc.setDepartment(department);
             pc.setDeviceType(deviceType);
             pc.setLoginName(login_name);
             pc.setComputerName(computer_name);
@@ -546,6 +558,7 @@ public class ControllerHelper extends HelperBase {
     public long savePrinter() throws ParseException, IOException {
         Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
         DeviceType deviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, Long.valueOf(request.getParameter("device_type")));
         Employee employee = null;
         if (!request.getParameter("employee").equals("")) {
@@ -561,16 +574,19 @@ public class ControllerHelper extends HelperBase {
         String ip_address = request.getParameter("ip_address");
         String office = request.getParameter("office");
         String toner_num = request.getParameter("toner_num");
-        Date purchase_date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("purchase_date"));
+        String purchase_date_string = request.getParameter("purchase_date");
+        Date purchase_date = null;
+        if (!purchase_date_string.equals("")) {
+            purchase_date = new SimpleDateFormat("yyyy-MM-dd").parse(purchase_date_string);
+        }
         boolean need_to_upgrade = Boolean.valueOf(request.getParameter("need_to_upgrade"));
         Printer printer = null;
         if (request.getParameter("device_id") == null) {
-            printer = new Printer(device, mac_address, ip_address, department, deviceType, toner_num, connection, employee);
+            printer = new Printer(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType, toner_num, connection, employee);
         } else {
             printer = (Printer) hibernateHelper.retreiveData(Printer.class, Long.valueOf(request.getParameter("device_id")));
         }
         printer.setVendor(vendor);
-        printer.setLocation(location);
         printer.setModel(model);
         printer.setSerialNum(serial_num);
         printer.setOffice(office);
@@ -584,7 +600,7 @@ public class ControllerHelper extends HelperBase {
             printer.setDevice(device);
             printer.setMac_address(mac_address);
             printer.setIp_address(ip_address);
-            printer.setDepartment(department);
+            printer.setLocationDepartment(locationDepartmentList.get(0));
             printer.setDeviceType(deviceType);
             printer.setTonerNumber(toner_num);
             printer.setPrinterConnection(connection);
@@ -598,6 +614,7 @@ public class ControllerHelper extends HelperBase {
     public long saveAttendance() throws ParseException, IOException {
         Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
         DeviceType deviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, Long.valueOf(request.getParameter("device_type")));
         String device = request.getParameter("device");
         String vendor = request.getParameter("vendor");
@@ -606,17 +623,20 @@ public class ControllerHelper extends HelperBase {
         String serial_num = request.getParameter("serial_num");
         String ip_address = request.getParameter("ip_address");
         String office = request.getParameter("office");
-        Date purchase_date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("purchase_date"));
+        String purchase_date_string = request.getParameter("purchase_date");
+        Date purchase_date = null;
+        if (!purchase_date_string.equals("")) {
+            purchase_date = new SimpleDateFormat("yyyy-MM-dd").parse(purchase_date_string);
+        }
         boolean need_to_upgrade = Boolean.valueOf(request.getParameter("need_to_upgrade"));
         String subnet = request.getParameter("subnet");
         String gateway = request.getParameter("gateway");
         Attendance attendance = null;
         if (request.getParameter("device_id") == null) {
-            attendance = new Attendance(device, mac_address, ip_address, department, deviceType, subnet, gateway);
+            attendance = new Attendance(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType, subnet, gateway);
         } else {
             attendance = (Attendance) hibernateHelper.retreiveData(Attendance.class, Long.valueOf(request.getParameter("device_id")));
         }
-        attendance.setLocation(location);
         attendance.setVendor(vendor);
         attendance.setModel(model);
         attendance.setSerialNum(serial_num);
@@ -630,7 +650,7 @@ public class ControllerHelper extends HelperBase {
             attendance.setDevice(device);
             attendance.setMac_address(mac_address);
             attendance.setIp_address(ip_address);
-            attendance.setDepartment(department);
+            attendance.setLocationDepartment(locationDepartmentList.get(0));
             attendance.setDeviceType(deviceType);
             attendance.setSubnet(subnet);
             attendance.setGateway(gateway);
@@ -643,6 +663,7 @@ public class ControllerHelper extends HelperBase {
     public long savePBX() throws ParseException, IOException {
         Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
         DeviceType deviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, Long.valueOf(request.getParameter("device_type")));
         Employee employee = null;
         if (!request.getParameter("employee").equals("")) {
@@ -656,16 +677,20 @@ public class ControllerHelper extends HelperBase {
         String ip_address = request.getParameter("ip_address");
         String office = request.getParameter("office");
         String device_num = request.getParameter("device_num");
-        Date purchase_date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("purchase_date"));
+        String purchase_date_string = request.getParameter("purchase_date");
+        Date purchase_date = null;
+        if (!purchase_date_string.equals("")) {
+            purchase_date = new SimpleDateFormat("yyyy-MM-dd").parse(purchase_date_string);
+        }
         boolean need_to_upgrade = Boolean.valueOf(request.getParameter("need_to_upgrade"));
         PBX pbx = null;
         if (request.getParameter("device_id") == null) {
-            pbx = new PBX(device, mac_address, ip_address, department, deviceType, device_num, employee);
+            pbx = new PBX(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType, device_num, employee);
         } else {
             pbx = (PBX) hibernateHelper.retreiveData(PBX.class, Long.valueOf(request.getParameter("device_id")));
         }
         pbx.setVendor(vendor);
-        pbx.setLocation(location);
+
         pbx.setModel(model);
         pbx.setSerialNum(serial_num);
         pbx.setOffice(office);
@@ -678,7 +703,8 @@ public class ControllerHelper extends HelperBase {
             pbx.setDevice(device);
             pbx.setMac_address(mac_address);
             pbx.setIp_address(ip_address);
-            pbx.setDepartment(department);
+            pbx.setLocationDepartment(locationDepartmentList.get(0));
+
             pbx.setDeviceType(deviceType);
             pbx.setDeviceNum(device_num);
             pbx.setEmployee(employee);
@@ -690,6 +716,8 @@ public class ControllerHelper extends HelperBase {
     public long saveDevice() throws ParseException, IOException {
         Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
+
         DeviceType deviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, Long.valueOf(request.getParameter("device_type")));
         String device = request.getParameter("device");
         String vendor = request.getParameter("vendor");
@@ -698,11 +726,15 @@ public class ControllerHelper extends HelperBase {
         String serial_num = request.getParameter("serial_num");
         String ip_address = request.getParameter("ip_address");
         String office = request.getParameter("office");
-        Date purchase_date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("purchase_date"));
+        String purchase_date_string = request.getParameter("purchase_date");
+        Date purchase_date = null;
+        if (!purchase_date_string.equals("")) {
+            purchase_date = new SimpleDateFormat("yyyy-MM-dd").parse(purchase_date_string);
+        }
         boolean need_to_upgrade = Boolean.valueOf(request.getParameter("need_to_upgrade"));
         Device device1 = null;
         if (request.getParameter("device_id") == null) {
-            device1 = new Device(device, mac_address, ip_address, department, deviceType);
+            device1 = new Device(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType);
         } else {
             device1 = (Device) hibernateHelper.retreiveData(Device.class, Long.valueOf(request.getParameter("device_id")));
         }
@@ -712,7 +744,6 @@ public class ControllerHelper extends HelperBase {
         device1.setPurchaseDate(purchase_date);
         device1.setNeedToUpgrade(need_to_upgrade);
         device1.setVendor(vendor);
-        device1.setLocation(location);
         if (request.getParameter("device_id") == null) {
             hibernateHelper.saveData(device1);
             return device1.getId();
@@ -720,7 +751,7 @@ public class ControllerHelper extends HelperBase {
             device1.setDevice(device);
             device1.setMac_address(mac_address);
             device1.setIp_address(ip_address);
-            device1.setDepartment(department);
+            device1.setLocationDepartment(locationDepartmentList.get(0));
             device1.setDeviceType(deviceType);
             hibernateHelper.updateData(device1);
             return 0;
@@ -731,6 +762,7 @@ public class ControllerHelper extends HelperBase {
     public long saveVideoRecorder() throws IOException, ParseException {
         Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
         DeviceType deviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, Long.valueOf(request.getParameter("device_type")));
         String device = request.getParameter("device");
         String vendor = request.getParameter("vendor");
@@ -740,15 +772,18 @@ public class ControllerHelper extends HelperBase {
         String ip_address = request.getParameter("ip_address");
         String office = request.getParameter("office");
         int portNum = Integer.valueOf(request.getParameter("port_num"));
-        Date purchase_date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("purchase_date"));
+        String purchase_date_string = request.getParameter("purchase_date");
+        Date purchase_date = null;
+        if (!purchase_date_string.equals("")) {
+            purchase_date = new SimpleDateFormat("yyyy-MM-dd").parse(purchase_date_string);
+        }
         boolean need_to_upgrade = Boolean.valueOf(request.getParameter("need_to_upgrade"));
         VideoRecorder videoRecorder = null;
         if (request.getParameter("device_id") == null) {
-            videoRecorder = new VideoRecorder(device, mac_address, ip_address, department, deviceType, portNum);
+            videoRecorder = new VideoRecorder(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType, portNum);
         } else {
             videoRecorder = (VideoRecorder) hibernateHelper.retreiveData(VideoRecorder.class, Long.valueOf(request.getParameter("device_id")));
         }
-        videoRecorder.setLocation(location);
         videoRecorder.setModel(model);
         videoRecorder.setVendor(vendor);
         videoRecorder.setSerialNum(serial_num);
@@ -762,7 +797,7 @@ public class ControllerHelper extends HelperBase {
             videoRecorder.setDevice(device);
             videoRecorder.setMac_address(mac_address);
             videoRecorder.setIp_address(ip_address);
-            videoRecorder.setDepartment(department);
+            videoRecorder.setLocationDepartment(locationDepartmentList.get(0));
             videoRecorder.setDeviceType(deviceType);
             videoRecorder.setPortNum(portNum);
             hibernateHelper.updateData(videoRecorder);
@@ -840,7 +875,7 @@ public class ControllerHelper extends HelperBase {
         List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where TSUser = " + user.getId());
         for (Privilege privilege : privilegeList) {
             for (UserPrivilege userPrivilege : userPrivilegeList) {
-                if(userPrivilege.getPrivilege().getId() == privilege.getId()){
+                if (userPrivilege.getPrivilege().getId() == privilege.getId()) {
                     for (int i = 0; i < privileges.split(",").length; i++) {
                         Privilege pri = (Privilege) hibernateHelper.retreiveData(Privilege.class, Long.valueOf(privileges.split(",")[i]));
                         if (pri.getId() == privilege.getId()) {
@@ -857,7 +892,7 @@ public class ControllerHelper extends HelperBase {
 
         for (Region region : regionList) {
             for (TSUserRegion userRegion : userRegionList) {
-                if(userRegion.getRegion().getId() == region.getId()){
+                if (userRegion.getRegion().getId() == region.getId()) {
                     for (int i = 0; i < regions.split(",").length; i++) {
                         Region reg = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regions.split(",")[i]));
                         if (reg.getId() == region.getId()) {

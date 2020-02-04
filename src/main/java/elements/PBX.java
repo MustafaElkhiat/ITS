@@ -16,8 +16,8 @@ public class PBX extends Device {
     public PBX() {
     }
 
-    public PBX(String device, String mac_address, String ip_address, Department department, DeviceType deviceType, String deviceNum, Employee employee) {
-        super(device, mac_address, ip_address, department, deviceType);
+    public PBX(String device, String mac_address, String ip_address, LocationDepartment locationDepartment, DeviceType deviceType, String deviceNum, Employee employee) {
+        super(device, mac_address, ip_address, locationDepartment, deviceType);
         this.deviceNum = deviceNum;
         this.employee = employee;
     }

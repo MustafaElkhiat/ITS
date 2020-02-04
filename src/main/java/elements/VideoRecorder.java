@@ -11,8 +11,8 @@ public class VideoRecorder extends Device {
     public VideoRecorder() {
     }
 
-    public VideoRecorder(String device, String mac_address, String ip_address, Department department, DeviceType deviceType, int portNum) {
-        super(device, mac_address, ip_address, department, deviceType);
+    public VideoRecorder(String device, String mac_address, String ip_address, LocationDepartment locationDepartment, DeviceType deviceType, int portNum) {
+        super(device, mac_address, ip_address, locationDepartment, deviceType);
         this.portNum = portNum;
     }
 

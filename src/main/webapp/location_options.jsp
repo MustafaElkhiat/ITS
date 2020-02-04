@@ -14,10 +14,10 @@
 <c:forEach items="${locationList}" var="location">
     <c:choose>
         <c:when test="${param.selected == location.id}">
-            <option selected value="${location.id}">${location.location}</option>
+            <option selected value="${location.id}">${location.location}   (${location.abbreviation})</option>
         </c:when>
         <c:otherwise>
-            <option value="${location.id}">${location.location}</option>
+            <option value="${location.id}">${location.location}   (${location.abbreviation})</option>
         </c:otherwise>
     </c:choose>
 

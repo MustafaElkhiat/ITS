@@ -33,7 +33,7 @@
                     <tr class="link ticket_edit" ticket-id="${ticketsPending.ticket.id}">
                         <td>${count}</td>
                         <td>${ticketsPending.ticket.id}</td>
-                        <td>${ticketsPending.ticket.device.department.location.region.abbreviation}-${ticketsPending.ticket.device.department.location.abbreviation}-${ticketsPending.ticket.device.department.abbreviation}-${ticketsPending.ticket.device.deviceType.abbreviation}-${ticketsPending.ticket.device.device}</td>
+                        <td>${ticketsPending.ticket.device.locationDepartment.location.region.abbreviation}-${ticketsPending.ticket.device.locationDepartment.location.abbreviation}-${ticketsPending.ticket.device.locationDepartment.department.abbreviation}-${ticketsPending.ticket.device.deviceType.abbreviation}-${ticketsPending.ticket.device.device}</td>
                         <td>${ticketsPending.ticket.problem}</td>
                         <td>${ticketsPending.ticket.subCategory.category.category}</td>
                         <td>${ticketsPending.ticket.subCategory.sub_category}</td>
