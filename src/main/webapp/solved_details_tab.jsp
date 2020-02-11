@@ -29,7 +29,7 @@
                 </thead>
                 <tbody id="solved_table_body">
                 <c:forEach items="${ticketsSolvedList}" var="ticketsSolved">
-                    <tr class="ticket link" ticket-id="${ticketsSolved.id}">
+                    <tr class="ticket link-success" ticket-id="${ticketsSolved.id}">
                         <td>${count}</td>
                         <td>${ticketsSolved.id}</td>
                         <td>${ticketsSolved.device.locationDepartment.location.region.abbreviation}-${ticketsSolved.device.locationDepartment.location.abbreviation}-${ticketsSolved.device.locationDepartment.department.abbreviation}-${ticketsSolved.device.deviceType.abbreviation}-${ticketsSolved.device.device}</td>

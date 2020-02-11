@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="tab-content" id="myTabContent">
+<div class="tab-content ${param.style}" id="myTabContent">
     <div class="tab-pane fade show active" id="${param.user}-assign-to" role="tabpanel" aria-labelledby="${param.user}-assign-to-tab">
     </div>
     <div class="tab-pane fade" id="${param.user}-in-progress" role="tabpanel" aria-labelledby="${param.user}-in-progress-tab">

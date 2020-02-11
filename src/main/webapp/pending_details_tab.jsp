@@ -30,7 +30,7 @@
                 </thead>
                 <tbody id="pending_table_body">
                 <c:forEach items="${ticketsPendingList}" var="ticketsPending">
-                    <tr class="link ticket_edit" ticket-id="${ticketsPending.ticket.id}">
+                    <tr class="link-secondary ticket_edit" ticket-id="${ticketsPending.ticket.id}">
                         <td>${count}</td>
                         <td>${ticketsPending.ticket.id}</td>
                         <td>${ticketsPending.ticket.device.locationDepartment.location.region.abbreviation}-${ticketsPending.ticket.device.locationDepartment.location.abbreviation}-${ticketsPending.ticket.device.locationDepartment.department.abbreviation}-${ticketsPending.ticket.device.deviceType.abbreviation}-${ticketsPending.ticket.device.device}</td>

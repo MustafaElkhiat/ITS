@@ -25,11 +25,9 @@ public class Directive extends HttpServlet {
                 case (1):
                     directiveHelper.goToNewTicketSection();
                     break;
-
                 case (2):
                     directiveHelper.goToDepartmentSection();
                     break;
-
                 case (3):
                     directiveHelper.goToDeviceTypeSection();
                     break;
@@ -147,13 +145,15 @@ public class Directive extends HttpServlet {
                 case (41):
                     directiveHelper.goToEditUser();
                     break;
-                case(42):
+                case (42):
                     directiveHelper.goToOSOptions();
                     break;
-                case(43):
+                case (43):
                     directiveHelper.goToDashboardDetails();
                     break;
-
+                case (44):
+                    directiveHelper.goToRegionChart();
+                    break;
             }
         }
     }

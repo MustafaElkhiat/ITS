@@ -11,7 +11,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<input type="hidden" id="user" value="${current_user.id}"/>
+<input type="hidden" id="current_user" value="${current_user.id}"/>
 <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
 
 

@@ -11,7 +11,7 @@ $(document).ready(function () {
     });
     $("#my_ticket").click(function () {
         stopTimers();
-        var user = $("#user").val();
+        var user = $("#current_user").val();
         $("#content_place").load('ticket_details.jsp', {user: user}, function () {
                 $("#search_REF").searchTable("table_REF");
                 $("#mytable_REF").sortTableNow();
@@ -371,7 +371,7 @@ var action_submit = function () {
 var action_edit_submit = function () {
     $("#action_submit").click(function () {
 
-        if ($(".needs-validation")[9].checkValidity() === true) {
+        if ($(".needs-validation")[1].checkValidity() === true) {
 
             $.ajax({
                 url: "Controller",
@@ -510,10 +510,30 @@ var addUser = function () {
                     if (result > 0) {
 
                         success("User has been added", "");
+                        $("#phone_num").removeClass("is-invalid");
+                        $("#phone_num").removeClass("is-valid");
+                        $("#username").removeClass("is-valid");
+                        $("#username").removeClass("is-invalid");
                         $("#create_user_form").trigger("reset");
                         //$("#content_place").load('Directive', {d: 15, ticket: result.trim()});
-                    } else {
-                        success("User has been edited", "");
+                    } else if (result == -1) {
+                        error("User hasn't been added", "The username is not available");
+                        $("#username").addClass("is-invalid");
+                        $("#username").removeClass("is-valid");
+                        $("#phone_num").addClass("is-valid");
+                        $("#phone_num").removeClass("is-invalid");
+                    } else if (result == -2) {
+                        error("User hasn't been added", "The phone number is used for another user");
+                        $("#phone_num").addClass("is-invalid");
+                        $("#phone_num").removeClass("is-valid");
+                        $("#username").addClass("is-valid");
+                        $("#username").removeClass("is-invalid");
+                    } else if (result == -3) {
+                        error("User hasn't been added", "The username is not available and phone number is used for another user");
+                        $("#phone_num").addClass("is-invalid");
+                        $("#phone_num").removeClass("is-valid");
+                        $("#username").removeClass("is-valid");
+                        $("#username").addClass("is-invalid");
                     }
                 }
             });
@@ -569,8 +589,30 @@ var editUser = function () {
                     if (result > 0) {
 
                         success("User has been edited", "");
+                        $("#phone_num").removeClass("is-invalid");
+                        $("#phone_num").removeClass("is-valid");
+                        $("#username").removeClass("is-valid");
+                        $("#username").removeClass("is-invalid");
                         //$("#create_user_form").trigger("reset");
                         //$("#content_place").load('Directive', {d: 15, ticket: result.trim()});
+                    } else if (result == -1) {
+                        error("User hasn't been edited", "The username is not available");
+                        $("#username").addClass("is-invalid");
+                        $("#username").removeClass("is-valid");
+                        $("#phone_num").addClass("is-valid");
+                        $("#phone_num").removeClass("is-invalid");
+                    } else if (result == -2) {
+                        error("User hasn't been edited", "The phone number is used for another user");
+                        $("#phone_num").addClass("is-invalid");
+                        $("#phone_num").removeClass("is-valid");
+                        $("#username").addClass("is-valid");
+                        $("#username").removeClass("is-invalid");
+                    } else if (result == -3) {
+                        error("User hasn't been edited", "The username is not available and phone number is used for another user");
+                        $("#phone_num").addClass("is-invalid");
+                        $("#phone_num").removeClass("is-valid");
+                        $("#username").removeClass("is-valid");
+                        $("#username").addClass("is-invalid");
                     }
                 }
             });

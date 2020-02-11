@@ -12,7 +12,7 @@
 <c:if test="${P_6}">
     <c:set var="edit_device_privilege" value="device"/>
 </c:if>
-<div class="card card-outline-primary scroll">
+<div class="card card-outline-primary">
     <div class="card-body">
 
         <c:if test="${fn:length(attendanceList) > 0}">
@@ -21,8 +21,8 @@
                 <jsp:param name="id" value="search_Att"/>
             </jsp:include>
 
-            <div class="scroll">
-                <table id="Att_table" class="table table-striped table-bordered" style="width: 2000px;">
+            <div class="scroll" style="height:300px;">
+                <table id="Att_table" class="table table-striped table-bordered" style="width: 2500px;">
                     <thead>
                     <tr class="table-bordered bg-lightGray">
                         <th>#<i class="fas float-left my-2"></i></th>

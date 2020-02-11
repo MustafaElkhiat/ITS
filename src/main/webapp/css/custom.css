@@ -218,6 +218,26 @@ select {
     width: 100%;
 }
 
+.link-warning, .link-secondary, .link-success, .link-danger {
+    cursor: pointer;
+}
+
+.link-warning:hover, .link-warning a:hover {
+    color: #ffc107 !important;
+}
+
+.link-secondary:hover, .link-secondary a:hover {
+    color: #6c757d !important;
+}
+
+.link-success:hover, .link-success a:hover {
+    color: #28a745 !important;
+}
+
+.link-danger:hover, .link-danger a:hover {
+    color: #dc3545 !important;
+}
+
 .card-outline-primary {
     color: #007bff;
     border-color: #007bff;
@@ -302,3 +322,4 @@ select {
 .nav-item .nav-link {
     padding: .5rem .5rem !important;
 }
+

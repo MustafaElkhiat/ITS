@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<ul class="nav nav-tabs" id="myTab" role="tablist">
+<ul class="nav nav-tabs ${param.style}" id="myTab" role="tablist">
     <li class="nav-item">
         <a class="nav-link bg-primary red-active" id="${param.user}-assign-to-tab" data-toggle="tab" href="#${param.user}-assign-to" role="tab"
            aria-controls="home" aria-selected="true">Assigned To <span id="${param.user}-assign-to-badge" class="badge badge-light"></span></a>

@@ -30,7 +30,7 @@
                 </thead>
                 <tbody id="in_progress_table_body">
                 <c:forEach items="${ticketsInProgressList}" var="ticketsInProgress">
-                    <tr class="link ticket_edit" ticket-id="${ticketsInProgress.ticket.id}">
+                    <tr class="link-warning ticket_edit" ticket-id="${ticketsInProgress.ticket.id}">
                         <td>${count}</td>
                         <td>${ticketsInProgress.ticket.id}</td>
                         <td>${ticketsInProgress.ticket.device.locationDepartment.location.region.abbreviation}-${ticketsInProgress.ticket.device.locationDepartment.location.abbreviation}-${ticketsInProgress.ticket.device.locationDepartment.department.abbreviation}-${ticketsInProgress.ticket.device.deviceType.abbreviation}-${ticketsInProgress.ticket.device.device}</td>

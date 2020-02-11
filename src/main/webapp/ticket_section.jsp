@@ -10,12 +10,19 @@
 <div class="card mt-3">
     <div class="card-body">
         <div class="row">
-            <div id="${param.user}_ticket_chart" class="col-lg-4 col-sm-12">
-
+            <div class="col-lg-4 col-sm-12">
+                <jsp:include page="user_charts.jsp">
+                    <jsp:param name="user" value="${param.user}"/>
+                </jsp:include>
             </div>
+
             <div class="col-lg-8 col-sm-12">
-                <jsp:include page="ticket_tab_header.jsp"/>
-                <jsp:include page="ticket_tab_content.jsp"/>
+                <jsp:include page="ticket_tab_header.jsp">
+                    <jsp:param name="style" value="ml-5"/>
+                </jsp:include>
+                <jsp:include page="ticket_tab_content.jsp">
+                    <jsp:param name="style" value="ml-5"/>
+                </jsp:include>
             </div>
 
         </div>
@@ -25,7 +32,6 @@
 
 <script>
     initialValues("${param.user}");
-    loadTicketChart("${param.user}");
     assign_to_tab("${param.user}");
     in_progress_tab("${param.user}");
     pending_tab("${param.user}");

@@ -146,6 +146,18 @@ public class Controller extends HttpServlet {
                 case (28):
                     response.getWriter().println(controllerHelper.addOS());
                     break;
+                case (29):
+                    response.getWriter().println(controllerHelper.getTicketAssignToRegionCount());
+                    break;
+                case (30):
+                    response.getWriter().println(controllerHelper.getTicketInProgressRegionCount());
+                    break;
+                case (31):
+                    response.getWriter().println(controllerHelper.getTicketPendingRegionCount());
+                    break;
+                case (32):
+                    response.getWriter().println(controllerHelper.getTicketSolvedRegionCount());
+                    break;
             }
         }
 

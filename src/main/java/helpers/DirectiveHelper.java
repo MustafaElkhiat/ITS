@@ -40,7 +40,7 @@ public class DirectiveHelper extends HelperBase {
         List<Department> departmentList = hibernateHelper.retreiveData("from Department order by department");
         List<Category> categoryList = hibernateHelper.retreiveData("from Category order by category");
         request.setAttribute("categoryList", categoryList);
-        request.setAttribute("departmentList",departmentList);
+        request.setAttribute("departmentList", departmentList);
 
         request.getRequestDispatcher("new_ticket.jsp").forward(request, response);
     }
@@ -57,10 +57,10 @@ public class DirectiveHelper extends HelperBase {
         request = getUserPrivilege(user, request);
         Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
         //List<Department> departmentList = hibernateHelper.retreiveData("from Department order by department");
-        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = "+location.getId());
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
 
-        List<Department> departmentList =  new ArrayList<>();
-        for(LocationDepartment locationDepartment : locationDepartmentList){
+        List<Department> departmentList = new ArrayList<>();
+        for (LocationDepartment locationDepartment : locationDepartmentList) {
             departmentList.add(locationDepartment.getDepartment());
         }
         request.setAttribute("departmentList", departmentList);
@@ -76,10 +76,10 @@ public class DirectiveHelper extends HelperBase {
 
     public void goToDeviceSection() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
-        Location location = (Location) hibernateHelper.retreiveData(Location.class,Long.valueOf(request.getParameter("location")));
+        Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
         DeviceType deviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, Long.valueOf(request.getParameter("device_type")));
-        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location ="+location.getId()+" and department = "+department.getId());
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location =" + location.getId() + " and department = " + department.getId());
         List<Device> deviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartmentList.get(0).getId() + " and deviceType = " + deviceType.getId());
         request.setAttribute("deviceList", deviceList);
         request.getRequestDispatcher("device_section.jsp").forward(request, response);
@@ -115,10 +115,10 @@ public class DirectiveHelper extends HelperBase {
     public void goToDepartmentOptions() throws ServletException, IOException {
         System.out.println("location : " + request.getParameter("location"));
         Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
-        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = "+location.getId());
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
 
-        List<Department> departmentList =  new ArrayList<>();
-        for(LocationDepartment locationDepartment : locationDepartmentList){
+        List<Department> departmentList = new ArrayList<>();
+        for (LocationDepartment locationDepartment : locationDepartmentList) {
             departmentList.add(locationDepartment.getDepartment());
         }
         request.setAttribute("departmentList", departmentList);
@@ -169,9 +169,9 @@ public class DirectiveHelper extends HelperBase {
     public void goToAssignToSection() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
         Device device = (Device) hibernateHelper.retreiveData(Device.class, Long.valueOf(request.getParameter("device_")));
-        //Region region = device.getDepartment().getLocation().getRegion();
-        //List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and region = " + region.getId() + " order by region");
-        //request.setAttribute("tsUserRegionList", tsUserRegionList);
+        Region region = device.getLocationDepartment().getLocation().getRegion();
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and region = " + region.getId() + " order by region");
+        request.setAttribute("tsUserRegionList", tsUserRegionList);
         request.setAttribute("currentUser", user);
         request.getRequestDispatcher("assign_to_section.jsp").forward(request, response);
     }
@@ -332,6 +332,27 @@ public class DirectiveHelper extends HelperBase {
         request.getRequestDispatcher("ticket_chart.jsp").forward(request, response);
     }
 
+    public void goToRegionChart() throws ServletException, IOException {
+        if(request.getParameter("region").equals("ALL")){
+            request.setAttribute("region", "ALL");
+            request.setAttribute("assignToRegionCount", controllerHelper.getTicketAssignToAllRegionsCount());
+            //request.setAttribute("needToSolveRegionCount", controllerHelper.getTicketAssignToSum());
+            request.setAttribute("inProgressRegionCount", controllerHelper.getTicketAInProgressAllRegionsCount());
+            request.setAttribute("pendingRegionCount", controllerHelper.getTicketPendingAllRegionsCount());
+            request.setAttribute("solvedRegionCount", controllerHelper.getTicketSolvedAllRegionsCount());
+        }else {
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+            System.out.println("region : " + region.getRegion());
+            request.setAttribute("region", region);
+            request.setAttribute("assignToRegionCount", controllerHelper.getTicketAssignToRegionCount());
+            //request.setAttribute("needToSolveRegionCount", controllerHelper.getTicketAssignToSum());
+            request.setAttribute("inProgressRegionCount", controllerHelper.getTicketInProgressRegionCount());
+            request.setAttribute("pendingRegionCount", controllerHelper.getTicketPendingRegionCount());
+            request.setAttribute("solvedRegionCount", controllerHelper.getTicketSolvedRegionCount());
+        }
+        request.getRequestDispatcher("region_chart.jsp").forward(request, response);
+    }
+
     public void goToDevices() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
         List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
@@ -358,7 +379,7 @@ public class DirectiveHelper extends HelperBase {
             System.out.println(tsUserRegion.getRegion().getRegion());
             for (Location location : locationList) {
                 System.out.println(location.getRegion().getId() == tsUserRegion.getRegion().getId());
-                List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = "+location.getId());
+                List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
                 if (location.getRegion().getId() == tsUserRegion.getRegion().getId()) {
                     for (LocationDepartment locationDepartment : locationDepartmentList) {
                         deviceList.addAll(hibernateHelper.retreiveData("from PC where locationDepartment = " + locationDepartment.getId()));
@@ -462,10 +483,10 @@ public class DirectiveHelper extends HelperBase {
         List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
         Device device = (Device) hibernateHelper.retreiveData(Device.class, Long.valueOf(request.getParameter("device")));
         List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + tsUserRegionList.get(0).getRegion().getId() + " order by location");
-        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = "+device.getLocationDepartment().getLocation().getId());
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + device.getLocationDepartment().getLocation().getId());
 
-        List<Department> departmentList =  new ArrayList<>();
-        for(LocationDepartment locationDepartment : locationDepartmentList){
+        List<Department> departmentList = new ArrayList<>();
+        for (LocationDepartment locationDepartment : locationDepartmentList) {
             departmentList.add(locationDepartment.getDepartment());
         }
         List<DeviceType> deviceTypeList = hibernateHelper.retreiveData("from DeviceType order by deviceType");
@@ -543,20 +564,47 @@ public class DirectiveHelper extends HelperBase {
         } else if (tsUserRegionList.size() > 1) {
             region = "Technology Sector";
         }
-        List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and region = 1");
+        List<TSUserRegion> userRegions = new ArrayList<>();
+        System.out.println("yysize" + tsUserRegionList.size());
+        List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser != " + user.getId());
+        for (TSUserRegion tsUserRegion : tsUserRegionList) {
+            for (TSUserRegion userRegion : userRegionList) {
+                if (userRegion.getRegion().getId() == tsUserRegion.getRegion().getId() && tsUserRegion.getTSUser().getId() != userRegion.getTSUser().getId() && userRegion.getTSUser().getRole().getId() == 5) {
+                    userRegions.add(userRegion);
+
+                }
+            }
+        }
+        System.out.println("size: " + userRegions.size());
         List<Department> departmentList = hibernateHelper.retreiveData("from Department order by department");
         request = getUserPrivilege(user, request);
         request.setAttribute("current_user", user);
-        request.setAttribute("userRegionList", userRegionList);
+        request.setAttribute("userRegionList", tsUserRegionList);
+        request.setAttribute("userRegions", userRegions);
         request.setAttribute("departmentList", departmentList);
         request.setAttribute("region", region);
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }
 
     public void goToDashboardDetails() throws ServletException, IOException {
-        List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and region = 1");
+        User user = (User) request.getSession().getAttribute("user");
         List<Department> departmentList = hibernateHelper.retreiveData("from Department order by department");
-        request.setAttribute("userRegionList", userRegionList);
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId());
+        System.out.println("yysize" + tsUserRegionList.size());
+        List<TSUserRegion> userRegions = new ArrayList<>();
+        List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser != " + user.getId());
+        for (TSUserRegion tsUserRegion : tsUserRegionList) {
+            for (TSUserRegion userRegion : userRegionList) {
+                if (userRegion.getRegion().getId() == tsUserRegion.getRegion().getId() && tsUserRegion.getTSUser().getId() != userRegion.getTSUser().getId() && userRegion.getTSUser().getRole().getId() == 5) {
+                    userRegions.add(userRegion);
+
+                }
+            }
+        }
+        //List<>
+        request.setAttribute("current_user", user);
+        request.setAttribute("userRegionList", tsUserRegionList);
+        request.setAttribute("userRegions", userRegions);
         request.setAttribute("departmentList", departmentList);
         request.getRequestDispatcher("dashboard_details.jsp").forward(request, response);
     }

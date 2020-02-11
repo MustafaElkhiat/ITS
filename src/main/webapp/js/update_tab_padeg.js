@@ -5,12 +5,20 @@ var inProgressTimer = [];
 var pendingTimer = [];
 var solvedTimer = [];
 var loadTicketChart = function (user) {
-    $("#" + user + "_ticket_chart").load('Directive', {d: 22, user: user});
-    ticketChartTimer[ticketChartTimer.length] = setTimeout(function () {
-        loadTicketChart(user);
-    }, 10000);
-}
+    $("#" + user + "_ticket_chart").load('Directive', {d: 22, user: user}, function () {
+        ticketChartTimer[ticketChartTimer.length] = setTimeout(function () {
+            loadTicketChart(user);
+        }, 10000);
+    });
 
+}
+var loadRegionChart = function (region) {
+    $("#" + region + "_region_chart").load('Directive', {d: 44, region: region}, function () {
+        ticketChartTimer[ticketChartTimer.length] = setTimeout(function () {
+            loadRegionChart(region);
+        }, 10000);
+    });
+}
 var stopTicketChart = function () {
     clearTimer(ticketChartTimer);
 }
@@ -25,12 +33,14 @@ var getAssignToSum = function (user) {
 
         success: function (result, status, xhr) {
             $("#" + user + "-assign-to-badge").html(result);
+            assignToTimer[assignToTimer.length] = setTimeout(function () {
+                getAssignToSum(user);
+            }, 10000);
         }
     });
-    assignToTimer[assignToTimer.length] = setTimeout(function () {
-        getAssignToSum(user);
-    }, 10000);
+
 }
+
 
 var stopAssignToSum = function () {
     clearTimer(assignToTimer);
@@ -50,11 +60,12 @@ var getAssignToUserSum = function (user) {
             } else {
                 $("#" + user + "-need-to-solve-badge").html(result);
             }
+            assignToUserTimer[assignToUserTimer.length] = setTimeout(function () {
+                getAssignToUserSum(user);
+            }, 10000);
         }
     });
-    assignToUserTimer[assignToUserTimer.length] = setTimeout(function () {
-        getAssignToUserSum(user);
-    }, 10000);
+
 }
 var stopAssignToUserSum = function () {
     clearTimer(assignToUserTimer);
@@ -70,11 +81,12 @@ var getInProgressUserSum = function (user) {
 
         success: function (result, status, xhr) {
             $("#" + user + "-in-progress-badge").html(result);
+            inProgressTimer[inProgressTimer.length] = setTimeout(function () {
+                getInProgressUserSum(user);
+            }, 10000);
         }
     });
-    inProgressTimer[inProgressTimer.length] = setTimeout(function () {
-        getInProgressUserSum(user);
-    }, 10000);
+
 }
 var stopInProgressUserSum = function () {
     clearTimer(inProgressTimer);
@@ -90,12 +102,13 @@ var getPendingUserSum = function (user) {
 
         success: function (result, status, xhr) {
             $("#" + user + "-pending-badge").html(result);
+            pendingTimer[pendingTimer.length] = setTimeout(
+                function () {
+                    getPendingUserSum(user);
+                }, 10000);
         }
     });
-    pendingTimer[pendingTimer.length] = setTimeout(
-        function () {
-            getPendingUserSum(user);
-        }, 10000);
+
 }
 var stopPendingUserSum = function () {
     clearTimer(pendingTimer);
@@ -111,11 +124,12 @@ var getSolvedUserSum = function (user) {
 
         success: function (result, status, xhr) {
             $("#" + user + "-solved-badge").html(result);
+            solvedTimer[solvedTimer.length] = setTimeout(function () {
+                getSolvedUserSum(user);
+            }, 10000);
         }
     });
-    solvedTimer[solvedTimer.length] = setTimeout(function () {
-        getSolvedUserSum(user);
-    }, 10000);
+
 
 }
 var stopSolvedUserSum = function () {

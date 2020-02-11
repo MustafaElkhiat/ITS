@@ -458,6 +458,107 @@ public class ControllerHelper extends HelperBase {
         }
     }
 
+
+    public int getTicketAssignToAllRegionsCount() {
+        return hibernateHelper.retreiveData("from Ticket where currentStatus = 1").size();
+    }
+
+    public int getTicketAInProgressAllRegionsCount() {
+        return hibernateHelper.retreiveData("from Ticket where currentStatus = 2").size();
+    }
+
+    public int getTicketPendingAllRegionsCount() {
+        return hibernateHelper.retreiveData("from Ticket where currentStatus = 3").size();
+    }
+
+    public int getTicketSolvedAllRegionsCount() {
+        return hibernateHelper.retreiveData("from Ticket where currentStatus = 4").size();
+    }
+
+    public int getTicketAssignToRegionCount() {
+        int count = 0;
+        List<Ticket> inProgressTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 1"); // 1 Assign-To
+        Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+        List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+        for (Location location : regionLocationList) {
+            List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                List<Device> regionDeviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                for (Device device : regionDeviceList) {
+                    for (Ticket ticket : inProgressTicketList) {
+                        if (device.getId() == ticket.getDevice().getId()) {
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    public int getTicketInProgressRegionCount() {
+        int count = 0;
+        List<Ticket> inProgressTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 2"); // 2 In-Progress
+        Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+        List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+        for (Location location : regionLocationList) {
+            List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                List<Device> regionDeviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                for (Device device : regionDeviceList) {
+                    for (Ticket ticket : inProgressTicketList) {
+                        if (device.getId() == ticket.getDevice().getId()) {
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    public int getTicketPendingRegionCount() {
+        int count = 0;
+        List<Ticket> inProgressTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 3"); // 3 Pending
+        Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+        List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+        for (Location location : regionLocationList) {
+            List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                List<Device> regionDeviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                for (Device device : regionDeviceList) {
+                    for (Ticket ticket : inProgressTicketList) {
+                        if (device.getId() == ticket.getDevice().getId()) {
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    public int getTicketSolvedRegionCount() {
+        int count = 0;
+        List<Ticket> inProgressTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 4"); // 4 Pending
+        Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+        List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+        for (Location location : regionLocationList) {
+            List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                List<Device> regionDeviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                for (Device device : regionDeviceList) {
+                    for (Ticket ticket : inProgressTicketList) {
+                        if (device.getId() == ticket.getDevice().getId()) {
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
     public Object getTicketAssignToSum() {
         User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         return hibernateHelper.retreiveData("select count(assignedBy) from TicketAssignedTo where assignedBy = " + user.getId()).get(0);
@@ -813,34 +914,40 @@ public class ControllerHelper extends HelperBase {
         String name = request.getParameter("name");
         String username = request.getParameter("username");
         String phoneNum = request.getParameter("phone_num");
-        Role role = (Role) hibernateHelper.retreiveData(Role.class, Long.valueOf(request.getParameter("role")));
-        User user = new User(username, name, phoneNum, role);
-        hibernateHelper.saveData(user);
-        String privileges = request.getParameter("privileges");
-        String regions = request.getParameter("regions");
-        for (Privilege privilege : privilegeList) {
-            UserPrivilege userPrivilege = new UserPrivilege(user, privilege);
-            for (int i = 0; i < privileges.split(",").length; i++) {
-                Privilege pri = (Privilege) hibernateHelper.retreiveData(Privilege.class, Long.valueOf(privileges.split(",")[i]));
-                if (pri.getId() == privilege.getId()) {
-                    userPrivilege.setValid(true);
-                    break;
+        List<User> usernameList = hibernateHelper.retreiveData("from User where username = '" + username + "'");
+        List<User> phoneNumList = hibernateHelper.retreiveData("from User where phoneNum = '" + phoneNum + "'");
+        if (usernameList.size() == 0 && phoneNumList.size() == 0) {
+            Role role = (Role) hibernateHelper.retreiveData(Role.class, Long.valueOf(request.getParameter("role")));
+            User user = new User(username, name, phoneNum, role);
+            hibernateHelper.saveData(user);
+            String privileges = request.getParameter("privileges");
+            System.out.println("privileges : " + privileges.length());
+            String regions = request.getParameter("regions");
+            for (Privilege privilege : privilegeList) {
+                UserPrivilege userPrivilege = new UserPrivilege(user, privilege);
+                if (privileges.length() > 0) {
+                    for (int i = 0; i < privileges.split(",").length; i++) {
+                        Privilege pri = (Privilege) hibernateHelper.retreiveData(Privilege.class, Long.valueOf(privileges.split(",")[i]));
+                        if (pri.getId() == privilege.getId()) {
+                            userPrivilege.setValid(true);
+                            break;
+                        }
+                    }
                 }
+                hibernateHelper.saveData(userPrivilege);
             }
-            hibernateHelper.saveData(userPrivilege);
-        }
 
-        for (Region region : regionList) {
-            TSUserRegion tsUserRegion = new TSUserRegion(user, region);
-            for (int i = 0; i < regions.split(",").length; i++) {
-                Region reg = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regions.split(",")[i]));
-                if (reg.getId() == region.getId()) {
-                    tsUserRegion.setValid(true);
-                    break;
+            for (Region region : regionList) {
+                TSUserRegion tsUserRegion = new TSUserRegion(user, region);
+                for (int i = 0; i < regions.split(",").length; i++) {
+                    Region reg = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regions.split(",")[i]));
+                    if (reg.getId() == region.getId()) {
+                        tsUserRegion.setValid(true);
+                        break;
+                    }
                 }
+                hibernateHelper.saveData(tsUserRegion);
             }
-            hibernateHelper.saveData(tsUserRegion);
-        }
 
         /*for (int i = 0; i < privileges.split(",").length; i++) {
 
@@ -852,18 +959,24 @@ public class ControllerHelper extends HelperBase {
             TSUserRegion tsUserRegion = new TSUserRegion(user, region);
             hibernateHelper.saveData(tsUserRegion);
         }*/
-        return user.getId();
+            return user.getId();
+        } else if (usernameList.size() > 0 && phoneNumList.size() > 0) {
+            return -3;
+        } else if (usernameList.size() > 0) {
+            return -1;
+        } else if (phoneNumList.size() > 0) {
+            return -2;
+        }
+        return 0;
     }
 
-    public long editUser() throws IOException {
-        List<Privilege> privilegeList = hibernateHelper.retreiveData("from Privilege");
-        List<Region> regionList = hibernateHelper.retreiveData("from Region");
-
-        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
+    private void editUserDetails(User user) throws IOException {
         String name = request.getParameter("name");
         String username = request.getParameter("username");
         String phoneNum = request.getParameter("phone_num");
         Role role = (Role) hibernateHelper.retreiveData(Role.class, Long.valueOf(request.getParameter("role")));
+        List<Privilege> privilegeList = hibernateHelper.retreiveData("from Privilege");
+        List<Region> regionList = hibernateHelper.retreiveData("from Region");
         user.setName(name);
         user.setUserName(username);
         user.setPhoneNum(phoneNum);
@@ -907,6 +1020,61 @@ public class ControllerHelper extends HelperBase {
             }
 
         }
+    }
+
+    public long editUser() throws IOException {
+
+
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
+        String username = request.getParameter("username");
+        String phoneNum = request.getParameter("phone_num");
+        List<User> usernameList = hibernateHelper.retreiveData("from User where username = '" + username + "'");
+        List<User> phoneNumList = hibernateHelper.retreiveData("from User where phoneNum = '" + phoneNum + "'");
+        System.out.println(user.getUserName() + "  " + username);
+        if (user.getUserName().equals(username) && user.getPhoneNum().equals(phoneNum)) {
+            editUserDetails(user);
+            return user.getId();
+        } else if (user.getUserName().equals(username) && !user.getPhoneNum().equals(phoneNum)) {
+            if (phoneNumList.size() > 0) {
+                return -2;
+            } else {
+                editUserDetails(user);
+                return user.getId();
+            }
+        } else if (!user.getUserName().equals(username) && user.getPhoneNum().equals(phoneNum)) {
+            if (usernameList.size() > 0) {
+                return -1;
+            } else {
+                editUserDetails(user);
+                return user.getId();
+            }
+        } else if (!user.getUserName().equals(username) && !user.getPhoneNum().equals(phoneNum)) {
+            if (usernameList.size() > 0 && phoneNumList.size() > 0) {
+                return -3;
+            } else if (usernameList.size() > 0) {
+                return -1;
+            } else if (phoneNumList.size() > 0) {
+                return -2;
+            } else {
+                editUserDetails(user);
+                return user.getId();
+            }
+        }
+
+        /*else {
+            if ((usernameList.size() == 0 && phoneNumList.size() == 0) || (usernameList.size() == 1 && phoneNumList.size() == 0) || (usernameList.size() == 0 && phoneNumList.size() == 1)) {
+                editUserDetails(user);
+                return user.getId();
+            } else if (usernameList.size() > 0 && phoneNumList.size() > 0) {
+                return -3;
+            } else if (usernameList.size() > 0) {
+                return -1;
+            } else if (phoneNumList.size() > 0) {
+                return -2;
+            }
+        }*/
+
+        return 0;
 
 /*
         if (userPrivilegeList.size() > 0) {
@@ -934,7 +1102,7 @@ public class ControllerHelper extends HelperBase {
         }
 
  */
-        return user.getId();
+
     }
 
     public int addOS() throws IOException {
