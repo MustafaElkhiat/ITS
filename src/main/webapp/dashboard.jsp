@@ -1,7 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
   User: Mustafa
-  Date: 5/11/2019
+  Date: 5/11/2019+
   Time: 10:46 AM
   To change this template use File | Settings | File Templates.
 --%>
@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="css/floating-labels.css"/>
     <link rel="stylesheet" href="css/custom.css"/>
     <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/loader.js"></script>
     <script src="js/update_tab_padeg.js"></script>
     <script src="js/ticket_tab_content.js"></script>
 </head>
@@ -79,10 +80,6 @@
 <script src="js/sortTable.js"></script>
 <script src="js/changePassword.js"></script>
 <script src="js/modals.js"></script>
-<script src="js/loader.js"></script>
-<script src="js/jsapi_compiled_corechart_module.js"></script>
-<script src="js/Google_Charts_loader.js"></script>
-<script src="js/Google_Charts.js"></script>
 <script src="js/google_chart_timeline.js"></script>
 <script src="js/saveDevices.js"></script>
 <script src="js/dashboard.js"></script>

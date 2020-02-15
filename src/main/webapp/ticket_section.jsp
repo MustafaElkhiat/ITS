@@ -10,7 +10,7 @@
 <div class="card mt-3">
     <div class="card-body">
         <div class="row">
-            <div class="col-lg-4 col-sm-12">
+            <div class="offset-lg-1 col-lg-3 col-sm-12">
                 <jsp:include page="user_charts.jsp">
                     <jsp:param name="user" value="${param.user}"/>
                 </jsp:include>

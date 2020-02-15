@@ -21,22 +21,23 @@
     <div class="card mt-3">
         <div class="card-body">
             <h5 class="card-title">Region Ticket Ratio</h5>
-            <c:if test="${current_user.role.id ==  1 || current_user.role.id == 6}">
+            <c:if test="${current_user.role.id == 1 || current_user.role.id == 6}">
                 <div class="row">
                     <jsp:include page="region_charts_view.jsp">
                         <jsp:param name="region" value="ALL"/>
                     </jsp:include>
+
                 </div>
             </c:if>
             <c:forEach items="${userRegionList}" var="userRegion" varStatus="loop">
 
-                <c:if test="${loop.index % 2 == 0}">
+                <c:if test="${loop.index % 3 == 0}">
                     <div class="row">
                 </c:if>
                 <jsp:include page="region_charts_view.jsp">
                     <jsp:param name="region" value="${userRegion.region.id}"/>
                 </jsp:include>
-                <c:if test="${loop.index % 2 == 1 || loop.last}">
+                <c:if test="${loop.index % 3 == 2 || loop.last}">
                     </div>
                 </c:if>
 
@@ -47,16 +48,45 @@
         <div class="card-body">
             <h5 class="card-title">L2 Engineers Ticket Ratio</h5>
             <c:forEach items="${userRegions}" var="userRegion" varStatus="loop">
-                <c:if test="${loop.index % 2 == 0}">
+                <c:if test="${loop.index % 3 == 0}">
                     <div class="row">
                 </c:if>
                 <jsp:include page="user_charts_view.jsp">
                     <jsp:param name="user" value="${userRegion.TSUser.id}"/>
                 </jsp:include>
 
-                <c:if test="${loop.index % 2 == 1 || loop.last}">
+                <c:if test="${loop.index % 3 == 2 || loop.last}">
                     </div>
                 </c:if>
+            </c:forEach>
+        </div>
+    </div>
+</c:if>
+<c:if test="${current_user.role.id == 1 || current_user.role.id == 2 || current_user.role.id == 3 || current_user.role.id == 6}">
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">Region Devices Ratio</h5>
+            <c:if test="${current_user.role.id == 1 || current_user.role.id == 3 || current_user.role.id == 6}">
+                <div class="row">
+
+                    <jsp:include page="device_charts_view.jsp">
+                        <jsp:param name="region" value="ALL"/>
+                    </jsp:include>
+
+                </div>
+            </c:if>
+            <c:forEach items="${userRegionList}" var="userRegion" varStatus="loop">
+
+                <c:if test="${loop.index % 3 == 0}">
+                    <div class="row">
+                </c:if>
+                <jsp:include page="device_charts_view.jsp">
+                    <jsp:param name="region" value="${userRegion.region.id}"/>
+                </jsp:include>
+                <c:if test="${loop.index % 3 == 2 || loop.last}">
+                    </div>
+                </c:if>
+
             </c:forEach>
         </div>
     </div>

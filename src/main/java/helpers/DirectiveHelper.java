@@ -333,14 +333,14 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToRegionChart() throws ServletException, IOException {
-        if(request.getParameter("region").equals("ALL")){
+        if (request.getParameter("region").equals("ALL")) {
             request.setAttribute("region", "ALL");
             request.setAttribute("assignToRegionCount", controllerHelper.getTicketAssignToAllRegionsCount());
             //request.setAttribute("needToSolveRegionCount", controllerHelper.getTicketAssignToSum());
             request.setAttribute("inProgressRegionCount", controllerHelper.getTicketAInProgressAllRegionsCount());
             request.setAttribute("pendingRegionCount", controllerHelper.getTicketPendingAllRegionsCount());
             request.setAttribute("solvedRegionCount", controllerHelper.getTicketSolvedAllRegionsCount());
-        }else {
+        } else {
             Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
             System.out.println("region : " + region.getRegion());
             request.setAttribute("region", region);
@@ -351,6 +351,28 @@ public class DirectiveHelper extends HelperBase {
             request.setAttribute("solvedRegionCount", controllerHelper.getTicketSolvedRegionCount());
         }
         request.getRequestDispatcher("region_chart.jsp").forward(request, response);
+    }
+
+    public void goToDeviceChart() throws ServletException, IOException {
+        if (request.getParameter("region").equals("ALL")) {
+            request.setAttribute("region", "ALL");
+        } else {
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+            request.setAttribute("region", region);
+        }
+        request.setAttribute("PC_count", controllerHelper.getRegionPCCount(request.getParameter("region")));
+        request.setAttribute("Printer_count", controllerHelper.getRegionPrinterCount(request.getParameter("region")));
+        request.setAttribute("PBX_count", controllerHelper.getRegionIPPhoneCount(request.getParameter("region")));
+        request.setAttribute("FP_count", controllerHelper.getRegionFPCount(request.getParameter("region")));
+        request.setAttribute("SW_count", controllerHelper.getRegionSWCount(request.getParameter("region")));
+        request.setAttribute("RO_count", controllerHelper.getRegionROCount(request.getParameter("region")));
+        request.setAttribute("CAM_count", controllerHelper.getRegionCameraCount(request.getParameter("region")));
+        request.setAttribute("DVR_count", controllerHelper.getRegionDVRCount(request.getParameter("region")));
+        request.setAttribute("NVR_count", controllerHelper.getRegionNVRCount(request.getParameter("region")));
+        request.setAttribute("UPS_count", controllerHelper.getRegionUPSCount(request.getParameter("region")));
+        request.setAttribute("FW_count", controllerHelper.getRegionFWCount(request.getParameter("region")));
+
+        request.getRequestDispatcher("device_chart.jsp").forward(request, response);
     }
 
     public void goToDevices() throws ServletException, IOException {
@@ -565,7 +587,6 @@ public class DirectiveHelper extends HelperBase {
             region = "Technology Sector";
         }
         List<TSUserRegion> userRegions = new ArrayList<>();
-        System.out.println("yysize" + tsUserRegionList.size());
         List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser != " + user.getId());
         for (TSUserRegion tsUserRegion : tsUserRegionList) {
             for (TSUserRegion userRegion : userRegionList) {

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -458,6 +459,281 @@ public class ControllerHelper extends HelperBase {
         }
     }
 
+
+    public int getRegionPCCount(String regionID) {
+        if (regionID.equals("ALL")) {
+            List<PC> pcList = hibernateHelper.retreiveData("from PC");
+            return pcList.size();
+        } else {
+            int count = 0;
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regionID));
+            List<PC> pcList = hibernateHelper.retreiveData("from PC");
+            List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+            List<LocationDepartment> locationDepartmentList = new ArrayList<>();
+            for (Location location : locationList) {
+                locationDepartmentList.addAll(hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId()));
+            }
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                for (PC pc : pcList) {
+                    if (pc.getLocationDepartment().getId() == locationDepartment.getId()) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+    }
+
+    public int getRegionPrinterCount(String regionID) {
+        if (regionID.equals("ALL")) {
+            List<Printer> printerList = hibernateHelper.retreiveData("from Printer");
+            return printerList.size();
+        } else {
+            int count = 0;
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regionID));
+            List<Printer> printerList = hibernateHelper.retreiveData("from Printer");
+            List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+            List<LocationDepartment> locationDepartmentList = new ArrayList<>();
+            for (Location location : locationList) {
+                locationDepartmentList.addAll(hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId()));
+            }
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                for (Printer printer : printerList) {
+                    if (printer.getLocationDepartment().getId() == locationDepartment.getId()) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+    }
+
+    public int getRegionIPPhoneCount(String regionID) {
+        if (regionID.equals("ALL")) {
+            List<PBX> pbxList = hibernateHelper.retreiveData("from PBX");
+            return pbxList.size();
+        } else {
+            int count = 0;
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regionID));
+            List<PBX> pbxList = hibernateHelper.retreiveData("from PBX");
+            List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+            List<LocationDepartment> locationDepartmentList = new ArrayList<>();
+            for (Location location : locationList) {
+                locationDepartmentList.addAll(hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId()));
+            }
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                for (PBX pbx : pbxList) {
+                    if (pbx.getLocationDepartment().getId() == locationDepartment.getId()) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+    }
+
+    public int getRegionFPCount(String regionID) {
+        if (regionID.equals("ALL")) {
+            List<Attendance> attendanceList = hibernateHelper.retreiveData("from Attendance");
+            return attendanceList.size();
+        } else {
+            int count = 0;
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regionID));
+            List<Attendance> attendanceList = hibernateHelper.retreiveData("from Attendance");
+            List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+            List<LocationDepartment> locationDepartmentList = new ArrayList<>();
+            for (Location location : locationList) {
+                locationDepartmentList.addAll(hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId()));
+            }
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                for (Attendance attendance : attendanceList) {
+                    if (attendance.getLocationDepartment().getId() == locationDepartment.getId()) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+    }
+
+    public int getRegionSWCount(String regionID) {
+        DeviceType switchType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 5);
+        if (regionID.equals("ALL")) {
+            List<Device> swList = hibernateHelper.retreiveData("from Device where deviceType =" + switchType.getId());
+            return swList.size();
+        } else {
+            int count = 0;
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regionID));
+            List<Device> swList = hibernateHelper.retreiveData("from Device where deviceType =" + switchType.getId());
+            List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+            List<LocationDepartment> locationDepartmentList = new ArrayList<>();
+            for (Location location : locationList) {
+                locationDepartmentList.addAll(hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId()));
+            }
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                for (Device sw : swList) {
+                    if (sw.getLocationDepartment().getId() == locationDepartment.getId()) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+    }
+
+    public int getRegionUPSCount(String regionID) {
+        DeviceType UPSType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 10);
+        if (regionID.equals("ALL")) {
+            List<Device> upsList = hibernateHelper.retreiveData("from Device where deviceType =" + UPSType.getId());
+            return upsList.size();
+        } else {
+            int count = 0;
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regionID));
+            List<Device> upsList = hibernateHelper.retreiveData("from Device where deviceType =" + UPSType.getId());
+            List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+            List<LocationDepartment> locationDepartmentList = new ArrayList<>();
+            for (Location location : locationList) {
+                locationDepartmentList.addAll(hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId()));
+            }
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                for (Device ups : upsList) {
+                    if (ups.getLocationDepartment().getId() == locationDepartment.getId()) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+    }
+
+    public int getRegionROCount(String regionID) {
+        DeviceType routerType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 6);
+        if (regionID.equals("ALL")) {
+            List<Device> roList = hibernateHelper.retreiveData("from Device where deviceType =" + routerType.getId());
+            return roList.size();
+        } else {
+            int count = 0;
+
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regionID));
+            List<Device> roList = hibernateHelper.retreiveData("from Device where deviceType =" + routerType.getId());
+            List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+            List<LocationDepartment> locationDepartmentList = new ArrayList<>();
+            for (Location location : locationList) {
+                locationDepartmentList.addAll(hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId()));
+            }
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                for (Device ro : roList) {
+                    if (ro.getLocationDepartment().getId() == locationDepartment.getId()) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+    }
+
+    public int getRegionFWCount(String regionID) {
+        DeviceType firewallType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 11);
+        if (regionID.equals("ALL")) {
+            List<Device> fwList = hibernateHelper.retreiveData("from Device where deviceType =" + firewallType.getId());
+            return fwList.size();
+        } else {
+            int count = 0;
+
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regionID));
+            List<Device> fwList = hibernateHelper.retreiveData("from Device where deviceType =" + firewallType.getId());
+            List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+            List<LocationDepartment> locationDepartmentList = new ArrayList<>();
+            for (Location location : locationList) {
+                locationDepartmentList.addAll(hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId()));
+            }
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                for (Device fw : fwList) {
+                    if (fw.getLocationDepartment().getId() == locationDepartment.getId()) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+    }
+
+    public int getRegionDVRCount(String regionID) {
+        DeviceType DVRType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 3);
+        if (regionID.equals("ALL")) {
+            List<VideoRecorder> DVRList = hibernateHelper.retreiveData("from VideoRecorder where deviceType =" + DVRType.getId());
+            return DVRList.size();
+        } else {
+            int count = 0;
+
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regionID));
+            List<VideoRecorder> DVRList = hibernateHelper.retreiveData("from VideoRecorder where deviceType =" + DVRType.getId());
+            List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+            List<LocationDepartment> locationDepartmentList = new ArrayList<>();
+            for (Location location : locationList) {
+                locationDepartmentList.addAll(hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId()));
+            }
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                for (VideoRecorder DVR : DVRList) {
+                    if (DVR.getLocationDepartment().getId() == locationDepartment.getId()) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+    }
+
+    public int getRegionCameraCount(String regionID) {
+        DeviceType cameraType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 4);
+        if (regionID.equals("ALL")) {
+            List<Device> cameraList = hibernateHelper.retreiveData("from Device where deviceType =" + cameraType.getId());
+            return cameraList.size();
+        } else {
+            int count = 0;
+
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regionID));
+            List<Device> cameraList = hibernateHelper.retreiveData("from Device where deviceType =" + cameraType.getId());
+            List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+            List<LocationDepartment> locationDepartmentList = new ArrayList<>();
+            for (Location location : locationList) {
+                locationDepartmentList.addAll(hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId()));
+            }
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                for (Device camera : cameraList) {
+                    if (camera.getLocationDepartment().getId() == locationDepartment.getId()) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+    }
+
+    public int getRegionNVRCount(String regionID) {
+        DeviceType NVRType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 7);
+        if (regionID.equals("ALL")) {
+            List<VideoRecorder> NVRList = hibernateHelper.retreiveData("from VideoRecorder where deviceType =" + NVRType.getId());
+            return NVRList.size();
+        } else {
+            int count = 0;
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regionID));
+            List<VideoRecorder> NVRList = hibernateHelper.retreiveData("from VideoRecorder where deviceType =" + NVRType.getId());
+            List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+            List<LocationDepartment> locationDepartmentList = new ArrayList<>();
+            for (Location location : locationList) {
+                locationDepartmentList.addAll(hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId()));
+            }
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                for (VideoRecorder NVR : NVRList) {
+                    if (NVR.getLocationDepartment().getId() == locationDepartment.getId()) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+    }
 
     public int getTicketAssignToAllRegionsCount() {
         return hibernateHelper.retreiveData("from Ticket where currentStatus = 1").size();

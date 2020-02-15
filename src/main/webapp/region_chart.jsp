@@ -55,8 +55,13 @@
         var options = {
             title: "${regionT}'s Ticket Ratio",
             pieHole: 0.35,
-            width: 430,
+            width: 280,
             height: 250,
+            chartArea:{
+                left:10,
+                width:250,
+                height:200
+            },
             titleTextStyle: {
                 fontSize: 18,
                 fontName: 'Exo'

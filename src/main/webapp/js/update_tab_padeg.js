@@ -19,6 +19,10 @@ var loadRegionChart = function (region) {
         }, 10000);
     });
 }
+
+var loadDeviceChart = function (region) {
+    $("#" + region + "_device_chart").load('Directive', {d: 45, region: region});
+}
 var stopTicketChart = function () {
     clearTimer(ticketChartTimer);
 }

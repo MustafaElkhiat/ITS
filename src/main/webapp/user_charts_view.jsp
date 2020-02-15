@@ -6,12 +6,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="col-lg-6 col-sm-12">
+<div class="col-lg-4 col-sm-12">
     <div class="card mt-3">
         <div class="card-body">
-            <jsp:include page="user_charts.jsp">
-                <jsp:param name="user" value="${param.user}"/>
-            </jsp:include>
+            <div id="${param.user}_ticket_chart" >
+            </div>
         </div>
     </div>
 </div>
+<script>
+    loadTicketChart("${param.user}");
+</script>
