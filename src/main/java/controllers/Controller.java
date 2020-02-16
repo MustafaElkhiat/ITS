@@ -158,6 +158,9 @@ public class Controller extends HttpServlet {
                 case (32):
                     response.getWriter().println(controllerHelper.getTicketSolvedRegionCount());
                     break;
+                case(33):
+                    response.getWriter().println(controllerHelper.addPrivilege());
+                    break;
             }
         }
 

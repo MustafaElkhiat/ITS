@@ -650,6 +650,8 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToEmployees() throws ServletException, IOException {
+        request = getUserPrivilege(user, request);
+
         List<Employee> regionEmployeeList = new ArrayList<>();
         List<Employee> employeeList = hibernateHelper.retreiveData("from Employee order by name");
         if (user.getRole().getId() == 1 || user.getRole().getId() == 3 || user.getRole().getId() == 6) {
@@ -693,7 +695,7 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToEditEmployee() throws ServletException, IOException {
-        request = getUserPrivilege(user,request);
+        request = getUserPrivilege(user, request);
         Employee employee = (Employee) hibernateHelper.retreiveData(Employee.class, Long.valueOf(request.getParameter("employee")));
         List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
         List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + employee.getLocationDepartment().getLocation().getRegion().getId() + " order by location");
@@ -708,6 +710,22 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("locationList", locationList);
         request.setAttribute("employee", employee);
         request.getRequestDispatcher("edit_employee.jsp").forward(request, response);
+    }
+
+    public void goToPrivileges() throws ServletException, IOException {
+        List<Privilege> privilegeList = hibernateHelper.retreiveData("from Privilege");
+        request.setAttribute("privilegeList", privilegeList);
+        request.getRequestDispatcher("privileges.jsp").forward(request, response);
+    }
+
+    public void goToAddPrivilege() throws ServletException, IOException {
+        request.getRequestDispatcher("add_privilege.jsp").forward(request, response);
+    }
+
+    public void goToEditPrivilege() throws ServletException, IOException {
+        Privilege privilege = (Privilege) hibernateHelper.retreiveData(Privilege.class, Long.valueOf(request.getParameter("privilege")));
+        request.setAttribute("privilege", privilege);
+        request.getRequestDispatcher("edit_privilege.jsp").forward(request, response);
     }
 
 

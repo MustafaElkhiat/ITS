@@ -51,7 +51,8 @@ $(document).ready(function () {
             $("#search_employee").searchTable("employee_table_body");
             $("#employee_table").sortTableNow();
             $(".edit_employee").click(function () {
-                $("#content_place").load('Directive', {d: 47, employee: $(this).attr("employee-id")}, function(){
+                $("#employees").removeClass("active");
+                $("#content_place").load('Directive', {d: 47, employee: $(this).attr("employee-id")}, function () {
                     editEmployee();
                     afterLoadingRegionSection();
                 });
@@ -59,6 +60,20 @@ $(document).ready(function () {
         });
     });
 
+    $("#Privileges").click(function () {
+        stopTimers();
+        $("#content_place").load('Directive', {d: 48}, function () {
+            $("#search_privilege").searchTable("privilege_table_body");
+            $("#privilege_table").sortTableNow();
+            $(".edit_privilege").click(function () {
+                $("#content_place").load('Directive', {d: 50, privilege: $(this).attr("privilege-id")}, edit_privilege);
+            });
+            $("#add_privilege").click(function () {
+                $("#Privileges").removeClass("active");
+                $("#content_place").load('Directive', {d: 49}, add_privilege);
+            });
+        });
+    });
     setupTimers();
 });
 
@@ -70,7 +85,61 @@ var add_device = function () {
 
     })
 }
+var add_privilege = function () {
+    $("#add_privilege_submit").click(function () {
+        var form = $(this).parents('form:first');
+        if ($(".needs-validation")[1].checkValidity() === true) {
 
+            $.ajax({
+                url: "Controller",
+                data: {
+                    n: "33",
+                    privilege: $("#privilege").val()
+
+                },
+                type: "POST",
+
+                success: function (result, status, xhr) {
+                    if (result > 0) {
+                        form.removeClass("was-validated");
+                        success("Privilege has been added", "");
+                        form.trigger("reset");
+
+                    }
+                }
+            });
+
+        }
+        form.addClass("was-validated");
+    });
+}
+
+var edit_privilege = function () {
+    $("#edit_privilege_submit").click(function () {
+        var form = $(this).parents('form:first');
+        if ($(".needs-validation")[1].checkValidity() === true) {
+
+            $.ajax({
+                url: "Controller",
+                data: {
+                    n: "33",
+                    privilege: $("#privilege").val(),
+                    privilege_id: $("#privilege_id").val()
+                },
+                type: "POST",
+
+                success: function (result, status, xhr) {
+                    if (result == 0) {
+                        form.removeClass("was-validated");
+                        success("Privilege has been edited", "");
+                    }
+                }
+            });
+
+        }
+        form.addClass("was-validated");
+    });
+}
 var device_data = function (type, location, department) {
     $("#device_data").empty();
     if (type == 1) {

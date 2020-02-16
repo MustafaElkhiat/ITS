@@ -55,9 +55,13 @@
                     <a class="nav-link font-weight-bold mr-1" id="users" data-toggle="pill" role="tab"
                        aria-selected="false"><i class="fas fa-users"></i> Users</a>
                 </c:if>
-                <c:if test="${P_13}">
+                <c:if test="${P_17}">
                     <a class="nav-link font-weight-bold mr-1" id="employees" data-toggle="pill" role="tab"
                        aria-selected="false"><i class="fas fa-users"></i> Employees</a>
+                </c:if>
+                <c:if test="${current_user.role.id == 6}">
+                    <a class="nav-link font-weight-bold mr-1" id="Privileges" data-toggle="pill" role="tab"
+                       aria-selected="false"><i class="fas fa-shield-alt"></i> <i class="fad fa-arrow-alt-right"></i> Privileges</a>
                 </c:if>
                 <%-- <a class="nav-link font-weight-bold" id="waiting_list" data-toggle="pill" role="tab"
                     aria-selected="false"><i class="far fa-clipboard"></i> Waiting List</a>--%>

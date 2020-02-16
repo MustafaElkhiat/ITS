@@ -275,6 +275,29 @@ public class ControllerHelper extends HelperBase {
         }
     }
 
+
+    public long addPrivilege() throws IOException {
+        if (request.getParameter("privilege_id") != null) {
+            Privilege privilege = (Privilege) hibernateHelper.retreiveData(Privilege.class, Long.valueOf(request.getParameter("privilege_id")));
+            privilege.setPrivilege(request.getParameter("privilege"));
+            hibernateHelper.updateData(privilege);
+            return 0;
+        } else {
+            List<User> userList = hibernateHelper.retreiveData("from User");
+            Privilege privilege = new Privilege(request.getParameter("privilege"));
+            hibernateHelper.saveData(privilege);
+            boolean valid = false;
+            for (User user : userList) {
+                UserPrivilege userPrivilege = new UserPrivilege(user, privilege);
+                if (user.getRole().getId() == 1 || user.getRole().getId() == 6) {
+                    userPrivilege.setValid(true);
+                }
+                hibernateHelper.saveData(userPrivilege);
+            }
+            return (privilege.getId());
+        }
+    }
+
     public int addDepartment() throws IOException {
         Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("select_location")));
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("added_department")));

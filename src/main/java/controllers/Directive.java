@@ -163,6 +163,15 @@ public class Directive extends HttpServlet {
                 case(47):
                     directiveHelper.goToEditEmployee();
                     break;
+                case(48):
+                    directiveHelper.goToPrivileges();
+                    break;
+                case(49):
+                    directiveHelper.goToAddPrivilege();
+                    break;
+                case(50):
+                    directiveHelper.goToEditPrivilege();
+                    break;
             }
         }
     }
