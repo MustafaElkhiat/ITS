@@ -55,6 +55,10 @@
                     <a class="nav-link font-weight-bold mr-1" id="users" data-toggle="pill" role="tab"
                        aria-selected="false"><i class="fas fa-users"></i> Users</a>
                 </c:if>
+                <c:if test="${P_13}">
+                    <a class="nav-link font-weight-bold mr-1" id="employees" data-toggle="pill" role="tab"
+                       aria-selected="false"><i class="fas fa-users"></i> Employees</a>
+                </c:if>
                 <%-- <a class="nav-link font-weight-bold" id="waiting_list" data-toggle="pill" role="tab"
                     aria-selected="false"><i class="far fa-clipboard"></i> Waiting List</a>--%>
             </div>

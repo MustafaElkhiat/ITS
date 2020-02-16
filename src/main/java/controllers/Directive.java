@@ -155,8 +155,13 @@ public class Directive extends HttpServlet {
                     directiveHelper.goToRegionChart();
                     break;
                 case(45):
-                    System.out.println("regjon ss"+request.getParameter("region"));
                     directiveHelper.goToDeviceChart();
+                    break;
+                case(46):
+                    directiveHelper.goToEmployees();
+                    break;
+                case(47):
+                    directiveHelper.goToEditEmployee();
                     break;
             }
         }

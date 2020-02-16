@@ -16,16 +16,18 @@ public class Employee {
     @Column(name = "staff_id")
     private String staffID;
     @ManyToOne
+    private LocationDepartment locationDepartment;
+    @ManyToOne
     private Department department;
 
     public Employee() {
     }
 
-    public Employee(String name, String position, String staffID, Department department) {
+    public Employee(String name, String position, String staffID, LocationDepartment locationDepartment) {
         this.name = name;
         this.position = position;
         this.staffID = staffID;
-        this.department = department;
+        this.locationDepartment = locationDepartment;
     }
 
     public long getId() {
@@ -66,5 +68,13 @@ public class Employee {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public LocationDepartment getLocationDepartment() {
+        return locationDepartment;
+    }
+
+    public void setLocationDepartment(LocationDepartment locationDepartment) {
+        this.locationDepartment = locationDepartment;
     }
 }

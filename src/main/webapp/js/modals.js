@@ -20,7 +20,7 @@ var saveLocation = function () {
                 if (result == 1) {
                     $(".needs-validation").removeClass("was-validated");
                     success("Location has been added", "");
-                    $(".location_").load('Directive', {d: 4,region:$("#region_").val()});
+                    $(".location_").load('Directive', {d: 4, region: $("#region_").val()});
                     $("#select_location_").load('Directive', {d: 4});
                     $("#location_modal_form").trigger("reset");
                 } else if (result == 0) {
@@ -54,8 +54,8 @@ var saveDepartment = function () {
                     $(".department_").load('Directive', {d: 5, location: $("#location_").val()});
                     //$("#select_location_").load('Directive', {d: 4});
                     $("#department_modal_form").trigger("reset");
-                }else if(result == 0){
-                    error("Department hasn't been added","This department is already on this Location")
+                } else if (result == 0) {
+                    error("Department hasn't been added", "This department is already on this Location")
                 }
             }
         });
@@ -174,6 +174,7 @@ var saveRegion = function () {
 var saveEmployee = function () {
     if ($(".needs-validation")[7].checkValidity() === true) {
         var department = $("#device_modal_form").find(".department_").val();
+        var location = $("#device_modal_form").find(".location_").val();
         $.ajax({
             url: "Controller",
             data: {
@@ -181,6 +182,7 @@ var saveEmployee = function () {
                 name: $("#name").val(),
                 position: $("#position").val(),
                 staff_id: $("#staff_id").val(),
+                location: $("#staff_id").parent().parent().find(".location_").val(),
                 department: $("#staff_id").parent().parent().find(".department_").val()
             },
             type: "POST",
@@ -189,7 +191,7 @@ var saveEmployee = function () {
                 if (result == 1) {
                     $(".needs-validation").removeClass("was-validated");
                     success("Employee has been added", "");
-                    $(".employee_").load('Directive', {d: 35, department: department});
+                    $(".employee_").load('Directive', {d: 35, department: department, location: location});
                     //$("#select_region_").load('Directive', {d: 37});
                     $("#employee_modal_form").trigger("reset");
                 }

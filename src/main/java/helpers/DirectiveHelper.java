@@ -458,10 +458,12 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToPCData() throws ServletException, IOException {
+        Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
         List<PCType> pcTypeList = hibernateHelper.retreiveData("from PCType order by pcType");
         List<OS> osList = hibernateHelper.retreiveData("from OS order by OS");
-        List<Employee> employeeList = hibernateHelper.retreiveData("from Employee where department = " + department.getId() + " order by name");
+        List<Employee> employeeList = hibernateHelper.retreiveData("from Employee where locationDepartment = " + locationDepartmentList.get(0).getId() + " order by name");
         request.setAttribute("osList", osList);
         request.setAttribute("pcTypeList", pcTypeList);
         request.setAttribute("employeeList", employeeList);
@@ -469,17 +471,21 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToPrinterData() throws ServletException, IOException {
+        Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
         List<PrinterConnection> printerConnectionList = hibernateHelper.retreiveData("from PrinterConnection order by connection");
-        List<Employee> employeeList = hibernateHelper.retreiveData("from Employee where department = " + department.getId() + " order by name");
+        List<Employee> employeeList = hibernateHelper.retreiveData("from Employee where locationDepartment = " + locationDepartmentList.get(0).getId() + " order by name");
         request.setAttribute("printerConnectionList", printerConnectionList);
         request.setAttribute("employeeList", employeeList);
         request.getRequestDispatcher("printer_data.jsp").forward(request, response);
     }
 
     public void goToPBXData() throws ServletException, IOException {
+        Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
-        List<Employee> employeeList = hibernateHelper.retreiveData("from Employee where department = " + department.getId() + " order by name");
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
+        List<Employee> employeeList = hibernateHelper.retreiveData("from Employee where locationDepartment = " + locationDepartmentList.get(0).getId() + " order by name");
         request.setAttribute("employeeList", employeeList);
         request.getRequestDispatcher("PBX_data.jsp").forward(request, response);
     }
@@ -533,7 +539,9 @@ public class DirectiveHelper extends HelperBase {
         List<Employee> employeeList;
         if (request.getParameter("department") != null) {
             Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
-            employeeList = hibernateHelper.retreiveData("from Employee where department = " + department.getId() + " order by name");
+            Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
+            List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
+            employeeList = hibernateHelper.retreiveData("from Employee where locationDepartment = " + locationDepartmentList.get(0).getId() + " order by name");
         } else {
             employeeList = new ArrayList<>();
         }
@@ -641,6 +649,31 @@ public class DirectiveHelper extends HelperBase {
         request.getRequestDispatcher("users.jsp").forward(request, response);
     }
 
+    public void goToEmployees() throws ServletException, IOException {
+        List<Employee> regionEmployeeList = new ArrayList<>();
+        List<Employee> employeeList = hibernateHelper.retreiveData("from Employee order by name");
+        if (user.getRole().getId() == 1 || user.getRole().getId() == 3 || user.getRole().getId() == 6) {
+            request.setAttribute("employeeList", employeeList);
+            request.setAttribute("isRegional", true);
+        } else {
+            List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId());
+            for (Employee employee : employeeList) {
+                for (TSUserRegion tsUserRegion : userRegionList) {
+                    if (employee.getLocationDepartment().getLocation().getRegion().getId() == tsUserRegion.getRegion().getId()) {
+                        regionEmployeeList.add(employee);
+                    }
+                }
+            }
+            if (userRegionList.size() == 1)
+                request.setAttribute("isRegional", false);
+            else if (userRegionList.size() > 1) {
+                request.setAttribute("isRegional", true);
+            }
+            request.setAttribute("employeeList", regionEmployeeList);
+        }
+        request.getRequestDispatcher("employees.jsp").forward(request, response);
+    }
+
     public void goToEditUser() throws ServletException, IOException {
 
         User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
@@ -657,6 +690,24 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("userPrivilegeList", userPrivilegeList);
         request.getRequestDispatcher("edit_user.jsp").forward(request, response);
 
+    }
+
+    public void goToEditEmployee() throws ServletException, IOException {
+        request = getUserPrivilege(user,request);
+        Employee employee = (Employee) hibernateHelper.retreiveData(Employee.class, Long.valueOf(request.getParameter("employee")));
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
+        List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + employee.getLocationDepartment().getLocation().getRegion().getId() + " order by location");
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + employee.getLocationDepartment().getLocation().getId());
+
+        List<Department> departmentList = new ArrayList<>();
+        for (LocationDepartment locationDepartment : locationDepartmentList) {
+            departmentList.add(locationDepartment.getDepartment());
+        }
+        request.setAttribute("regionList", tsUserRegionList);
+        request.setAttribute("departmentList", departmentList);
+        request.setAttribute("locationList", locationList);
+        request.setAttribute("employee", employee);
+        request.getRequestDispatcher("edit_employee.jsp").forward(request, response);
     }
 
 

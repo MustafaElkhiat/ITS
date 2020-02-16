@@ -251,9 +251,28 @@ public class ControllerHelper extends HelperBase {
         String position = request.getParameter("position");
         String staffID = request.getParameter("staff_id");
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
-        Employee employee = new Employee(name, position, staffID, department);
-        hibernateHelper.saveData(employee);
-        return (1);
+        Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
+        LocationDepartment locationDepartment = null;
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department =" + department.getId());
+        if (locationDepartmentList.size() == 0) {
+            locationDepartment = new LocationDepartment(location, department);
+            hibernateHelper.saveData(locationDepartment);
+        } else {
+            locationDepartment = locationDepartmentList.get(0);
+        }
+        if (request.getParameter("employee") != null) {
+            Employee employee = (Employee) hibernateHelper.retreiveData(Employee.class, Long.valueOf(request.getParameter("employee")));
+            employee.setName(name);
+            employee.setPosition(position);
+            employee.setStaffID(staffID);
+            employee.setLocationDepartment(locationDepartment);
+            hibernateHelper.updateData(employee);
+            return (0);
+        } else {
+            Employee employee = new Employee(name, position, staffID, locationDepartment);
+            hibernateHelper.saveData(employee);
+            return (1);
+        }
     }
 
     public int addDepartment() throws IOException {

@@ -26,7 +26,7 @@
                 <jsp:param name="id" value="search_user"/>
             </jsp:include>
 
-            <div class="scroll">
+            <div class="scroll" style="height:300px;">
                 <table id="user_table" class="table table-striped table-striped" style="width: 2500px;">
                     <thead>
                     <tr class="table-bordered bg-lightGray">

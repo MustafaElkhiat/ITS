@@ -43,9 +43,20 @@ $(document).ready(function () {
             $("#add_user").click(function () {
                 $("#content_place").load('Directive', {d: 38}, addUser);
             });
-
-        })
-
+        });
+    });
+    $("#employees").click(function () {
+        stopTimers();
+        $("#content_place").load('Directive', {d: 46}, function () {
+            $("#search_employee").searchTable("employee_table_body");
+            $("#employee_table").sortTableNow();
+            $(".edit_employee").click(function () {
+                $("#content_place").load('Directive', {d: 47, employee: $(this).attr("employee-id")}, function(){
+                    editEmployee();
+                    afterLoadingRegionSection();
+                });
+            });
+        });
     });
 
     setupTimers();
@@ -60,19 +71,19 @@ var add_device = function () {
     })
 }
 
-var device_data = function (type, department) {
+var device_data = function (type, location, department) {
     $("#device_data").empty();
     if (type == 1) {
-        $("#device_data").load('Directive', {d: 30, department: department}, savePC);
+        $("#device_data").load('Directive', {d: 30, department: department, location: location}, savePC);
     } else if (type == 2) {
-        $("#device_data").load('Directive', {d: 32, department: department}, function () {
+        $("#device_data").load('Directive', {d: 32, department: department, location: location}, function () {
             savePrinter();
             printerConnection();
         });
     } else if (type == 9) {
         $("#device_data").load('attendance_data.jsp', saveAttendance);
     } else if (type == 8) {
-        $("#device_data").load('Directive', {d: 33, department: department}, savePBX);
+        $("#device_data").load('Directive', {d: 33, department: department, location: location}, savePBX);
     } else if (type == 5 || type == 6 || type == 10 || type == 11) {
         $("#device_data").load('device_data.jsp', saveDevice);
     } else if (type == 3 || type == 7) {
@@ -245,7 +256,7 @@ var afterLoadingDeviceTypeSection = function (deviceTypeSection, location, depar
     deviceTypeSection.find(".device_type_").change(function () {
             var deviceType = $(this).val();
             loadDeviceSection(deviceTypeSection, location, department, deviceType);
-            device_data(deviceType, department);
+            device_data(deviceType, location, department);
             emptySections();
         }
     );
@@ -442,6 +453,7 @@ var viewDevice = function () {
         $("#content_place").load('Directive', {d: 34, device: $(this).attr("device-id")}, function () {
             $("#devices").removeClass("active");
             $('#purchase_date').datepicker();
+            afterLoadingRegionSection();
             resetForm();
             printerConnection();
             cameraIP_MAC();
@@ -463,6 +475,40 @@ var viewDevice = function () {
 }
 var resetForm = function () {
     $(".reset").click(add_device);
+}
+
+var editEmployee = function () {
+    $("#edit_employee_submit").click(function () {
+        var form = $(this).parents('form:first');
+        if ($(".needs-validation")[9].checkValidity() === true) {
+            $.ajax({
+                url: "Controller",
+                data: {
+                    n: "24",
+                    name: $("#edit_name").val(),
+                    position: $("#edit_position").val(),
+                    staff_id: $("#edit_staff_id").val(),
+                    location: $("#location_").val(),
+                    department: $("#department_").val(),
+                    employee: $("#employee").val()
+                },
+                type: "POST",
+
+                success: function (result, status, xhr) {
+                    form.removeClass("was-validated");
+                    if (result == 1) {
+
+                        success("Employee has been added", "");
+                    } else if (result == 0) {
+                        success("Employee has been edited", "")
+                    }
+
+
+                }
+            });
+        }
+        form.addClass("was-validated");
+    });
 }
 
 var addUser = function () {
