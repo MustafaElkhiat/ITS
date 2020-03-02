@@ -10,19 +10,17 @@
 <div class="card mt-3">
     <div class="card-body">
         <div class="row">
-            <div class="offset-lg-1 col-lg-3 col-sm-12">
+            <div class="col-lg-3 col-sm-12">
                 <jsp:include page="user_charts.jsp">
                     <jsp:param name="user" value="${param.user}"/>
                 </jsp:include>
             </div>
 
-            <div class="col-lg-8 col-sm-12">
-                <jsp:include page="ticket_tab_header.jsp">
-                    <jsp:param name="style" value="ml-5"/>
-                </jsp:include>
-                <jsp:include page="ticket_tab_content.jsp">
-                    <jsp:param name="style" value="ml-5"/>
-                </jsp:include>
+            <div class="col-lg-9 col-sm-12">
+                <jsp:include page="ticket_tab_header.jsp"/>
+
+                <jsp:include page="ticket_tab_content.jsp"/>
+
             </div>
 
         </div>
@@ -37,5 +35,6 @@
     pending_tab("${param.user}");
     solved_tab("${param.user}");
     need_to_solve_tab("${param.user}");
-
+    closed_tab("${param.user}");
+    need_to_close_tab("${param.user}");
 </script>

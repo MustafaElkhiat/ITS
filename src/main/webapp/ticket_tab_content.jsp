@@ -14,4 +14,6 @@
     <div class="tab-pane fade" id="${param.user}-pending" role="tabpanel" aria-labelledby="${param.user}-pending-tab"></div>
     <div class="tab-pane fade" id="${param.user}-solved" role="tabpanel" aria-labelledby="${param.user}-solved-tab"></div>
     <div class="tab-pane fade" id="${param.user}-need-to-solve" role="tabpanel" aria-labelledby="${param.user}-need-to-solve-tab"></div>
+    <div class="tab-pane fade" id="${param.user}-closed" role="tabpanel" aria-labelledby="${param.user}-closed-tab"></div>
+    <div class="tab-pane fade" id="${param.user}-need-to-close" role="tabpanel" aria-labelledby="${param.user}-need-to-close-tab"></div>
 </div>

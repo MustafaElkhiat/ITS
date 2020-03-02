@@ -233,7 +233,22 @@ public class DirectiveHelper extends HelperBase {
     }
 
     private List getTicketsSolvedByUser(User user) {
-        return hibernateHelper.retreiveData("from Ticket where done = true and solvedBy = " + user.getId());
+        return hibernateHelper.retreiveData("from Ticket where done = false and solvedBy = " + user.getId());
+    }
+
+    private List getTicketNeedToClose(Region region) {
+        Status solvedStatus = (Status) hibernateHelper.retreiveData(Status.class, (long) 4);
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where region = " + region.getId());
+        List<TicketStatus> ticketSolvedList = new ArrayList<>();
+        for (TSUserRegion tsUserRegion : tsUserRegionList) {
+            ticketSolvedList.addAll(hibernateHelper.retreiveData("from TicketStatus where done = false and status = " + solvedStatus.getId() + " and TSUser = " + tsUserRegion.getTSUser().getId()));
+
+        }
+        return ticketSolvedList;
+    }
+
+    private List getTicketsClosedByUser(User user) {
+        return hibernateHelper.retreiveData("from Ticket where done = true and (solvedBy = " + user.getId() + " or closedBy = " + user.getId() + ")");
     }
 
     private List getTicketStatus(Ticket ticket) {
@@ -280,17 +295,55 @@ public class DirectiveHelper extends HelperBase {
         request.getRequestDispatcher("need_to_solve_details_tab.jsp").forward(request, response);
     }
 
+    public void goToNeedToCloseTab() throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user.getRole().getId() == 2) {
+            //User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
+            List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("From TSUserRegion where TSUser = " + user.getId());
+            request.setAttribute("tickets", getTickets());
+            System.out.println("Close region : " + tsUserRegionList.get(0).getRegion().getRegion());
+            request.setAttribute("ticketsSolvedList", getTicketNeedToClose(tsUserRegionList.get(0).getRegion()));
+
+        } else {
+            request.setAttribute("ticketsSolvedList", null);
+        }
+        request.getRequestDispatcher("need_to_close_tab.jsp").forward(request, response);
+    }
+
+    /*public void goToNeedToCloseDetailsTab() throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("From TSUserRegion where TSUser = "+user.getId());
+        request.setAttribute("tickets", getTickets());
+        request.setAttribute("ticketsAssignedToList", getTicketNeedToClose(tsUserRegionList.get(0).getRegion()));
+        request.getRequestDispatcher("need_to_solve_details_tab.jsp").forward(request, response);
+    }*/
+
     public void goToSolvedTab() throws ServletException, IOException {
         //User user = (User) request.getSession().getAttribute("user");
         User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         request.setAttribute("ticketsSolvedList", getTicketsSolvedByUser(user));
+        request.setAttribute("user", user);
         request.getRequestDispatcher("solved_tab.jsp").forward(request, response);
     }
 
     public void goToSolvedDetailsTab() throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         request.setAttribute("ticketsSolvedList", getTicketsSolvedByUser(user));
+        request.setAttribute("user", user);
         request.getRequestDispatcher("solved_details_tab.jsp").forward(request, response);
+    }
+
+    public void goToClosedTab() throws ServletException, IOException {
+        //User user = (User) request.getSession().getAttribute("user");
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
+        request.setAttribute("ticketsClosedList", getTicketsClosedByUser(user));
+        request.getRequestDispatcher("closed_tab.jsp").forward(request, response);
+    }
+
+    public void goToClosedDetailsTab() throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        request.setAttribute("ticketsClosedList", getTicketsClosedByUser(user));
+        request.getRequestDispatcher("closed_details_tab.jsp").forward(request, response);
     }
 
     public void goToInProgressTab() throws ServletException, IOException {
@@ -324,11 +377,13 @@ public class DirectiveHelper extends HelperBase {
         User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         System.out.println(user.getName());
         request.setAttribute("user", user);
-        request.setAttribute("assignToUserCount", controllerHelper.getTicketAssignedToUserSum());
-        request.setAttribute("assignToCount", controllerHelper.getTicketAssignToSum());
-        request.setAttribute("inProgressCount", controllerHelper.getTicketInProgressByUserSum());
-        request.setAttribute("pendingCount", controllerHelper.getTicketPendingByUserSum());
-        request.setAttribute("solvedCount", controllerHelper.getTicketSolvedByUserSum());
+        request.setAttribute("assignToUserCount", controllerHelper.getTicketAssignedToUserCount(user));
+        request.setAttribute("assignToCount", controllerHelper.getTicketAssignToCount(user));
+        request.setAttribute("inProgressCount", controllerHelper.getTicketInProgressByUserCount(user));
+        request.setAttribute("pendingCount", controllerHelper.getTicketPendingByUserCount(user));
+        request.setAttribute("solvedCount", controllerHelper.getTicketSolvedByUserCount(user));
+        request.setAttribute("closedCount", controllerHelper.getTicketClosedByUserCount(user));
+        request.setAttribute("needToCloseCount", controllerHelper.getTicketNeedToCloseCount(user));
         request.getRequestDispatcher("ticket_chart.jsp").forward(request, response);
     }
 
@@ -336,8 +391,9 @@ public class DirectiveHelper extends HelperBase {
         if (request.getParameter("region").equals("ALL")) {
             request.setAttribute("region", "ALL");
             request.setAttribute("assignToRegionCount", controllerHelper.getTicketAssignToAllRegionsCount());
-            //request.setAttribute("needToSolveRegionCount", controllerHelper.getTicketAssignToSum());
+            //request.setAttribute("needToSolveRegionCount", controllerHelper.getTicketAssignToCount());
             request.setAttribute("inProgressRegionCount", controllerHelper.getTicketAInProgressAllRegionsCount());
+            request.setAttribute("closedRegionCount", controllerHelper.getTicketSolvedAllRegionsCount());
             request.setAttribute("pendingRegionCount", controllerHelper.getTicketPendingAllRegionsCount());
             request.setAttribute("solvedRegionCount", controllerHelper.getTicketSolvedAllRegionsCount());
         } else {
@@ -345,13 +401,15 @@ public class DirectiveHelper extends HelperBase {
             System.out.println("region : " + region.getRegion());
             request.setAttribute("region", region);
             request.setAttribute("assignToRegionCount", controllerHelper.getTicketAssignToRegionCount());
-            //request.setAttribute("needToSolveRegionCount", controllerHelper.getTicketAssignToSum());
+            //request.setAttribute("needToSolveRegionCount", controllerHelper.getTicketAssignToCount());
             request.setAttribute("inProgressRegionCount", controllerHelper.getTicketInProgressRegionCount());
+            request.setAttribute("closedRegionCount", controllerHelper.getTicketClosedRegionCount());
             request.setAttribute("pendingRegionCount", controllerHelper.getTicketPendingRegionCount());
             request.setAttribute("solvedRegionCount", controllerHelper.getTicketSolvedRegionCount());
         }
         request.getRequestDispatcher("region_chart.jsp").forward(request, response);
     }
+
 
     public void goToDeviceChart() throws ServletException, IOException {
         if (request.getParameter("region").equals("ALL")) {
@@ -373,6 +431,7 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("FW_count", controllerHelper.getRegionFWCount(request.getParameter("region")));
 
         request.getRequestDispatcher("device_chart.jsp").forward(request, response);
+        return;
     }
 
     public void goToDevices() throws ServletException, IOException {

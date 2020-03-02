@@ -172,6 +172,15 @@ public class Directive extends HttpServlet {
                 case(50):
                     directiveHelper.goToEditPrivilege();
                     break;
+                case (51):
+                    directiveHelper.goToClosedTab();
+                    break;
+                case (52):
+                    directiveHelper.goToClosedDetailsTab();
+                    break;
+                case(53):
+                    directiveHelper.goToNeedToCloseTab();
+                    break;
             }
         }
     }

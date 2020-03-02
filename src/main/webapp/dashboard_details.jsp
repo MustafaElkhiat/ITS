@@ -11,7 +11,7 @@
 <jsp:include page="page_header.jsp">
     <jsp:param name="title" value="Dashboard"/>
 </jsp:include>
-<c:if test="${current_user.role.id != 1 && current_user.role.id != 2 && current_user.role.id !=3}">
+<c:if test="${current_user.role.id != 1 && current_user.role.id !=3}">
     <jsp:include page="ticket_section.jsp">
         <jsp:param name="user" value="${current_user.id}"/>
     </jsp:include>
@@ -25,6 +25,8 @@
                 <div class="row">
                     <jsp:include page="region_charts_view.jsp">
                         <jsp:param name="region" value="ALL"/>
+                        <jsp:param name="regionAbb" value="ALL"/>
+                        <jsp:param name="regionT" value="All Regions"/>
                     </jsp:include>
 
                 </div>
@@ -36,6 +38,8 @@
                 </c:if>
                 <jsp:include page="region_charts_view.jsp">
                     <jsp:param name="region" value="${userRegion.region.id}"/>
+                    <jsp:param name="regionAbb" value="${userRegion.region.abbreviation}"/>
+                    <jsp:param name="regionT" value="${userRegion.region.region}"/>
                 </jsp:include>
                 <c:if test="${loop.index % 3 == 2 || loop.last}">
                     </div>
@@ -71,6 +75,8 @@
 
                     <jsp:include page="device_charts_view.jsp">
                         <jsp:param name="region" value="ALL"/>
+                        <jsp:param name="regionAbb" value="ALL"/>
+                        <jsp:param name="regionT" value="All Regions"/>
                     </jsp:include>
 
                 </div>
@@ -82,6 +88,8 @@
                 </c:if>
                 <jsp:include page="device_charts_view.jsp">
                     <jsp:param name="region" value="${userRegion.region.id}"/>
+                    <jsp:param name="regionAbb" value="${userRegion.region.abbreviation}"/>
+                    <jsp:param name="regionT" value="${userRegion.region.region}"/>
                 </jsp:include>
                 <c:if test="${loop.index % 3 == 2 || loop.last}">
                     </div>

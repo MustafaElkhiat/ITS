@@ -1,9 +1,11 @@
 package helpers;
 
+import com.google.gson.JsonObject;
 import elements.*;
 import login.elements.Role;
 import login.elements.User;
 
+import javax.json.Json;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -348,19 +350,28 @@ public class ControllerHelper extends HelperBase {
         return (1);
     }
 
-    private Ticket saveTicket() throws IOException {
+    private Ticket saveTicket() throws IOException, ParseException {
         String problem = request.getParameter("problem");
         String comment = request.getParameter("comment");
         String reporterName = request.getParameter("caller_name");
         String reporterNum = request.getParameter("caller_num");
+        Date actual_date = null;
+        if (!request.getParameter("actual_date").equals("")) {
+            actual_date = convert12TO24(request.getParameter("actual_date"));
+        }
+        System.out.println("Date : " + actual_date);
         Device device = (Device) hibernateHelper.retreiveData(Device.class, Long.valueOf(request.getParameter("device_")));
         User l1_user = (User) request.getSession().getAttribute("user");
         SubCategory subCategory = (SubCategory) hibernateHelper.retreiveData(SubCategory.class, Long.valueOf(request.getParameter("sub_category_")));
         Status status = (Status) hibernateHelper.retreiveData(Status.class, Long.valueOf(request.getParameter("status")));
         //Ticket(String problem, String comment, String reporterName,String reporterNum, Device device, User l1_user, SubCategory subCategory, Status currentStatus)
-        Ticket ticket = new Ticket(problem, comment, reporterName, reporterNum, device, l1_user, subCategory, status);
+        Ticket ticket = new Ticket(problem, comment, reporterName, reporterNum, device, l1_user, subCategory, status, actual_date, actual_date);
         hibernateHelper.saveData(ticket);
         return ticket;
+    }
+
+    private Date convert12TO24(String date12) throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd hh:mm aa").parse(date12)));
     }
 
     private long assignTo(Ticket ticket) throws IOException {
@@ -447,9 +458,7 @@ public class ControllerHelper extends HelperBase {
 
         Status solved_status = (Status) hibernateHelper.retreiveData(Status.class, (long) 4);
         ticket.setCurrentStatus(solved_status);
-        ticket.setDone(true);
-        ticket.setEndDate(new Date());
-        ticket.setEndTime(new Date());
+
         ticket.setSolvedBy(user);
         hibernateHelper.updateData(ticket);
         List<TicketAssignedTo> ticketAssignedToList = hibernateHelper.retreiveData("from TicketAssignedTo where ticket = " + ticket.getId());
@@ -468,6 +477,36 @@ public class ControllerHelper extends HelperBase {
             }
         }
         TicketStatus ticketStatus = new TicketStatus(steps, ticket, solved_status, user);
+        hibernateHelper.saveData(ticketStatus);
+        return ticket.getId();
+    }
+
+    private long closed(Ticket ticket) throws IOException {
+        User user = (User) request.getSession().getAttribute("user");
+
+        Status closed_status = (Status) hibernateHelper.retreiveData(Status.class, (long) 5);
+        ticket.setCurrentStatus(closed_status);
+        ticket.setDone(true);
+        ticket.setEndDate(new Date());
+        ticket.setEndTime(new Date());
+        ticket.setClosedBy(user);
+        hibernateHelper.updateData(ticket);
+        List<TicketAssignedTo> ticketAssignedToList = hibernateHelper.retreiveData("from TicketAssignedTo where ticket = " + ticket.getId());
+        for (TicketAssignedTo ticketAssignedTo : ticketAssignedToList) {
+            ticketAssignedTo.setDone(true);
+            hibernateHelper.updateData(ticketAssignedTo);
+        }
+        String steps = request.getParameter("action");
+        List<TicketStatus> ticketStatusList = hibernateHelper.retreiveData("from TicketStatus where ticket = " + ticket.getId());
+        for (TicketStatus ticketStatus : ticketStatusList) {
+            if (!ticketStatus.isDone()) {
+                ticketStatus.setDone(true);
+                ticketStatus.setDoneDate(new Date());
+                ticketStatus.setDoneTime(new Date());
+                hibernateHelper.updateData(ticketStatus);
+            }
+        }
+        TicketStatus ticketStatus = new TicketStatus(steps, ticket, closed_status, user);
         ticketStatus.setDone(true);
         ticketStatus.setDoneDate(new Date());
         ticketStatus.setDoneTime(new Date());
@@ -475,7 +514,7 @@ public class ControllerHelper extends HelperBase {
         return ticket.getId();
     }
 
-    public long addTicket() throws IOException {
+    public long addTicket() throws IOException, ParseException {
         Status status = (Status) hibernateHelper.retreiveData(Status.class, Long.valueOf(request.getParameter("status")));
         Ticket ticket = saveTicket();
         return checkTicketStatus(status, ticket);
@@ -496,6 +535,8 @@ public class ControllerHelper extends HelperBase {
             return pending(ticket);
         } else if (status.getId() == 4) {
             return solved(ticket);
+        } else if (status.getId() == 5) {
+            return closed(ticket);
         } else {
             return 0;
         }
@@ -793,6 +834,10 @@ public class ControllerHelper extends HelperBase {
         return hibernateHelper.retreiveData("from Ticket where currentStatus = 4").size();
     }
 
+    public int getTicketClosedAllRegionsCount() {
+        return hibernateHelper.retreiveData("from Ticket where currentStatus = 5").size();
+    }
+
     public int getTicketAssignToRegionCount() {
         int count = 0;
         List<Ticket> inProgressTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 1"); // 1 Assign-To
@@ -837,7 +882,7 @@ public class ControllerHelper extends HelperBase {
 
     public int getTicketPendingRegionCount() {
         int count = 0;
-        List<Ticket> inProgressTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 3"); // 3 Pending
+        List<Ticket> pendingTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 3"); // 3 Pending
         Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
         List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
         for (Location location : regionLocationList) {
@@ -845,7 +890,7 @@ public class ControllerHelper extends HelperBase {
             for (LocationDepartment locationDepartment : locationDepartmentList) {
                 List<Device> regionDeviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
                 for (Device device : regionDeviceList) {
-                    for (Ticket ticket : inProgressTicketList) {
+                    for (Ticket ticket : pendingTicketList) {
                         if (device.getId() == ticket.getDevice().getId()) {
                             count++;
                         }
@@ -858,7 +903,7 @@ public class ControllerHelper extends HelperBase {
 
     public int getTicketSolvedRegionCount() {
         int count = 0;
-        List<Ticket> inProgressTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 4"); // 4 Pending
+        List<Ticket> solvedTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 4"); // 4 solved
         Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
         List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
         for (Location location : regionLocationList) {
@@ -866,7 +911,7 @@ public class ControllerHelper extends HelperBase {
             for (LocationDepartment locationDepartment : locationDepartmentList) {
                 List<Device> regionDeviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
                 for (Device device : regionDeviceList) {
-                    for (Ticket ticket : inProgressTicketList) {
+                    for (Ticket ticket : solvedTicketList) {
                         if (device.getId() == ticket.getDevice().getId()) {
                             count++;
                         }
@@ -877,29 +922,151 @@ public class ControllerHelper extends HelperBase {
         return count;
     }
 
-    public Object getTicketAssignToSum() {
-        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
+    public int getTicketClosedRegionCount() {
+        int count = 0;
+        List<Ticket> solvedTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 5"); // 4 solved
+        Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+        List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+        for (Location location : regionLocationList) {
+            List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                List<Device> regionDeviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                for (Device device : regionDeviceList) {
+                    for (Ticket ticket : solvedTicketList) {
+                        if (device.getId() == ticket.getDevice().getId()) {
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    public Object getTicketAssignToCount(User user) {
+        //User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         return hibernateHelper.retreiveData("select count(assignedBy) from TicketAssignedTo where assignedBy = " + user.getId()).get(0);
     }
 
-    public Object getTicketAssignedToUserSum() {
-        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
+    public Object getTicketAssignedToUserCount(User user) {
+        //User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         return hibernateHelper.retreiveData("select count(assignedTo) from TicketAssignedTo where done = false and assignedTo = " + user.getId()).get(0);
     }
 
-    public Object getTicketSolvedByUserSum() {
-        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
-        return hibernateHelper.retreiveData("select count(solvedBy) from Ticket where done = true and solvedBy = " + user.getId()).get(0);
+    public Object getTicketSolvedByUserCount(User user) {
+        //User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
+        return hibernateHelper.retreiveData("select count(solvedBy) from Ticket where done = false and solvedBy = " + user.getId()).get(0);
     }
 
-    public Object getTicketInProgressByUserSum() {
+    public Object getTicketClosedByUserCount(User user) {
+        //User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
+        return hibernateHelper.retreiveData("select count(closedBy) from Ticket where done = true and (solvedBy = " + user.getId() + " or closedBy = " + user.getId() + ")").get(0);
+    }
+
+    public JsonObject getRegionChartData() {
+
+        JsonObject data = new JsonObject();
+        if (request.getParameter("region").equals("ALL")) {
+            data.addProperty("region", "ALL");
+            data.addProperty("regionAbb", "ALL");
+            data.addProperty("regionT", "All Regions");
+            data.addProperty("assignToRegionCount", getTicketAssignToAllRegionsCount());
+            data.addProperty("inProgressRegionCount", getTicketAInProgressAllRegionsCount());
+            data.addProperty("closedRegionCount", getTicketSolvedAllRegionsCount());
+            data.addProperty("pendingRegionCount", getTicketPendingAllRegionsCount());
+            data.addProperty("solvedRegionCount", getTicketSolvedAllRegionsCount());
+        } else {
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+            data.addProperty("region", region.getRegion());
+            data.addProperty("regionAbb", region.getAbbreviation());
+            data.addProperty("regionT", region.getRegion());
+            data.addProperty("assignToRegionCount", getTicketAssignToRegionCount());
+            data.addProperty("inProgressRegionCount", getTicketInProgressRegionCount());
+            data.addProperty("closedRegionCount", getTicketClosedRegionCount());
+            data.addProperty("pendingRegionCount", getTicketPendingRegionCount());
+            data.addProperty("solvedRegionCount", getTicketSolvedRegionCount());
+        }
+        return data;
+    }
+
+    public JsonObject getTicketChartData() {
         User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
+        JsonObject data = new JsonObject();
+
+        data.addProperty("user_name", user.getName());
+        data.addProperty("user_id", user.getId());
+        data.addProperty("assignToUserCount", (long) getTicketAssignedToUserCount(user));
+        data.addProperty("assignToCount", (long) getTicketAssignToCount(user));
+        data.addProperty("inProgressCount", (long) getTicketInProgressByUserCount(user));
+        data.addProperty("pendingCount", (long) getTicketPendingByUserCount(user));
+        data.addProperty("solvedCount", (long) getTicketSolvedByUserCount(user));
+        data.addProperty("closedCount", (long) getTicketClosedByUserCount(user));
+        data.addProperty("needToCloseCount", (int) getTicketNeedToCloseCount(user));
+        return data;
+    }
+
+    public JsonObject getDeviceChartData(){
+        System.out.println("region Para : "+request.getParameter("region"));
+        JsonObject data = new JsonObject();
+        if (request.getParameter("region").equals("ALL")) {
+            data.addProperty("region", "ALL");
+            data.addProperty("regionAbb", "ALL");
+            data.addProperty("regionT", "All Regions");
+        } else {
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+            data.addProperty("region", region.getRegion());
+            data.addProperty("regionAbb", region.getAbbreviation());
+            data.addProperty("regionT", region.getRegion());
+        }
+        data.addProperty("PC_count", getRegionPCCount(request.getParameter("region")));
+        data.addProperty("Printer_count", getRegionPrinterCount(request.getParameter("region")));
+        data.addProperty("PBX_count", getRegionIPPhoneCount(request.getParameter("region")));
+        data.addProperty("FP_count", getRegionFPCount(request.getParameter("region")));
+        data.addProperty("SW_count", getRegionSWCount(request.getParameter("region")));
+        data.addProperty("RO_count", getRegionROCount(request.getParameter("region")));
+        data.addProperty("CAM_count", getRegionCameraCount(request.getParameter("region")));
+        data.addProperty("DVR_count", getRegionDVRCount(request.getParameter("region")));
+        data.addProperty("NVR_count", getRegionNVRCount(request.getParameter("region")));
+        data.addProperty("UPS_count", getRegionUPSCount(request.getParameter("region")));
+        data.addProperty("FW_count", getRegionFWCount(request.getParameter("region")));
+        return data;
+    }
+    public Object getTicketNeedToCloseCount(User user) {
+        int count = 0;
+        List<Ticket> needToCloseTicketList = new ArrayList<>();
+        //User user  = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
+
+        //User user = (User) request.getSession().getAttribute("user");
+        if (user.getRole().getId() == 2) {
+            List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where TSUser = " + user.getId());
+            List<Ticket> solvedTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 4"); // 4 solved
+            //Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+            List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + tsUserRegionList.get(0).getRegion().getId());
+            for (Location location : regionLocationList) {
+                List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+                for (LocationDepartment locationDepartment : locationDepartmentList) {
+                    List<Device> regionDeviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                    for (Device device : regionDeviceList) {
+                        for (Ticket ticket : solvedTicketList) {
+                            if (device.getId() == ticket.getDevice().getId()) {
+                                count++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    public Object getTicketInProgressByUserCount(User user) {
+        //User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         Status inProgressStatus = (Status) hibernateHelper.retreiveData(Status.class, (long) 2);
         return hibernateHelper.retreiveData("select count(TSUser) from TicketStatus where done = false and status = " + inProgressStatus.getId() + " and TSUser = " + user.getId()).get(0);
     }
 
-    public Object getTicketPendingByUserSum() {
-        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
+    public Object getTicketPendingByUserCount(User user) {
+        //User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         Status pendingStatus = (Status) hibernateHelper.retreiveData(Status.class, (long) 3);
         return hibernateHelper.retreiveData("select count(TSUser) from TicketStatus where done = false and status = " + pendingStatus.getId() + " and TSUser = " + user.getId()).get(0);
     }

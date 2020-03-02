@@ -10,10 +10,17 @@
     <div class="card mt-3">
         <div class="card-body">
             <div id="${param.region}_region_chart">
+                <jsp:include page="region_chart.jsp">
+                    <jsp:param name="region" value="${param.region}"/>
+                    <jsp:param name="regionAbb" value="${param.regionAbb}"/>
+                    <jsp:param name="regionT" value="${param.regionT}"/>
+                </jsp:include>
             </div>
         </div>
     </div>
 </div>
+<%--
 <script>
     loadRegionChart("${param.region}");
 </script>
+--%>

@@ -2,6 +2,7 @@ package elements;
 
 import login.elements.User;
 import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -15,10 +16,10 @@ public class Ticket {
     @Type(type = "true_false")
     @Column(name = "done")
     private boolean done = false;
-    @Type(type="text")
+    @Type(type = "text")
     @Column(name = "problem")
     private String problem;
-    @Type(type="text")
+    @Type(type = "text")
     @Column(name = "comment")
     private String comment;
     @Column(name = "reporter_name")
@@ -29,14 +30,20 @@ public class Ticket {
     @Column(name = "start_date")
     private Date startDate = new Date();
     @Temporal(TemporalType.TIME)
-    @Column(name="start_time")
+    @Column(name = "start_time")
     private Date startTime = new Date();
     @Temporal(TemporalType.DATE)
     @Column(name = "end_date")
     private Date endDate;
     @Temporal(TemporalType.TIME)
-    @Column(name="end_time")
+    @Column(name = "end_time")
     private Date endTime;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "actual_date")
+    private Date actualDate;
+    @Temporal(TemporalType.TIME)
+    @Column(name = "actual_time")
+    private Date actualTime;
     @ManyToOne
     private Device device;
     @ManyToOne
@@ -44,14 +51,16 @@ public class Ticket {
     @ManyToOne
     private User solvedBy;
     @ManyToOne
-    private SubCategory subCategory ;
+    private User closedBy;
+    @ManyToOne
+    private SubCategory subCategory;
     @ManyToOne
     private Status currentStatus;
 
     public Ticket() {
     }
 
-    public Ticket(String problem, String comment, String reporterName,String reporterNum, Device device, User l1_user, SubCategory subCategory, Status currentStatus) {
+    public Ticket(String problem, String comment, String reporterName, String reporterNum, Device device, User l1_user, SubCategory subCategory, Status currentStatus, Date actualDate, Date actualTime) {
         this.problem = problem;
         this.comment = comment;
         this.reporterName = reporterName;
@@ -60,6 +69,8 @@ public class Ticket {
         this.l1_user = l1_user;
         this.subCategory = subCategory;
         this.currentStatus = currentStatus;
+        this.actualDate = actualDate;
+        this.actualTime = actualTime;
     }
 
     public long getId() {
@@ -180,5 +191,29 @@ public class Ticket {
 
     public void setReporterNum(String reporterNum) {
         this.reporterNum = reporterNum;
+    }
+
+    public Date getActualDate() {
+        return actualDate;
+    }
+
+    public void setActualDate(Date actualDate) {
+        this.actualDate = actualDate;
+    }
+
+    public Date getActualTime() {
+        return actualTime;
+    }
+
+    public void setActualTime(Date actualTime) {
+        this.actualTime = actualTime;
+    }
+
+    public User getClosedBy() {
+        return closedBy;
+    }
+
+    public void setClosedBy(User closedBy) {
+        this.closedBy = closedBy;
     }
 }

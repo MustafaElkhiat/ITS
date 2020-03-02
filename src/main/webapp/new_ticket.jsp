@@ -27,7 +27,7 @@
         <div id="action_section" class="col-lg-2">
 
         </div>
-        <div id="action_detail_section" class="col-lg-10">
+        <div id="action_detail_section" class="my-auto col-lg-10">
 
         </div>
     </div>

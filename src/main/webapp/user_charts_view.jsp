@@ -10,10 +10,13 @@
     <div class="card mt-3">
         <div class="card-body">
             <div id="${param.user}_ticket_chart" >
+                <jsp:include page="ticket_chart.jsp">
+                    <jsp:param name="user" value="${param.user}"/>
+                </jsp:include>
             </div>
         </div>
     </div>
 </div>
-<script>
+<%--<script>
     loadTicketChart("${param.user}");
-</script>
+</script>--%>

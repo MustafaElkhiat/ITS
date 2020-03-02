@@ -90,6 +90,9 @@
 <script src="js/modals.js"></script>
 <script src="js/google_chart_timeline.js"></script>
 <script src="js/saveDevices.js"></script>
+<script src="js/drawRegionChart.js"></script>
+<script src="js/drawTicketChart.js"></script>
+<script src="js/drawDeviceChart.js"></script>
 <script src="js/dashboard.js"></script>
 
 

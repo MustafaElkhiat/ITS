@@ -7,6 +7,7 @@ $(document).ready(function () {
         stopTimers();
         $("#content_place").load('Directive', {d: 1}, function () {
             afterLoadingRegionSection();
+
         });
     });
     $("#my_ticket").click(function () {
@@ -348,15 +349,19 @@ var afterLoadingDeviceSection = function () {
 
     $("#device_").change(function () {
         var device = $("#device_info").parent().find("#device_").val();
-        $("#device_info").load('Directive', {d: 7, device: device});
-        $("#problem_comment_section").load('Directive', {d: 10}, function () {
-            $("#category_").change(function () {
-                $("#sub_category_section").load('Directive', {d: 12, category: $(this).val()});
-                $("#action_section").load("action_section.jsp", function () {
-                    afterLoadingActionSection(true);
+        $("#device_info").load('Directive', {d: 7, device: device},function(){
+            $("#problem_comment_section").load('Directive', {d: 10}, function () {
+                $('#actual_date').datepicker();
+                $("#category_").change(function () {
+
+                    $("#sub_category_section").load('Directive', {d: 12, category: $(this).val()});
+                    $("#action_section").load("action_section.jsp", function () {
+                        afterLoadingActionSection(true);
+                    });
                 });
             });
         });
+
     });
 }
 
@@ -413,12 +418,19 @@ var afterLoadingActionSection = function (isCreated) {
         });
 
     });
+    $("#closed_btn").click(function () {
+        setStatusValue($(this).attr('status_value'));
+        $("#action_detail_section").load('closed_section.jsp', function () {
+            action_(isCreated)
+        });
+
+    });
 }
 var action_submit = function () {
     $("#action_submit").click(function () {
 
         if ($(".needs-validation")[9].checkValidity() === true) {
-
+            alert($("#actual_date").val());
             $.ajax({
                 url: "Controller",
                 data: {
@@ -430,6 +442,7 @@ var action_submit = function () {
                     sub_category_: $("#sub_category_").val(),
                     comment: $("#comment").val(),
                     status: $("#status").val(),
+                    actual_date: $("#actual_date").val(),
                     action: getAction()
                 },
                 type: "POST",
@@ -487,6 +500,8 @@ var getAction = function () {
         action = $("#reason").val();
     } else if ($("#status").val() == 4) {
         action = $("#steps").val();
+    } else if ($("#status").val() == 5) {
+        action = $("#comment").val();
     }
     return action;
 }

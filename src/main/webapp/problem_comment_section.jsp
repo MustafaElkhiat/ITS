@@ -12,7 +12,7 @@
     <div class="card-body">
 
         <div class="row">
-            <div class="col-lg-6 col-sm-12">
+            <div class="col-lg-4 col-sm-12">
                 <div class="form-label-group mb-md-2 mb-0">
                     <input type="text" id="caller_name" name="caller_name" class="form-control"
                            placeholder="Caller Name"
@@ -21,12 +21,24 @@
                     <label for="caller_name">Caller Name</label>
                 </div>
             </div>
-            <div class="col-lg-6 col-sm-12">
-                <div class="form-label-group mb-0">
+            <div class="col-lg-4 col-sm-12">
+                <div class="form-label-group mb-0 mb-md-2">
                     <input type="number" id="caller_num" name="caller_num" class="form-control"
                            placeholder="Caller Number"
                            required="">
                     <label for="caller_num">Caller Number</label>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="form-label-group mb-0">
+                    <input id="actual_date"
+                           autocomplete="off"
+                           type="text"
+                           data-language="en" data-timepicker="true" data-time-format='hh:ii AA'
+                           placeholder="Select Actual Date"
+                           class="datepicker-here form-control" readonly/>
+
+                    <label for="actual_date">Actual Date</label>
                 </div>
             </div>
         </div>

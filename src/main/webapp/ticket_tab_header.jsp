@@ -27,4 +27,12 @@
         <a class="nav-link bg-danger red-active" id="${param.user}-need-to-solve-tab" data-toggle="tab" href="#${param.user}-need-to-solve" role="tab" aria-controls="contact"
            aria-selected="false">Need To Solve <span id="${param.user}-need-to-solve-badge" class="badge badge-light"></span></a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link bg-dark red-active" id="${param.user}-closed-tab" data-toggle="tab" href="#${param.user}-closed" role="tab" aria-controls="contact"
+           aria-selected="false">Closed <span id="${param.user}-closed-badge" class="badge badge-light"></span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link bg-info red-active" id="${param.user}-need-to-close-tab" data-toggle="tab" href="#${param.user}-need-to-close" role="tab" aria-controls="contact"
+           aria-selected="false">Need To Close <span id="${param.user}-need-to-close-badge" class="badge badge-light"></span></a>
+    </li>
 </ul>

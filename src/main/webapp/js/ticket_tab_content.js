@@ -14,15 +14,33 @@ var assign_to_details_tab = function (user) {
 }
 var solved_tab = function (user) {
     $("#" + user + "-solved-tab").click(function () {
-        $("#" + user + "-solved").load('Directive', {d: 17, user: user}, ticket_click);
+        $("#" + user + "-solved").load('Directive', {d: 17, user: user}, function () {
+            ticket_click();
+            ticket_edit();
+        });
     });
 }
 var solved_details_tab = function (user) {
     $("#" + user + "-solved-tab").click(function () {
         $("#" + user + "-solved").load('Directive', {d: 26, user: user}, function () {
             ticket_click();
+            ticket_edit();
             $("#search_solved").searchTable("solved_table_body");
             $("#solved_table").sortTableNow();
+        });
+    });
+}
+var closed_tab = function (user) {
+    $("#" + user + "-closed-tab").click(function () {
+        $("#" + user + "-closed").load('Directive', {d: 51, user: user}, ticket_click);
+    });
+}
+var closed_details_tab = function (user) {
+    $("#" + user + "-closed-tab").click(function () {
+        $("#" + user + "-closed").load('Directive', {d: 52, user: user}, function () {
+            ticket_click();
+            $("#search_closed").searchTable("closed_table_body");
+            $("#closed_table").sortTableNow();
         });
     });
 }
@@ -66,6 +84,11 @@ var need_to_solve_details_tab = function (user) {
             $("#search_need_to_solve").searchTable("need_to_solve_table_body");
             $("#need_to_solve_table").sortTableNow();
         });
+    });
+}
+var need_to_close_tab = function (user) {
+    $("#" + user + "-need-to-close-tab").click(function () {
+        $("#" + user + "-need-to-close").load('Directive', {d: 53, user: user}, ticket_edit);
     });
 }
 var ticket_click = function () {

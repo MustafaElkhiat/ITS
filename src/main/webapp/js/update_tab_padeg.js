@@ -1,23 +1,20 @@
 var ticketChartTimer = [];
+var regionChartTimer = [];
 var assignToTimer = [];
 var assignToUserTimer = [];
 var inProgressTimer = [];
 var pendingTimer = [];
 var solvedTimer = [];
+var closedTimer = [];
+var needToCloseTimer = [];
 var loadTicketChart = function (user) {
     $("#" + user + "_ticket_chart").load('Directive', {d: 22, user: user}, function () {
-        ticketChartTimer[ticketChartTimer.length] = setTimeout(function () {
-            loadTicketChart(user);
-        }, 10000);
+
     });
 
 }
 var loadRegionChart = function (region) {
-    $("#" + region + "_region_chart").load('Directive', {d: 44, region: region}, function () {
-        ticketChartTimer[ticketChartTimer.length] = setTimeout(function () {
-            loadRegionChart(region);
-        }, 10000);
-    });
+    $("#" + region + "_region_chart").load('Directive', {d: 44, region: region});
 }
 
 var loadDeviceChart = function (region) {
@@ -25,6 +22,9 @@ var loadDeviceChart = function (region) {
 }
 var stopTicketChart = function () {
     clearTimer(ticketChartTimer);
+}
+var stopRegionChart = function () {
+    clearTimer(regionChartTimer);
 }
 var getAssignToSum = function (user) {
     $.ajax({
@@ -49,6 +49,7 @@ var getAssignToSum = function (user) {
 var stopAssignToSum = function () {
     clearTimer(assignToTimer);
 }
+
 var getAssignToUserSum = function (user) {
     $.ajax({
         url: "Controller",
@@ -136,6 +137,54 @@ var getSolvedUserSum = function (user) {
 
 
 }
+var stopClosedUserSum = function () {
+    clearTimer(closedTimer);
+}
+
+var getClosedUserSum = function (user) {
+    $.ajax({
+        url: "Controller",
+        data: {
+            n: "34",
+            user: user
+        },
+        type: "POST",
+
+        success: function (result, status, xhr) {
+            $("#" + user + "-closed-badge").html(result);
+            closedTimer[closedTimer.length] = setTimeout(function () {
+                getClosedUserSum(user);
+            }, 10000);
+        }
+    });
+
+
+}
+
+var stopNeedToCloseSum = function () {
+    clearTimer(closedTimer);
+}
+
+var getNeedToCloseSum = function (user) {
+    $.ajax({
+        url: "Controller",
+        data: {
+            n: "35",
+            user: user
+        },
+        type: "POST",
+
+        success: function (result, status, xhr) {
+            $("#" + user + "-need-to-close-badge").html(result);
+            needToCloseTimer[needToCloseTimer.length] = setTimeout(function () {
+                getNeedToCloseSum(user);
+            }, 10000);
+        }
+    });
+
+
+}
+
 var stopSolvedUserSum = function () {
     clearTimer(solvedTimer);
 }
@@ -146,6 +195,8 @@ var initialValues = function (user) {
     getPendingUserSum(user);
     getInProgressUserSum(user);
     getSolvedUserSum(user);
+    getClosedUserSum(user);
+    getNeedToCloseSum(user);
 }
 var stopTimers = function () {
     stopAssignToSum();
@@ -153,7 +204,10 @@ var stopTimers = function () {
     stopInProgressUserSum();
     stopPendingUserSum();
     stopSolvedUserSum();
+    stopClosedUserSum();
+    stopNeedToCloseSum();
     stopTicketChart();
+    stopRegionChart();
 }
 var clearTimer = function (Timer) {
     Timer.forEach(function (value, index, array) {

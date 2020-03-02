@@ -64,27 +64,32 @@ public class Controller extends HttpServlet {
                     response.getWriter().println(status);
                     break;
                 case (10):
-                    status1 = controllerHelper.addTicket();
-                    response.getWriter().println(status1);
+                    try {
+                        status1 = controllerHelper.addTicket();
+                        response.getWriter().println(status1);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
                     break;
                 case (11):
                     status1 = controllerHelper.editTicket();
                     response.getWriter().println(status1);
                     break;
                 case (12):
-                    response.getWriter().println(controllerHelper.getTicketAssignToSum());
+                    response.getWriter().println(controllerHelper.getTicketAssignToCount(user));
                     break;
                 case (13):
-                    response.getWriter().println(controllerHelper.getTicketAssignedToUserSum());
+                    response.getWriter().println(controllerHelper.getTicketAssignedToUserCount(user));
                     break;
                 case (14):
-                    response.getWriter().println(controllerHelper.getTicketInProgressByUserSum());
+                    response.getWriter().println(controllerHelper.getTicketInProgressByUserCount(user));
                     break;
                 case (15):
-                    response.getWriter().println(controllerHelper.getTicketPendingByUserSum());
+                    response.getWriter().println(controllerHelper.getTicketPendingByUserCount(user));
                     break;
                 case (16):
-                    response.getWriter().println(controllerHelper.getTicketSolvedByUserSum());
+                    response.getWriter().println(controllerHelper.getTicketSolvedByUserCount(user));
                     break;
                 case (17):
                     try {
@@ -158,9 +163,25 @@ public class Controller extends HttpServlet {
                 case (32):
                     response.getWriter().println(controllerHelper.getTicketSolvedRegionCount());
                     break;
-                case(33):
+                case (33):
                     response.getWriter().println(controllerHelper.addPrivilege());
                     break;
+                case (34):
+                    response.getWriter().println(controllerHelper.getTicketClosedByUserCount(user));
+                    break;
+                case(35):
+                    response.getWriter().println(controllerHelper.getTicketNeedToCloseCount(user));
+                    break;
+                case(36):
+                    response.getWriter().println(controllerHelper.getRegionChartData());
+                    break;
+                case(37):
+                    response.getWriter().println(controllerHelper.getTicketChartData());
+                    break;
+                case(38):
+                    response.getWriter().println(controllerHelper.getDeviceChartData());
+                    break;
+
             }
         }
 

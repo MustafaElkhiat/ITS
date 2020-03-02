@@ -30,5 +30,10 @@
                 <button id="solved_btn" type="button" class="btn btn-outline-success btn-full-width" status_value="4">Solved</button>
             </div>
         </div>
+        <div class="row my-1">
+            <div class="col">
+                <button id="closed_btn" type="button" class="btn btn-outline-closed btn-full-width" status_value="5">Closed</button>
+            </div>
+        </div>
     </div>
 </div>

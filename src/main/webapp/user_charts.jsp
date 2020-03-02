@@ -7,8 +7,12 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div id="${param.user}_ticket_chart" >
+    <jsp:include page="ticket_chart.jsp">
+        <jsp:param name="user" value="${param.user}"/>
+    </jsp:include>
 </div>
-
+<%--
 <script>
     loadTicketChart("${param.user}");
 </script>
+--%>

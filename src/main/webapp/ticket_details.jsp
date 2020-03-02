@@ -28,4 +28,5 @@
     pending_details_tab("${param.user}");
     solved_details_tab("${param.user}");
     need_to_solve_details_tab("${param.user}");
+    closed_details_tab("${param.user}");
 </script>
