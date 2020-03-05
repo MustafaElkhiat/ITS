@@ -349,7 +349,7 @@ var afterLoadingDeviceSection = function () {
 
     $("#device_").change(function () {
         var device = $("#device_info").parent().find("#device_").val();
-        $("#device_info").load('Directive', {d: 7, device: device},function(){
+        $("#device_info").load('Directive', {d: 7, device: device}, function () {
             $("#problem_comment_section").load('Directive', {d: 10}, function () {
                 $('#actual_date').datepicker();
                 $("#category_").change(function () {
@@ -750,4 +750,20 @@ var editUser = function () {
         }
         form.addClass("was-validated");
     });
+}
+
+var loadRegionTicketRatioSection = function () {
+    clearClass('ratio_section');
+    $("#region_ticket_ratio_section").load('Directive', {d: 56});
+}
+var loadL2EngineersTicketRatioSection = function () {
+    clearClass('ratio_section');
+    $("#l2_engineers_ticket_ratio_section").load('Directive', {d: 54});
+}
+var loadRegionDevicesRatioSection = function () {
+    clearClass('ratio_section');
+    $("#region_devices_ratio_section").load('Directive', {d: 55});
+}
+var clearClass = function (Class) {
+$("."+Class).empty();
 }

@@ -91,6 +91,16 @@ var need_to_close_tab = function (user) {
         $("#" + user + "-need-to-close").load('Directive', {d: 53, user: user}, ticket_edit);
     });
 }
+var need_to_close_details_tab = function(user){
+    $("#" + user + "-need-to-close-tab").click(function () {
+        $("#" + user + "-need-to-close").load('Directive', {d: 57, user: user}, function () {
+            ticket_edit();
+            $("#search_need_to_close").searchTable("need_to_close_table_body");
+            $("#need_to_close_table").sortTableNow();
+        });
+    });
+}
+
 var ticket_click = function () {
     $(".ticket").click(function () {
         var ticket_id = $(this).attr("ticket-id");

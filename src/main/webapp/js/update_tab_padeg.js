@@ -39,7 +39,7 @@ var getAssignToSum = function (user) {
             $("#" + user + "-assign-to-badge").html(result);
             assignToTimer[assignToTimer.length] = setTimeout(function () {
                 getAssignToSum(user);
-            }, 10000);
+            }, 20000);
         }
     });
 
@@ -67,7 +67,7 @@ var getAssignToUserSum = function (user) {
             }
             assignToUserTimer[assignToUserTimer.length] = setTimeout(function () {
                 getAssignToUserSum(user);
-            }, 10000);
+            }, 20000);
         }
     });
 
@@ -88,7 +88,7 @@ var getInProgressUserSum = function (user) {
             $("#" + user + "-in-progress-badge").html(result);
             inProgressTimer[inProgressTimer.length] = setTimeout(function () {
                 getInProgressUserSum(user);
-            }, 10000);
+            }, 20000);
         }
     });
 
@@ -110,7 +110,7 @@ var getPendingUserSum = function (user) {
             pendingTimer[pendingTimer.length] = setTimeout(
                 function () {
                     getPendingUserSum(user);
-                }, 10000);
+                }, 20000);
         }
     });
 
@@ -131,7 +131,7 @@ var getSolvedUserSum = function (user) {
             $("#" + user + "-solved-badge").html(result);
             solvedTimer[solvedTimer.length] = setTimeout(function () {
                 getSolvedUserSum(user);
-            }, 10000);
+            }, 20000);
         }
     });
 
@@ -154,7 +154,7 @@ var getClosedUserSum = function (user) {
             $("#" + user + "-closed-badge").html(result);
             closedTimer[closedTimer.length] = setTimeout(function () {
                 getClosedUserSum(user);
-            }, 10000);
+            }, 20000);
         }
     });
 
@@ -178,7 +178,7 @@ var getNeedToCloseSum = function (user) {
             $("#" + user + "-need-to-close-badge").html(result);
             needToCloseTimer[needToCloseTimer.length] = setTimeout(function () {
                 getNeedToCloseSum(user);
-            }, 10000);
+            }, 20000);
         }
     });
 

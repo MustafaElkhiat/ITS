@@ -16,7 +16,7 @@
         getDeviceData("${param.region}","${param.regionAbb}");
         setInterval(function () {
             getDeviceData("${param.region}","${param.regionAbb}");
-        }, 10000);
+        }, 20000);
     });
 
 

@@ -924,7 +924,7 @@ public class ControllerHelper extends HelperBase {
 
     public int getTicketClosedRegionCount() {
         int count = 0;
-        List<Ticket> solvedTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 5"); // 4 solved
+        List<Ticket> solvedTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 5"); // 5 closed
         Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
         List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
         for (Location location : regionLocationList) {
@@ -972,9 +972,9 @@ public class ControllerHelper extends HelperBase {
             data.addProperty("regionT", "All Regions");
             data.addProperty("assignToRegionCount", getTicketAssignToAllRegionsCount());
             data.addProperty("inProgressRegionCount", getTicketAInProgressAllRegionsCount());
-            data.addProperty("closedRegionCount", getTicketSolvedAllRegionsCount());
-            data.addProperty("pendingRegionCount", getTicketPendingAllRegionsCount());
             data.addProperty("solvedRegionCount", getTicketSolvedAllRegionsCount());
+            data.addProperty("pendingRegionCount", getTicketPendingAllRegionsCount());
+            data.addProperty("closedRegionCount", getTicketClosedAllRegionsCount());
         } else {
             Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
             data.addProperty("region", region.getRegion());

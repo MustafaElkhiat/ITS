@@ -37,7 +37,7 @@
         getRegionData("${param.region}","${param.regionAbb}");
         setInterval(function () {
             getRegionData("${param.region}","${param.regionAbb}");
-        }, 10000);
+        }, 20000);
 
     });
     <%--

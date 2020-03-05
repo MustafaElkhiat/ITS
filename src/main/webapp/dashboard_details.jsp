@@ -16,7 +16,56 @@
         <jsp:param name="user" value="${current_user.id}"/>
     </jsp:include>
 </c:if>
+<div class="accordion mt-4" id="accordionExample">
+<c:if test="${current_user.role.id == 1 || current_user.role.id == 2 || current_user.role.id == 6}">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne" onclick="loadRegionTicketRatioSection();">
+                    <h5 class="card-title">Region Ticket Ratio</h5>
+                </button>
+            </h2>
+        </div>
 
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div id="region_ticket_ratio_section" class="card-body ratio_section">
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+            <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="false" aria-controls="collapseTwo" onclick="loadL2EngineersTicketRatioSection();">
+                    <h5 class="card-title">L2 Engineers Ticket Ratio</h5>
+                </button>
+            </h2>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div id="l2_engineers_ticket_ratio_section" class="card-body ratio_section">
+            </div>
+        </div>
+    </div>
+</c:if>
+<c:if test="${current_user.role.id == 1 || current_user.role.id == 2 || current_user.role.id == 3 || current_user.role.id == 6}">
+    <div class="card">
+        <div class="card-header" id="headingThree">
+            <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree"
+                        aria-expanded="false" aria-controls="collapseThree" onclick="loadRegionDevicesRatioSection();">
+                    <h5 class="card-title">Region Devices Ratio</h5>
+                </button>
+            </h2>
+        </div>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+            <div id="region_devices_ratio_section" class="card-body ratio_section">
+            </div>
+        </div>
+    </div>
+    </div>
+</c:if>
+<%--
 <c:if test="${current_user.role.id == 1 || current_user.role.id == 2 || current_user.role.id == 6}">
     <div class="card mt-3">
         <div class="card-body">
@@ -99,3 +148,4 @@
         </div>
     </div>
 </c:if>
+--%>

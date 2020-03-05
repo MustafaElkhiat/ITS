@@ -137,7 +137,7 @@ textarea {
 }
 
 
-.link, .fa-print {
+.link, .fa-print ,.pointer {
     cursor: pointer;
 }
 
@@ -341,3 +341,6 @@ select {
     padding: .5rem .2rem !important;
 }
 
+.accordion .card:first-of-type {
+    border-bottom: 1px solid rgba(0,0,0,.125) !important;
+}

@@ -16,7 +16,7 @@
     <div class="card-body">
 
         <c:if test="${fn:length(pbxList) > 0}">
-            <h5 class="card-title">IP Phone</h5> <i class="fas fa-print"></i>
+            <h5 class="card-title">IP Phone <i class="fas fa-print"></i></h5>
             <jsp:include page="search_field.jsp">
                 <jsp:param name="id" value="search_PBX"/>
             </jsp:include>

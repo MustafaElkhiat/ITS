@@ -31,6 +31,11 @@
                 <jsp:include page="problem_comment_info.jsp"/>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <jsp:include page="all_ticket_status.jsp"/>
+            </div>
+        </div>
 
     </div>
 </div>

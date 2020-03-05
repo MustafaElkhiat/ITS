@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div id="${param.user}_chart_div" style="width:280px ;height:250px ;"></div>
+<div id="${param.user}_chart_div" style="width:280px; height:250px;"></div>
 <script>
     // Load the Visualization API and the corechart package.
     google.charts.load('current', {'packages': ['corechart']});
@@ -16,7 +16,7 @@
         getTicketData("${param.user}");
         setInterval(function () {
             getTicketData("${param.user}");
-        }, 10000);
+        }, 20000);
     });
 
     // Callback that creates and populates a data table,

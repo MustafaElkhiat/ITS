@@ -183,9 +183,11 @@ public class DirectiveHelper extends HelperBase {
             List<TicketAssignedTo> ticketAssignedToList = hibernateHelper.retreiveData("from TicketAssignedTo where done = false and ticket =" + ticket.getId());
             request.setAttribute("ticketAssignedToList", ticketAssignedToList);
         }
+        List<TicketStatus> allTicketStatusList = hibernateHelper.retreiveData("from TicketStatus where ticket = " + ticket.getId());
         request.setAttribute("ticket", ticket);
         request.setAttribute("device", ticket.getDevice());
         request.setAttribute("ticketStatusList", ticketStatusList);
+        request.setAttribute("allTicketStatusList", allTicketStatusList);
         request.setAttribute("ticketStatus", getTicketStatus(ticket));
         request.setAttribute("status", getStatusStyle(ticket.getCurrentStatus()));
         request.getRequestDispatcher("ticket_report.jsp").forward(request, response);
@@ -198,9 +200,11 @@ public class DirectiveHelper extends HelperBase {
             List<TicketAssignedTo> ticketAssignedToList = hibernateHelper.retreiveData("from TicketAssignedTo where done = false and ticket =" + ticket.getId());
             request.setAttribute("ticketAssignedToList", ticketAssignedToList);
         }
+        List<TicketStatus> allTicketStatusList = hibernateHelper.retreiveData("from TicketStatus where ticket = " + ticket.getId());
         request.setAttribute("ticket", ticket);
         request.setAttribute("device", ticket.getDevice());
         request.setAttribute("ticketStatusList", ticketStatusList);
+        request.setAttribute("allTicketStatusList", allTicketStatusList);
         request.setAttribute("ticketStatus", getTicketStatus(ticket));
         request.setAttribute("status", getStatusStyle(ticket.getCurrentStatus()));
         request.getRequestDispatcher("edit_ticket.jsp").forward(request, response);
@@ -295,6 +299,7 @@ public class DirectiveHelper extends HelperBase {
         request.getRequestDispatcher("need_to_solve_details_tab.jsp").forward(request, response);
     }
 
+
     public void goToNeedToCloseTab() throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         if (user.getRole().getId() == 2) {
@@ -308,6 +313,21 @@ public class DirectiveHelper extends HelperBase {
             request.setAttribute("ticketsSolvedList", null);
         }
         request.getRequestDispatcher("need_to_close_tab.jsp").forward(request, response);
+    }
+
+    public void goToNeedToCloseDetailsTab() throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user.getRole().getId() == 2) {
+            //User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
+            List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("From TSUserRegion where TSUser = " + user.getId());
+            request.setAttribute("tickets", getTickets());
+            System.out.println("Close region : " + tsUserRegionList.get(0).getRegion().getRegion());
+            request.setAttribute("ticketsSolvedList", getTicketNeedToClose(tsUserRegionList.get(0).getRegion()));
+
+        } else {
+            request.setAttribute("ticketsSolvedList", null);
+        }
+        request.getRequestDispatcher("need_to_close_details_tab.jsp").forward(request, response);
     }
 
     /*public void goToNeedToCloseDetailsTab() throws ServletException, IOException {
@@ -695,6 +715,39 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("userRegions", userRegions);
         request.setAttribute("departmentList", departmentList);
         request.getRequestDispatcher("dashboard_details.jsp").forward(request, response);
+    }
+
+    public void goToRegionTicketRatioSection() throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId());
+        request.setAttribute("userRegionList", tsUserRegionList);
+        request.setAttribute("current_user", user);
+        request.getRequestDispatcher("dashboard_section/region_ticket_ratio_section.jsp").forward(request, response);
+    }
+
+    public void goToRegionDevicesRatioSection() throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId());
+        request.setAttribute("userRegionList", tsUserRegionList);
+        request.setAttribute("current_user", user);
+        request.getRequestDispatcher("dashboard_section/region_devices_ratio_section.jsp").forward(request, response);
+    }
+
+    public void goToL2EngineersTicketRatioSection() throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId());
+        List<TSUserRegion> userRegions = new ArrayList<>();
+        List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser != " + user.getId());
+        for (TSUserRegion tsUserRegion : tsUserRegionList) {
+            for (TSUserRegion userRegion : userRegionList) {
+                if (userRegion.getRegion().getId() == tsUserRegion.getRegion().getId() && tsUserRegion.getTSUser().getId() != userRegion.getTSUser().getId() && userRegion.getTSUser().getRole().getId() == 5) {
+                    userRegions.add(userRegion);
+
+                }
+            }
+        }
+        request.setAttribute("userRegions", userRegions);
+        request.getRequestDispatcher("dashboard_section/L2_engineers_ticket_ratio_section.jsp").forward(request, response);
     }
 
     public void goToUsers() throws ServletException, IOException {

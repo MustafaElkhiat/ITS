@@ -181,6 +181,18 @@ public class Directive extends HttpServlet {
                 case(53):
                     directiveHelper.goToNeedToCloseTab();
                     break;
+                case(54):
+                    directiveHelper.goToL2EngineersTicketRatioSection();
+                    break;
+                case(55):
+                    directiveHelper.goToRegionDevicesRatioSection();
+                    break;
+                case(56):
+                    directiveHelper.goToRegionTicketRatioSection();
+                    break;
+                case(57):
+                    directiveHelper.goToNeedToCloseDetailsTab();
+                    break;
             }
         }
     }
