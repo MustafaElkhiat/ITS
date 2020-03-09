@@ -207,6 +207,11 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("allTicketStatusList", allTicketStatusList);
         request.setAttribute("ticketStatus", getTicketStatus(ticket));
         request.setAttribute("status", getStatusStyle(ticket.getCurrentStatus()));
+        if(user.getRole().getId() == 2){
+            request.setAttribute("branch_manager",true);
+        }else{
+            request.setAttribute("branch_manager",false);
+        }
         request.getRequestDispatcher("edit_ticket.jsp").forward(request, response);
     }
 
@@ -838,6 +843,14 @@ public class DirectiveHelper extends HelperBase {
         Privilege privilege = (Privilege) hibernateHelper.retreiveData(Privilege.class, Long.valueOf(request.getParameter("privilege")));
         request.setAttribute("privilege", privilege);
         request.getRequestDispatcher("edit_privilege.jsp").forward(request, response);
+    }
+    public void goToActionSection() throws ServletException, IOException {
+        if(user.getRole().getId() == 2){
+            request.setAttribute("branch_manager",true);
+        }else{
+            request.setAttribute("branch_manager",false);
+        }
+        request.getRequestDispatcher("action_section.jsp").forward(request,response);
     }
 
 

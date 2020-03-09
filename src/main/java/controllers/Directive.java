@@ -154,22 +154,22 @@ public class Directive extends HttpServlet {
                 case (44):
                     directiveHelper.goToRegionChart();
                     break;
-                case(45):
+                case (45):
                     directiveHelper.goToDeviceChart();
                     break;
-                case(46):
+                case (46):
                     directiveHelper.goToEmployees();
                     break;
-                case(47):
+                case (47):
                     directiveHelper.goToEditEmployee();
                     break;
-                case(48):
+                case (48):
                     directiveHelper.goToPrivileges();
                     break;
-                case(49):
+                case (49):
                     directiveHelper.goToAddPrivilege();
                     break;
-                case(50):
+                case (50):
                     directiveHelper.goToEditPrivilege();
                     break;
                 case (51):
@@ -178,20 +178,23 @@ public class Directive extends HttpServlet {
                 case (52):
                     directiveHelper.goToClosedDetailsTab();
                     break;
-                case(53):
+                case (53):
                     directiveHelper.goToNeedToCloseTab();
                     break;
-                case(54):
+                case (54):
                     directiveHelper.goToL2EngineersTicketRatioSection();
                     break;
-                case(55):
+                case (55):
                     directiveHelper.goToRegionDevicesRatioSection();
                     break;
-                case(56):
+                case (56):
                     directiveHelper.goToRegionTicketRatioSection();
                     break;
-                case(57):
+                case (57):
                     directiveHelper.goToNeedToCloseDetailsTab();
+                    break;
+                case (58):
+                    directiveHelper.goToActionSection();
                     break;
             }
         }

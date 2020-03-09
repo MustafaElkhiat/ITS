@@ -30,7 +30,7 @@
                 </thead>
                 <tbody id="need_to_solve_table_body">
                 <c:forEach items="${ticketsAssignedToList}" var="ticketsAssignedTo">
-                    <tr class="ticket link-danger" ticket-id="${ticketsAssignedTo.ticket.id}">
+                    <tr class="ticket link-danger ticket_edit" ticket-id="${ticketsAssignedTo.ticket.id}">
                         <td>${count}</td>
                         <td>${ticketsAssignedTo.ticket.id}</td>
                         <td>${ticketsAssignedTo.ticket.device.locationDepartment.location.region.abbreviation}-${ticketsAssignedTo.ticket.device.locationDepartment.location.abbreviation}-${ticketsAssignedTo.ticket.device.locationDepartment.department.abbreviation}-${ticketsAssignedTo.ticket.device.deviceType.abbreviation}-${ticketsAssignedTo.ticket.device.device}</td>

@@ -24,19 +24,19 @@
                     <th>Problem<i class="fas float-left my-2"></i></th>
                     <th>Category<i class="fas float-left my-2"></i></th>
                     <th>Sub-Category<i class="fas float-left my-2"></i></th>
-                    <th>Assigned By<i class="fas float-left my-2"></i></th>
+                    <th>Engineer<i class="fas float-left my-2"></i></th>
                 </tr>
                 </thead>
                 <tbody id="need_to_close_table_body">
                 <c:forEach items="${ticketsSolvedList}" var="ticketsSolved" varStatus="loop">
-                    <tr class="ticket link" ticket-id="${ticketsSolved.ticket.id}">
+                    <tr class="ticket link ticket_edit" ticket-id="${ticketsSolved.ticket.id}">
                         <td>${loop.count}</td>
                         <td>${ticketsSolved.ticket.id}</td>
                         <td>${ticketsSolved.ticket.device.locationDepartment.location.region.abbreviation}-${ticketsSolved.ticket.device.locationDepartment.location.abbreviation}-${ticketsSolved.ticket.device.locationDepartment.department.abbreviation}-${ticketsSolved.ticket.device.deviceType.abbreviation}-${ticketsSolved.ticket.device.device}</td>
                         <td>${ticketsSolved.ticket.problem}</td>
                         <td>${ticketsSolved.ticket.subCategory.category.category}</td>
                         <td>${ticketsSolved.ticket.subCategory.sub_category}</td>
-                        <td>${ticketsSolved.assignedBy.name}</td>
+                        <td>${ticketsSolved.TSUser.name}</td>
                     </tr>
                 </c:forEach>
                 </tbody>

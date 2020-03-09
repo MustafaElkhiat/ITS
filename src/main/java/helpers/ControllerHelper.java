@@ -395,6 +395,8 @@ public class ControllerHelper extends HelperBase {
                 hibernateHelper.updateData(ticketStatus);
             }
         }
+        ticket.setCurrentStatus(assignTo_status);
+        hibernateHelper.updateData(ticket);
         //TicketStatus(String reason, Ticket ticket, Status status, User TSUser)
         TicketStatus ticketStatus = new TicketStatus(null, ticket, assignTo_status, assignedBy);
         hibernateHelper.saveData(ticketStatus);

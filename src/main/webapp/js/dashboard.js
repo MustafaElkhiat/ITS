@@ -355,7 +355,7 @@ var afterLoadingDeviceSection = function () {
                 $("#category_").change(function () {
 
                     $("#sub_category_section").load('Directive', {d: 12, category: $(this).val()});
-                    $("#action_section").load("action_section.jsp", function () {
+                    $("#action_section").load("Directive", {d: 58}, function () {
                         afterLoadingActionSection(true);
                     });
                 });
@@ -430,7 +430,6 @@ var action_submit = function () {
     $("#action_submit").click(function () {
 
         if ($(".needs-validation")[9].checkValidity() === true) {
-            alert($("#actual_date").val());
             $.ajax({
                 url: "Controller",
                 data: {
@@ -765,5 +764,5 @@ var loadRegionDevicesRatioSection = function () {
     $("#region_devices_ratio_section").load('Directive', {d: 55});
 }
 var clearClass = function (Class) {
-$("."+Class).empty();
+    $("." + Class).empty();
 }
