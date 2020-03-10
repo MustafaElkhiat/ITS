@@ -50,7 +50,8 @@ var drawRegionChart = function (countData) {
     chart.draw(data, options);
 }
 var getRegionData = function (region, regionAbb) {
-    $("#" + regionAbb + "_chart_div").load('loading_spinner.jsp');
+    var response_result;
+    //$("#" + regionAbb + "_chart_div").load('loading_spinner.jsp');
     $.ajax({
         url: "Controller",
         data: {
@@ -60,7 +61,12 @@ var getRegionData = function (region, regionAbb) {
         type: "POST",
 
         success: function (result, status, xhr) {
-            drawRegionChart(result);
+            response_result = result;
+            drawRegionChart(response_result);
+
+        },
+        fail: function (jqXHR, textStatus) {
+            drawRegionChart(response_result);
         }
     });
 }

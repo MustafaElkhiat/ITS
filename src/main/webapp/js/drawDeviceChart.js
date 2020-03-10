@@ -41,8 +41,9 @@ var drawDeviceChart = function (countData) {
     chart.draw(data, options);
 }
 
-var getDeviceData = function (region,regionAbb) {
-    $("#" + regionAbb + "_device_chart").load('loading_spinner.jsp');
+var getDeviceData = function (region, regionAbb) {
+    var response_result;
+    //$("#" + regionAbb + "_device_chart").load('loading_spinner.jsp');
     $.ajax({
         url: "Controller",
         data: {
@@ -52,8 +53,12 @@ var getDeviceData = function (region,regionAbb) {
         type: "POST",
 
         success: function (result, status, xhr) {
-            drawDeviceChart(result);
+            response_result = result;
+            drawDeviceChart(response_result);
 
+        },
+        fail: function (jqXHR, textStatus) {
+            drawDeviceChart(response_result);
         }
     });
 }

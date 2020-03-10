@@ -23,7 +23,7 @@
             <h2 class="mb-0">
                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne"
                         aria-expanded="true" aria-controls="collapseOne" onclick="loadRegionTicketRatioSection();">
-                    <h5 class="card-title">Region Ticket Ratio</h5>
+                    <h5 class="card-title"><i class="fas fa-chart-pie"></i> Region Ticket Ratio</h5>
                 </button>
             </h2>
         </div>
@@ -38,7 +38,7 @@
             <h2 class="mb-0">
                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo"
                         aria-expanded="false" aria-controls="collapseTwo" onclick="loadL2EngineersTicketRatioSection();">
-                    <h5 class="card-title">L2 Engineers Ticket Ratio</h5>
+                    <h5 class="card-title"><i class="fas fa-chart-pie"></i> L2 Engineers Ticket Ratio</h5>
                 </button>
             </h2>
         </div>
@@ -54,7 +54,7 @@
             <h2 class="mb-0">
                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree"
                         aria-expanded="false" aria-controls="collapseThree" onclick="loadRegionDevicesRatioSection();">
-                    <h5 class="card-title">Region Devices Ratio</h5>
+                    <h5 class="card-title"><i class="fas fa-chart-pie"></i> Region Devices Ratio</h5>
                 </button>
             </h2>
         </div>

@@ -51,8 +51,9 @@ var drawTicketChart = function (countData) {
     var chart = new google.visualization.PieChart(document.getElementById(count.user_id + "_chart_div"));
     chart.draw(data, options);
 }
-var getTicketData  = function (user) {
-    $("#"+user+"_chart_div").load('loading_spinner.jsp');
+var getTicketData = function (user) {
+    var response_result;
+    //$("#"+user+"_chart_div").load('loading_spinner.jsp');
     $.ajax({
         url: "Controller",
         data: {
@@ -62,8 +63,12 @@ var getTicketData  = function (user) {
         type: "POST",
 
         success: function (result, status, xhr) {
-            drawTicketChart(result);
+            response_result = result;
+            drawTicketChart(response_result);
 
+        },
+        fail: function (jqXHR, textStatus) {
+            drawTicketChart(response_result);
         }
     });
 }
