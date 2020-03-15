@@ -137,7 +137,7 @@ textarea {
 }
 
 
-.link, .fa-print ,.pointer {
+.link, .fa-print, .pointer {
     cursor: pointer;
 }
 
@@ -262,23 +262,32 @@ select {
     color: #dc3545;
     border-color: #dc3545;
 }
-.card-outline-info{
+
+.card-outline-info {
     color: #17a2b8;
     border-color: #17a2b8;
 }
 
 .btn-outline-closed, .card-outline-closed {
-    color: #000000;
-    border-color: #000000;
+    color: #6E2571;
+    border-color: #6E2571;
 }
 
 .btn-outline-closed:hover {
     color: #fff;
-    background-color: #000000;
-    border-color: #000000;
+    background-color: #6E2571;
+    border-color: #6E2571;
 }
 
 
+.bg-closed {
+    color: #FFFFFF;
+    background-color: #6E2571 !important    ;
+}
+
+.bg-closed:hover, .bg-closed:focus {
+    background-color: #5F2871 !important;
+}
 
 
 .height-200 {
@@ -342,5 +351,5 @@ select {
 }
 
 .accordion .card:first-of-type {
-    border-bottom: 1px solid rgba(0,0,0,.125) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, .125) !important;
 }

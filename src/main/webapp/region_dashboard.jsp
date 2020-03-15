@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Mustafa
-  Date: 5/11/2019+
-  Time: 10:46 AM
+  Date: 3/15/2020
+  Time: 9:42 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -18,29 +18,22 @@
     <link rel="stylesheet" href="css/all.min.css"/>
     <link rel="stylesheet" href="css/line-awesome.min.css"/>
     <link rel="stylesheet" href="css/Exo.css"/>
-    <link rel="stylesheet" href="css/datepicker.min.css"/>
-    <link rel="stylesheet" href="css/customCheckbox.css"/>
-    <link rel="stylesheet" href="css/toastr.css"/>
     <link rel="stylesheet" href="css/google_chart_tooltip.css"/>
     <link rel="stylesheet" href="css/google_chart_util.css"/>
     <link rel="stylesheet" href="css/floating-labels.css"/>
-    <link rel="stylesheet" href="css/print.css"/>
     <link rel="stylesheet" href="css/custom.css"/>
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/loader.js"></script>
-    <script src="js/update_tab_padeg.js"></script>
-    <script src="js/ticket_tab_content.js"></script>
 </head>
 <body>
 <jsp:include page="navbar.jsp">
-    <jsp:param name="name" value="${current_user.name}"/>
-    <jsp:param name="region" value="${region}"/>
+    <jsp:param name="region" value="${region.region}"/>
 </jsp:include>
 
 
 <div class="container-fluid mt-4 pt-5">
     <div class="row">
-        <nav class="col-2 d-none d-block bg-light sidebar sidebar-sticky no-print ">
+        <%--<nav class="col-2 d-none d-block bg-light sidebar sidebar-sticky no-print ">
 
             <div class="nav flex-column mt-4 nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link font-weight-bold mr-1 active" id="dashboard" data-toggle="pill" role="tab"
@@ -65,44 +58,60 @@
                 </c:if>
                 <c:if test="${current_user.role.id == 6}">
                     <a class="nav-link font-weight-bold mr-1" id="Privileges" data-toggle="pill" role="tab"
-                       aria-selected="false"><i class="fas fa-shield-alt"></i> Privileges</a>
+                       aria-selected="false"><i class="fas fa-shield-alt"></i> <i class="fad fa-arrow-alt-right"></i> Privileges</a>
                 </c:if>
-
                 <%-- <a class="nav-link font-weight-bold" id="waiting_list" data-toggle="pill" role="tab"
                     aria-selected="false"><i class="far fa-clipboard"></i> Waiting List</a>--%>
-            </div>
-        </nav>
-        <div class="col-10">
+        <%--</div>
+    </nav>--%>
+        <div class="col">
 
             <div id="content_place" class="mx-3 no-margin-print pt-2">
-                <jsp:include page="dashboard_details.jsp"/>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Region Ticket Ratio</h5>
+                        <div class="row">
+                            <div class="offset-lg-2"></div>
+                            <jsp:include page="region_charts_view.jsp">
+                                <jsp:param name="region" value="${region.id}"/>
+                                <jsp:param name="regionAbb" value="${region.abbreviation}"/>
+                                <jsp:param name="regionT" value="${region.region}"/>
+                            </jsp:include>
+                            <jsp:include page="device_charts_view.jsp">
+                                <jsp:param name="region" value="${region.id}"/>
+                                <jsp:param name="regionAbb" value="${region.abbreviation}"/>
+                                <jsp:param name="regionT" value="${region.region}"/>
+                            </jsp:include>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">L2 Engineers Ticket Ratio</h5>
+                        <c:forEach items="${userRegions}" var="userRegion" varStatus="loop">
+                            <c:if test="${loop.index % 3 == 0}">
+                                <div class="row">
+                            </c:if>
+                            <jsp:include page="user_charts_view.jsp">
+                                <jsp:param name="user" value="${userRegion.TSUser.id}"/>
+                            </jsp:include>
+
+                            <c:if test="${loop.index % 3 == 2 || loop.last}">
+                                </div>
+                            </c:if>
+                        </c:forEach>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script src="js/datepicker.js"></script>
-<script src="js/datepicker.en.js"></script>
-<script src="js/toastr.js"></script>
-<script src="js/toastr_functions.js"></script>
-<script src="js/print.js"></script>
-<script src="js/printThis.js"></script>
-<script src="js/bootbox.all.min.js"></script>
-<script src="js/timeout_session.js"></script>
-<script src="js/filterTable.js"></script>
-<script src="js/sortTable.js"></script>
-<script src="js/changePassword.js"></script>
-<script src="js/modals.js"></script>
-<script src="js/google_chart_timeline.js"></script>
-<script src="js/saveDevices.js"></script>
 <script src="js/drawRegionChart.js"></script>
 <script src="js/drawTicketChart.js"></script>
 <script src="js/drawDeviceChart.js"></script>
-<script src="js/dashboard.js"></script>
 
 
 </body>
 </html>
-
-

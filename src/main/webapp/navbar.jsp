@@ -11,6 +11,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <input type="hidden" id="current_user" value="${current_user.id}"/>
 <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
 
@@ -21,17 +22,20 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <div class="form-inline ml-auto my-2 my-lg-0">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item text-white mr-2 table-style"><i class="mr-2 fas fa-2x fa-user-tie"></i> <span
-                        class="my-auto table-cell-style pr-2 font-weight-bold">${current_user.name}</span></li>
-            </ul>
+        <c:if test="${not empty param.name}">
+            <div class="form-inline ml-auto my-2 my-lg-0">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item text-white mr-2 table-style"><i class="mr-2 fas fa-2x fa-user-tie"></i> <span
+                            class="my-auto table-cell-style pr-2 font-weight-bold">${param.name}</span></li>
+                </ul>
 
-        </div>
+            </div>
+        </c:if>
+
         <div class="form-inline ml-auto my-2 my-lg-0">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item text-white mr-2 table-style"><i class="mr-2 fas fa-2x fa-map-marker-alt"></i><span
-                        class="my-auto table-cell-style pr-2 font-weight-bold">${region}</span></li>
+                        class="my-auto table-cell-style pr-2 font-weight-bold">${param.region}</span></li>
             </ul>
 
         </div>

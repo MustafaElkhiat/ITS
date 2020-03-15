@@ -47,7 +47,11 @@ public class ControllerHelper extends HelperBase {
             session.setAttribute("user", users.get(0));
             if (users.get(0).isActivated()) {
                 DirectiveHelper directiveHelper = new DirectiveHelper(request, response);
-                directiveHelper.goToDashboard();
+                if(users.get(0).getRole().getId() == 7){
+                    directiveHelper.goToRegionDashboard(Long.valueOf(users.get(0).getUserName()));
+                }else {
+                    directiveHelper.goToDashboard();
+                }
             } else {
                 request.getRequestDispatcher("create_password.html").forward(request, response);
             }

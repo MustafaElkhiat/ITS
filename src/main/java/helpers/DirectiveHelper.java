@@ -207,10 +207,10 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("allTicketStatusList", allTicketStatusList);
         request.setAttribute("ticketStatus", getTicketStatus(ticket));
         request.setAttribute("status", getStatusStyle(ticket.getCurrentStatus()));
-        if(user.getRole().getId() == 2){
-            request.setAttribute("branch_manager",true);
-        }else{
-            request.setAttribute("branch_manager",false);
+        if (user.getRole().getId() == 2) {
+            request.setAttribute("branch_manager", true);
+        } else {
+            request.setAttribute("branch_manager", false);
         }
         request.getRequestDispatcher("edit_ticket.jsp").forward(request, response);
     }
@@ -584,6 +584,9 @@ public class DirectiveHelper extends HelperBase {
         } else if (tsUserRegionList.size() > 1) {
 
         }*/
+
+        List<Department> departmentList = hibernateHelper.retreiveData("from Department order by department");
+        request.setAttribute("departmentList", departmentList);
         List<Category> categoryList = hibernateHelper.retreiveData("from Category order by category");
         request.setAttribute("categoryList", categoryList);
         request.setAttribute("regionList", tsUserRegionList);
@@ -697,6 +700,32 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("departmentList", departmentList);
         request.setAttribute("region", region);
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+    }
+
+
+    public void goToRegionDashboard(long region) throws ServletException, IOException {
+        //Region region = hibernateHelper.retreiveData(Region.class,Long.valueOf(region));
+        //User user = (User) request.getSession().getAttribute("user");
+        //List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId());
+       /*String region = "";
+        if (tsUserRegionList.size() == 1) {
+            region = tsUserRegionList.get(0).getRegion().getRegion();
+        } else if (tsUserRegionList.size() > 1) {
+            region = "Technology Sector";
+        }*/
+
+        List<TSUserRegion> userRegions = new ArrayList<>();
+        List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and region = " + region);
+
+        for (TSUserRegion userRegion : userRegionList) {
+            if (userRegion.getTSUser().getRole().getId() == 5) {
+                userRegions.add(userRegion);
+
+            }
+        }
+        request.setAttribute("userRegions", userRegions);
+        request.setAttribute("region", hibernateHelper.retreiveData(Region.class, region));
+        request.getRequestDispatcher("region_dashboard.jsp").forward(request, response);
     }
 
     public void goToDashboardDetails() throws ServletException, IOException {
@@ -844,13 +873,14 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("privilege", privilege);
         request.getRequestDispatcher("edit_privilege.jsp").forward(request, response);
     }
+
     public void goToActionSection() throws ServletException, IOException {
-        if(user.getRole().getId() == 2){
-            request.setAttribute("branch_manager",true);
-        }else{
-            request.setAttribute("branch_manager",false);
+        if (user.getRole().getId() == 2) {
+            request.setAttribute("branch_manager", true);
+        } else {
+            request.setAttribute("branch_manager", false);
         }
-        request.getRequestDispatcher("action_section.jsp").forward(request,response);
+        request.getRequestDispatcher("action_section.jsp").forward(request, response);
     }
 
 

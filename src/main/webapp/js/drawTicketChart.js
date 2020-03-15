@@ -22,8 +22,8 @@ var drawTicketChart = function (countData) {
         height: 250,
         chartArea: {
             top: 40,
-            left: 0,
-            width: 250,
+            left: 10,
+            width: 260,
             height: 200
         },
         titleTextStyle: {
@@ -41,7 +41,7 @@ var drawTicketChart = function (countData) {
             2: {color: '#6c757d'},
             3: {color: '#28a745'},
             4: {color: '#dc3545'},
-            5: {color: '#000000'},
+            5: {color: '#6E2571'},
             6: {color: '#17a2b8'}
         }
     };

@@ -16,7 +16,8 @@
     <div class="card-body">
 
         <c:if test="${fn:length(deviceList) > 0}">
-            <h5 class="card-title">PC <i class="fas fa-print"></i></h5>
+            <h5 class="card-title">PC <i class="fas fa-print"></i>
+            </h5>
             <jsp:include page="search_field.jsp">
                 <jsp:param name="id" value="search_PC"/>
             </jsp:include>

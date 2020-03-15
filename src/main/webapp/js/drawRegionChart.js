@@ -24,7 +24,7 @@ var drawRegionChart = function (countData) {
         chartArea: {
             top: 40,
             left: 10,
-            width: 250,
+            width: 260,
             height: 200
         },
         titleTextStyle: {
@@ -41,7 +41,7 @@ var drawRegionChart = function (countData) {
             1: {color: '#ffc107'},
             2: {color: '#6c757d'},
             3: {color: '#28a745'},
-            4: {color: '#000000'}
+            4: {color: '#6E2571'}
         }
     }
 

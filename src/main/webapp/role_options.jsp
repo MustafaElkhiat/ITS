@@ -12,13 +12,16 @@
     <option selected hidden disabled>Select Role</option>
 </c:if>
 <c:forEach items="${roleList}" var="role">
-    <c:choose>
-        <c:when test="${param.selected == role.id}">
-            <option selected value="${role.id}">${role.role}</option>
-        </c:when>
-        <c:otherwise>
-            <option value="${role.id}">${role.role}</option>
-        </c:otherwise>
-    </c:choose>
+    <c:if test="${role.id != 7}">
+        <c:choose>
+            <c:when test="${param.selected == role.id}">
+                <option selected value="${role.id}">${role.role}</option>
+            </c:when>
+            <c:otherwise>
+                <option value="${role.id}">${role.role}</option>
+            </c:otherwise>
+        </c:choose>
+    </c:if>
+
 
 </c:forEach>

@@ -23,7 +23,7 @@ var drawDeviceChart = function (countData) {
         chartArea: {
             top: 40,
             left: 10,
-            width: 250,
+            width: 260,
             height: 200
         },
         titleTextStyle: {

@@ -28,7 +28,7 @@
            aria-selected="false">Need To Solve <span id="${param.user}-need-to-solve-badge" class="badge badge-light"></span></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link bg-dark red-active" id="${param.user}-closed-tab" data-toggle="tab" href="#${param.user}-closed" role="tab" aria-controls="contact"
+        <a class="nav-link bg-closed red-active" id="${param.user}-closed-tab" data-toggle="tab" href="#${param.user}-closed" role="tab" aria-controls="contact"
            aria-selected="false">Closed <span id="${param.user}-closed-badge" class="badge badge-light"></span></a>
     </li>
     <li class="nav-item">

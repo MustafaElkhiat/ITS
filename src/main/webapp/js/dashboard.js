@@ -24,10 +24,18 @@ $(document).ready(function () {
         $("#content_place").load('Directive', {d: 28}, function () {
             deviceTabsSearchSorting();
             viewDevice();
-            $(".fa-print").click(function () {
+            /*$(".fa-print").click(function () {
                 $(this).parent().parent().find('table').printThis({
                     importCSS: true,
                     base: true
+                });
+            });*/
+            $(".fa-print").click(function () {
+                printJS({
+                    printable: $(this).parent().parent().find('table').attr("id"),
+                    type: 'html',
+                    css: 'css/all.min.css',
+                    targetStyles: ['*']
                 });
             });
             $("#add_device").click(add_device);
