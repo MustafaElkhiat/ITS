@@ -47,9 +47,9 @@ public class ControllerHelper extends HelperBase {
             session.setAttribute("user", users.get(0));
             if (users.get(0).isActivated()) {
                 DirectiveHelper directiveHelper = new DirectiveHelper(request, response);
-                if(users.get(0).getRole().getId() == 7){
+                if (users.get(0).getRole().getId() == 7) {
                     directiveHelper.goToRegionDashboard(Long.valueOf(users.get(0).getUserName()));
-                }else {
+                } else {
                     directiveHelper.goToDashboard();
                 }
             } else {
@@ -844,6 +844,146 @@ public class ControllerHelper extends HelperBase {
         return hibernateHelper.retreiveData("from Ticket where currentStatus = 5").size();
     }
 
+    public List getDailyRegionTickets() {
+        List<Ticket> ticketList = hibernateHelper.retreiveData("from Ticket where startDate = " + new Date());
+        List<Ticket> tickets = new ArrayList<>();
+        Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+        List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+        for (Location location : regionLocationList) {
+            List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                List<Device> regionDeviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                for (Device device : regionDeviceList) {
+                    for (Ticket ticket : ticketList) {
+                        if (device.getId() == ticket.getDevice().getId()) {
+                            tickets.add(ticket);
+                        }
+                    }
+                }
+            }
+        }
+        return tickets;
+    }
+
+    public int getPCTicketRegionCount(String time) {
+        int count = 0;
+        DeviceType PCdeviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 1); // 1-PC
+
+        //List<Ticket> ticketList = hibernateHelper.retreiveData("from Ticket");
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String date= formatter.format(new Date());
+        System.out.println("from Ticket where startDate = '" + date + "' and startTime <= '" + time + "'");
+        List<Ticket> ticketList = hibernateHelper.retreiveData("from Ticket where startDate = '" + date + "' and startTime <= '" + time + "'");
+        Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+        List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+        for (Location location : regionLocationList) {
+            List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                List<Device> regionDeviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                for (Device device : regionDeviceList) {
+                    for (Ticket ticket : ticketList) {
+                        if (device.getId() == ticket.getDevice().getId() && device.getDeviceType().getId() == PCdeviceType.getId()) {
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+    public int getPrinterTicketRegionCount(String time) {
+        int count = 0;
+        DeviceType printerDeviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 2); // 2-Printer
+
+        //List<Ticket> ticketList = hibernateHelper.retreiveData("from Ticket");
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String date= formatter.format(new Date());
+        System.out.println("from Ticket where startDate = '" + date + "' and startTime <= '" + time + "'");
+        List<Ticket> ticketList = hibernateHelper.retreiveData("from Ticket where startDate = '" + date + "' and startTime <= '" + time + "'");
+        Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+        List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+        for (Location location : regionLocationList) {
+            List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                List<Device> regionDeviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                for (Device device : regionDeviceList) {
+                    for (Ticket ticket : ticketList) {
+                        if (device.getId() == ticket.getDevice().getId() && device.getDeviceType().getId() == printerDeviceType.getId()) {
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+    public int getCameraTicketRegionCount(String time) {
+        int count = 0;
+        DeviceType cameraDeviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 4); // 4-camera
+
+        //List<Ticket> ticketList = hibernateHelper.retreiveData("from Ticket");
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String date= formatter.format(new Date());
+        System.out.println("from Ticket where startDate = '" + date + "' and startTime <= '" + time + "'");
+        List<Ticket> ticketList = hibernateHelper.retreiveData("from Ticket where startDate = '" + date + "' and startTime <= '" + time + "'");
+        Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+        List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+        for (Location location : regionLocationList) {
+            List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                List<Device> regionDeviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                for (Device device : regionDeviceList) {
+                    for (Ticket ticket : ticketList) {
+                        if (device.getId() == ticket.getDevice().getId() && device.getDeviceType().getId() == cameraDeviceType.getId()) {
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    public JsonObject getDailyTicketPerTimeData() {
+        JsonObject data = new JsonObject();
+
+        data.addProperty("PC_8", getPCTicketRegionCount("8:30"));
+        data.addProperty("PC_9", getPCTicketRegionCount("9:30"));
+        data.addProperty("PC_10", getPCTicketRegionCount("10:30"));
+        data.addProperty("PC_11", getPCTicketRegionCount("11:30"));
+        data.addProperty("PC_12", getPCTicketRegionCount("12:30"));
+        data.addProperty("PC_13", getPCTicketRegionCount("13:30"));
+        data.addProperty("PC_14", getPCTicketRegionCount("14:30"));
+        data.addProperty("PC_15", getPCTicketRegionCount("15:30"));
+        data.addProperty("PC_16", getPCTicketRegionCount("16:30"));
+        data.addProperty("PC_17", getPCTicketRegionCount("17:30"));
+        data.addProperty("PR_8", getPrinterTicketRegionCount("8:30"));
+        data.addProperty("PR_9", getPrinterTicketRegionCount("9:30"));
+        data.addProperty("PR_10", getPrinterTicketRegionCount("10:30"));
+        data.addProperty("PR_11", getPrinterTicketRegionCount("11:30"));
+        data.addProperty("PR_12", getPrinterTicketRegionCount("12:30"));
+        data.addProperty("PR_13", getPrinterTicketRegionCount("13:30"));
+        data.addProperty("PR_14", getPrinterTicketRegionCount("14:30"));
+        data.addProperty("PR_15", getPrinterTicketRegionCount("15:30"));
+        data.addProperty("PR_16", getPrinterTicketRegionCount("16:30"));
+        data.addProperty("PR_17", getPrinterTicketRegionCount("17:30"));
+        data.addProperty("CAM_8", getCameraTicketRegionCount("8:30"));
+        data.addProperty("CAM_9", getCameraTicketRegionCount("9:30"));
+        data.addProperty("CAM_10", getCameraTicketRegionCount("10:30"));
+        data.addProperty("CAM_11", getCameraTicketRegionCount("11:30"));
+        data.addProperty("CAM_12", getCameraTicketRegionCount("12:30"));
+        data.addProperty("CAM_13", getCameraTicketRegionCount("13:30"));
+        data.addProperty("CAM_14", getCameraTicketRegionCount("14:30"));
+        data.addProperty("CAM_15", getCameraTicketRegionCount("15:30"));
+        data.addProperty("CAM_16", getCameraTicketRegionCount("16:30"));
+        data.addProperty("CAM_17", getCameraTicketRegionCount("17:30"));
+
+        return data;
+    }
+
     public int getTicketAssignToRegionCount() {
         int count = 0;
         List<Ticket> inProgressTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 1"); // 1 Assign-To
@@ -1011,8 +1151,8 @@ public class ControllerHelper extends HelperBase {
         return data;
     }
 
-    public JsonObject getDeviceChartData(){
-        System.out.println("region Para : "+request.getParameter("region"));
+    public JsonObject getDeviceChartData() {
+        System.out.println("region Para : " + request.getParameter("region"));
         JsonObject data = new JsonObject();
         if (request.getParameter("region").equals("ALL")) {
             data.addProperty("region", "ALL");
@@ -1037,6 +1177,7 @@ public class ControllerHelper extends HelperBase {
         data.addProperty("FW_count", getRegionFWCount(request.getParameter("region")));
         return data;
     }
+
     public Object getTicketNeedToCloseCount(User user) {
         int count = 0;
         List<Ticket> needToCloseTicketList = new ArrayList<>();

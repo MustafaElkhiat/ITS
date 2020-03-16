@@ -69,9 +69,10 @@
             <div id="content_place" class="mx-3 no-margin-print pt-2">
                 <div class="card mt-3">
                     <div class="card-body">
-                        <h5 class="card-title">Region Ticket Ratio</h5>
                         <div class="row">
-                            <div class="offset-lg-2"></div>
+                            <jsp:include page="ticket_per_time.jsp">
+                                <jsp:param name="region" value="${region.id}"/>
+                            </jsp:include>
                             <jsp:include page="region_charts_view.jsp">
                                 <jsp:param name="region" value="${region.id}"/>
                                 <jsp:param name="regionAbb" value="${region.abbreviation}"/>
@@ -111,7 +112,7 @@
 <script src="js/drawRegionChart.js"></script>
 <script src="js/drawTicketChart.js"></script>
 <script src="js/drawDeviceChart.js"></script>
-
+<script src="js/drawTicketPerTimeChart.js"></script>
 
 </body>
 </html>

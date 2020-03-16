@@ -181,6 +181,12 @@ public class Controller extends HttpServlet {
                 case(38):
                     response.getWriter().println(controllerHelper.getDeviceChartData());
                     break;
+                case(39):
+                    controllerHelper.getDailyRegionTickets();
+                    break;
+                case(40):
+                    response.getWriter().println(controllerHelper.getDailyTicketPerTimeData());
+                    break;
 
             }
         }

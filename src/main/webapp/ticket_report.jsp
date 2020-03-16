@@ -78,6 +78,9 @@
                 <c:if test="${ticket_status.status.id == 4}">
                 '#28a745',
                 </c:if>
+                <c:if test="${ticket_status.status.id == 5}">
+                '#6E2571',
+                </c:if>
                 </c:forEach>
             ]
         };
