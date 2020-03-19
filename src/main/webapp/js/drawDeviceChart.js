@@ -1,22 +1,20 @@
-var drawDeviceChart = function (countData) {
-    var count = jQuery.parseJSON(countData);
+var initDeviceChart = function () {
     var data = google.visualization.arrayToDataTable([
         ['status', 'Slices'],
-        ['PC', count.PC_count],
-        ['Printer', count.Printer_count],
-        ['Finger Print', count.FP_count],
-        ['IP Phone', count.PBX_count],
-        ['Switch', count.SW_count],
-        ['Router', count.RO_count],
-        ['UPS', count.UPS_count],
-        ['Firewall', count.FW_count],
-        ['Camera', count.CAM_count],
-        ['DVR', count.DVR_count],
-        ['NVR', count.NVR_count]
+        ['PC', 0],
+        ['Printer', 0],
+        ['Finger Print', 0],
+        ['IP Phone', 0],
+        ['Switch', 0],
+        ['Router', 0],
+        ['UPS', 0],
+        ['Firewall', 0],
+        ['Camera', 0],
+        ['DVR', 0],
+        ['NVR', 0]
     ]);
 
     var options = {
-        title: count.regionT + "'s Devices",
         pieHole: 0.35,
         width: 280,
         height: 250,
@@ -36,12 +34,17 @@ var drawDeviceChart = function (countData) {
             }
         }
     };
-
-    var chart = new google.visualization.PieChart(document.getElementById(count.regionAbb + "_device_chart"));
-    chart.draw(data, options);
+    return {data: data, options: options};
 }
 
-var getDeviceData = function (region, regionAbb) {
+
+var getDeviceChart = function (regionAbb) {
+    return new google.visualization.PieChart(document.getElementById(regionAbb + "_device_chart"));
+}
+var drawDeviceChart = function (chart, data, options) {
+    chart.draw(data, options);
+}
+var getDeviceData = function (region, chart, data, options) {
     var response_result;
     //$("#" + regionAbb + "_device_chart").load('loading_spinner.jsp');
     $.ajax({
@@ -54,11 +57,25 @@ var getDeviceData = function (region, regionAbb) {
 
         success: function (result, status, xhr) {
             response_result = result;
-            drawDeviceChart(response_result);
+            var count = jQuery.parseJSON(result);
+            data.setValue(0, 1, count.PC_count);
+            data.setValue(1, 1, count.Printer_count);
+            data.setValue(2, 1, count.FP_count);
+            data.setValue(3, 1, count.PBX_count);
+            data.setValue(4, 1, count.SW_count);
+            data.setValue(5, 1, count.RO_count);
+            data.setValue(6, 1, count.UPS_count);
+            data.setValue(7, 1, count.FW_count);
+            data.setValue(8, 1, count.CAM_count);
+            data.setValue(9, 1, count.DVR_count);
+            data.setValue(10, 1, count.NVR_count);
+            options.title = count.regionT + "'s Devices";
+            drawDeviceChart(chart, data, options);
 
         },
         fail: function (jqXHR, textStatus) {
-            drawDeviceChart(response_result);
+            alert("fail");
+            //drawDeviceChart(response_result);
         }
     });
 }

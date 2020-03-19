@@ -13,9 +13,10 @@
     google.charts.load('current', {'packages': ['corechart']});
     google.charts.setOnLoadCallback(function () {
 
-        getDeviceData("${param.region}","${param.regionAbb}");
+        var chart_${param.regionAbb} = getDeviceChart("${param.regionAbb}");
+        getDeviceData("${param.region}", chart_${param.regionAbb}, initDeviceChart().data, initDeviceChart().options);
         setInterval(function () {
-            getDeviceData("${param.region}","${param.regionAbb}");
+            getDeviceData("${param.region}", chart_${param.regionAbb}, initDeviceChart().data, initDeviceChart().options);
         }, 20000);
     });
 

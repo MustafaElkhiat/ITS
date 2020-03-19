@@ -1,22 +1,19 @@
-var drawTicketChart = function (countData) {
-    var count = jQuery.parseJSON(countData);
-    // Create the data table.
+var initTicketChart = function () {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'status');
     data.addColumn('number', 'Slices');
     data.addRows([
-        ['Assigned To', count.assignToCount],
-        ['In Progress', count.inProgressCount],
-        ['Pending', count.pendingCount],
-        ['Solved', count.solvedCount],
-        ['Need To Solve', count.assignToUserCount],
-        ['Closed', count.closedCount],
-        ['Need To Close', count.needToCloseCount]
+        ['Assigned To', 0],
+        ['In Progress', 0],
+        ['Pending', 0],
+        ['Solved', 0],
+        ['Need To Solve', 0],
+        ['Closed', 0],
+        ['Need To Close', 0]
     ]);
 
     // Set chart options
     var options = {
-        title: count.user_name + "'s Ticket Ratio",
         pieHole: 0.35,
         width: 280,
         height: 250,
@@ -45,13 +42,15 @@ var drawTicketChart = function (countData) {
             6: {color: '#17a2b8'}
         }
     };
-
-
-    // Instantiate and draw our chart, passing in some options.
-    var chart = new google.visualization.PieChart(document.getElementById(count.user_id + "_chart_div"));
+    return {data: data, options: options};
+}
+var getTicketChart = function (user_id) {
+    return new google.visualization.PieChart(document.getElementById(user_id + "_chart_div"));
+}
+var drawTicketChart = function (chart, data, options) {
     chart.draw(data, options);
 }
-var getTicketData = function (user) {
+var getTicketData = function (user, chart, data, options) {
     var response_result;
     //$("#"+user+"_chart_div").load('loading_spinner.jsp');
     $.ajax({
@@ -64,11 +63,22 @@ var getTicketData = function (user) {
 
         success: function (result, status, xhr) {
             response_result = result;
-            drawTicketChart(response_result);
+            var count = jQuery.parseJSON(result);
+            data.setValue(0, 1, count.assignToCount);
+            data.setValue(1, 1, count.inProgressCount);
+            data.setValue(2, 1, count.pendingCount);
+            data.setValue(3, 1, count.solvedCount);
+            data.setValue(4, 1, count.assignToUserCount);
+            data.setValue(5, 1, count.closedCount);
+            data.setValue(6, 1, count.needToCloseCount);
+            options.title = count.user_name + "'s Ticket Ratio";
+
+            drawTicketChart(chart, data, options);
 
         },
         fail: function (jqXHR, textStatus) {
-            drawTicketChart(response_result);
+            alert("fail");
+            //drawTicketChart(response_result);
         }
     });
 }

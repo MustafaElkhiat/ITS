@@ -16,9 +16,10 @@
 <script type="text/javascript">
     google.charts.load('current', {'packages': ['line']});
     google.charts.setOnLoadCallback(function () {
-        getDailyTicketPerTimeData('${param.region}');
+        var chart = getTicketPerTimeChart();
+        getDailyTicketPerTimeData('${param.region}',chart,initTicketPerTimeChart().data,initTicketPerTimeChart().options);
         setInterval(function () {
-            getDailyTicketPerTimeData('${param.region}')
+            getDailyTicketPerTimeData('${param.region}',chart,initTicketPerTimeChart().data,initTicketPerTimeChart().options);
         }, 20000);
     });
 

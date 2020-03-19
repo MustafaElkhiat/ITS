@@ -1,23 +1,20 @@
 // Callback that creates and populates a data table,
 // instantiates the pie chart, passes in the data and
 // draws it.
-var drawRegionChart = function (countData) {
-    var count = jQuery.parseJSON(countData);
-    // Create the data table.
+var initRegionChart = function () {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'status');
     data.addColumn('number', 'Slices');
     data.addRows([
-        ['Assigned To', count.assignToRegionCount],
-        ['In Progress', count.inProgressRegionCount],
-        ['Pending', count.pendingRegionCount],
-        ['Solved', count.solvedRegionCount],
-        ['closed', count.closedRegionCount]
+        ['Assigned To', 0],
+        ['In Progress', 0],
+        ['Pending', 0],
+        ['Solved', 0],
+        ['closed', 0]
     ]);
 
     // Set chart options
     var options = {
-        title: count.regionT + "'s Ticket Ratio",
         pieHole: 0.35,
         width: 280,
         height: 250,
@@ -44,12 +41,16 @@ var drawRegionChart = function (countData) {
             4: {color: '#6E2571'}
         }
     }
-
-    // Instantiate and draw our chart, passing in some options.
-    var chart = new google.visualization.PieChart(document.getElementById(count.regionAbb + "_chart_div"));
+    return {data: data, options: options};
+}
+var getRegionChart = function (regionAbb) {
+    return new google.visualization.PieChart(document.getElementById(regionAbb + "_chart_div"));
+}
+var drawRegionChart = function (chart, data, options) {
     chart.draw(data, options);
 }
-var getRegionData = function (region, regionAbb) {
+
+var getRegionData = function (region, chart, data, options) {
     var response_result;
     //$("#" + regionAbb + "_chart_div").load('loading_spinner.jsp');
     $.ajax({
@@ -62,11 +63,19 @@ var getRegionData = function (region, regionAbb) {
 
         success: function (result, status, xhr) {
             response_result = result;
-            drawRegionChart(response_result);
+            var count = jQuery.parseJSON(result);
+            data.setValue(0, 1, count.assignToRegionCount);
+            data.setValue(1, 1, count.inProgressRegionCount);
+            data.setValue(2, 1, count.pendingRegionCount);
+            data.setValue(3, 1, count.solvedRegionCount);
+            data.setValue(4, 1, count.closedRegionCount);
+            options.title = count.regionT + "'s Ticket Ratio";
+            drawRegionChart(chart, data, options);
 
         },
         fail: function (jqXHR, textStatus) {
-            drawRegionChart(response_result);
+            alert("fail");
+            //drawRegionChart(response_result);
         }
     });
 }

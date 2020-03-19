@@ -89,6 +89,9 @@
                 <div class="card mt-3">
                     <div class="card-body">
                         <h5 class="card-title">L2 Engineers Ticket Ratio</h5>
+                        <jsp:include page="ticket_bar_chart.jsp">
+                            <jsp:param name="region" value="${region.id}"/>
+                        </jsp:include>
                         <c:forEach items="${userRegions}" var="userRegion" varStatus="loop">
                             <c:if test="${loop.index % 3 == 0}">
                                 <div class="row">
@@ -113,6 +116,7 @@
 <script src="js/drawTicketChart.js"></script>
 <script src="js/drawDeviceChart.js"></script>
 <script src="js/drawTicketPerTimeChart.js"></script>
+<script src="js/drawTicketBarChart.js"></script>
 
 </body>
 </html>

@@ -34,9 +34,10 @@
 
     // Set a callback to run when the Google Visualization API is loaded.
     google.charts.setOnLoadCallback(function () {
-        getRegionData("${param.region}","${param.regionAbb}");
+        var chart_${param.region} = getRegionChart("${param.regionAbb}");
+        getRegionData("${param.region}", chart_${param.region}, initRegionChart().data, initRegionChart().options);
         setInterval(function () {
-            getRegionData("${param.region}","${param.regionAbb}");
+            getRegionData("${param.region}", chart_${param.region}, initRegionChart().data, initRegionChart().options);
         }, 20000);
 
     });

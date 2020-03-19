@@ -13,9 +13,10 @@
 
     // Set a callback to run when the Google Visualization API is loaded.
     google.charts.setOnLoadCallback(function () {
-        getTicketData("${param.user}");
+        var chart_${param.user} = getTicketChart("${param.user}",initTicketChart().data,initTicketChart().options);
+        getTicketData("${param.user}",chart_${param.user},initTicketChart().data,initTicketChart().options);
         setInterval(function () {
-            getTicketData("${param.user}");
+            getTicketData("${param.user}",chart_${param.user},initTicketChart().data,initTicketChart().options);
         }, 20000);
     });
 
