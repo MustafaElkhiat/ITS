@@ -146,7 +146,7 @@
                     <c:when test="${device.deviceType.id == 3 || device.deviceType.id == 7}">
                         <jsp:include page="video_recorder_data.jsp"/>
                     </c:when>
-                    <c:when test="${device.deviceType.id == 4 || device.deviceType.id == 5 || device.deviceType.id == 6 || device.deviceType.id == 10 || device.deviceType.id == 11}">
+                    <c:when test="${device.deviceType.id == 4 || device.deviceType.id == 5 || device.deviceType.id == 6 || device.deviceType.id == 10 || device.deviceType.id == 11 || device.deviceType.id == 12}">
                         <jsp:include page="device_data.jsp"/>
                     </c:when>
                     <c:when test="${device.deviceType.id == 8}">

@@ -800,6 +800,32 @@ public class ControllerHelper extends HelperBase {
         }
     }
 
+    public int getRegionAPCount(String regionID) {
+        DeviceType APType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 12);
+        if (regionID.equals("ALL")) {
+            List<Device> cameraList = hibernateHelper.retreiveData("from Device where deviceType =" + APType.getId());
+            return cameraList.size();
+        } else {
+            int count = 0;
+
+            Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regionID));
+            List<Device> cameraList = hibernateHelper.retreiveData("from Device where deviceType =" + APType.getId());
+            List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + region.getId());
+            List<LocationDepartment> locationDepartmentList = new ArrayList<>();
+            for (Location location : locationList) {
+                locationDepartmentList.addAll(hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId()));
+            }
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                for (Device camera : cameraList) {
+                    if (camera.getLocationDepartment().getId() == locationDepartment.getId()) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+    }
+
     public int getRegionNVRCount(String regionID) {
         DeviceType NVRType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 7);
         if (regionID.equals("ALL")) {
@@ -1143,8 +1169,8 @@ public class ControllerHelper extends HelperBase {
         Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
         Role L2Role = (Role) hibernateHelper.retreiveData(Role.class, (long) 5);
         List<TSUserRegion> userRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and region = " + region.getId());
-        for(TSUserRegion userRegion : userRegionList){
-            if(userRegion.getTSUser().getRole().getId() == L2Role.getId()){
+        for (TSUserRegion userRegion : userRegionList) {
+            if (userRegion.getTSUser().getRole().getId() == L2Role.getId()) {
                 JsonObject data = new JsonObject();
                 data.addProperty("user_name", userRegion.getTSUser().getName());
                 data.addProperty("user_id", userRegion.getTSUser().getId());
@@ -1201,6 +1227,7 @@ public class ControllerHelper extends HelperBase {
         data.addProperty("NVR_count", getRegionNVRCount(request.getParameter("region")));
         data.addProperty("UPS_count", getRegionUPSCount(request.getParameter("region")));
         data.addProperty("FW_count", getRegionFWCount(request.getParameter("region")));
+        data.addProperty("AP_count", getRegionAPCount(request.getParameter("region")));
         return data;
     }
 

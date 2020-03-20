@@ -11,7 +11,8 @@ var initDeviceChart = function () {
         ['Firewall', 0],
         ['Camera', 0],
         ['DVR', 0],
-        ['NVR', 0]
+        ['NVR', 0],
+        ['Access Point', 0]
     ]);
 
     var options = {
@@ -69,6 +70,7 @@ var getDeviceData = function (region, chart, data, options) {
             data.setValue(8, 1, count.CAM_count);
             data.setValue(9, 1, count.DVR_count);
             data.setValue(10, 1, count.NVR_count);
+            data.setValue(11, 1, count.AP_count);
             options.title = count.regionT + "'s Devices";
             drawDeviceChart(chart, data, options);
 

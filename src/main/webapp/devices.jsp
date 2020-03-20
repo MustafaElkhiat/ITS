@@ -62,6 +62,10 @@
                 <a class="nav-link bg-primary red-active" id="NVR-tab" data-toggle="tab" href="#NVR" role="tab" aria-controls="contact"
                    aria-selected="false">NVR <span class="badge badge-light">${fn:length(NVRList)}</span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link bg-primary red-active" id="AP-tab" data-toggle="tab" href="#AP" role="tab" aria-controls="contact"
+                   aria-selected="false">Access Point <span class="badge badge-light">${fn:length(APList)}</span></a>
+            </li>
 
         </ul>
         <div class="tab-content" id="myTabContent">
@@ -97,6 +101,9 @@
             </div>
             <div class="tab-pane fade" id="NVR" role="tabpanel" aria-labelledby="NVR-tab">
                 <jsp:include page="NVR_tab.jsp"/>
+            </div>
+            <div class="tab-pane fade" id="AP" role="tabpanel" aria-labelledby="AP-tab">
+                <jsp:include page="AP_tab.jsp"/>
             </div>
 
         </div>

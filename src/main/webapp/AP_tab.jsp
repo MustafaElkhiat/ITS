@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Mustafa
-  Date: 1/12/2020
-  Time: 10:57 AM
+  Date: 3/19/2020
+  Time: 12:28 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -15,13 +15,13 @@
 <div class="card card-outline-primary">
     <div class="card-body">
 
-        <c:if test="${fn:length(cameraList) > 0}">
-            <h5 class="card-title">Camera <i class="fas fa-print"></i></h5>
+        <c:if test="${fn:length(APList) > 0}">
+            <h5 class="card-title">Access Point <i class="fas fa-print"></i></h5>
             <jsp:include page="search_field.jsp">
-                <jsp:param name="id" value="search_Camera"/>
+                <jsp:param name="id" value="search_AP"/>
             </jsp:include>
             <div class="scroll" style="height:300px;">
-                <table id="Camera_table" class="table table-striped table-bordered" style="width: 2500px;">
+                <table id="AP_table" class="table table-striped table-bordered" style="width: 2500px;">
                     <thead>
                     <tr class="table-bordered bg-lightGray">
                         <th>#<i class="fas float-left my-2"></i></th>
@@ -38,9 +38,9 @@
                         <th>Need To Upgrade<i class="fas float-left my-2"></i></th>
                     </tr>
                     </thead>
-                    <tbody id="Camera_table_body">
+                    <tbody id="AP_table_body">
                     <c:set var="count" value="1"/>
-                    <c:forEach items="${cameraList}" var="device">
+                    <c:forEach items="${APList}" var="device">
 
                         <c:choose>
                             <c:when test="${device.needToUpgrade}">

@@ -322,7 +322,7 @@ var updateDevices = function (device_type) {
         saveAttendance();
     } else if (device_type == 8) {
         savePBX();
-    } else if (device_type == 4 || device_type == 5 || device_type == 6 || device_type == 10 || device_type == 11) {
+    } else if (device_type == 4 || device_type == 5 || device_type == 6 || device_type == 10 || device_type == 11 || device_type == 12) {
         saveDevice();
     } else if (device_type == 3 || device_type == 7) {
         saveVideoRecorder();

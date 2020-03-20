@@ -454,7 +454,7 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("NVR_count", controllerHelper.getRegionNVRCount(request.getParameter("region")));
         request.setAttribute("UPS_count", controllerHelper.getRegionUPSCount(request.getParameter("region")));
         request.setAttribute("FW_count", controllerHelper.getRegionFWCount(request.getParameter("region")));
-
+        request.setAttribute("AP_count", controllerHelper.getRegionAPCount(request.getParameter("region")));
         request.getRequestDispatcher("device_chart.jsp").forward(request, response);
         return;
     }
@@ -470,6 +470,7 @@ public class DirectiveHelper extends HelperBase {
         DeviceType cameraType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 4);
         DeviceType NVRType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 7);
         DeviceType DVRType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 3);
+        DeviceType APType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 12);
         List<PC> deviceList = new ArrayList<>();
         List<Printer> printerList = new ArrayList<>();
         List<PBX> pbxList = new ArrayList<>();
@@ -481,6 +482,7 @@ public class DirectiveHelper extends HelperBase {
         List<Device> UPSList = new ArrayList<>();
         List<Device> firewallList = new ArrayList<>();
         List<Device> cameraList = new ArrayList<>();
+        List<Device> APList = new ArrayList<>();
         for (TSUserRegion tsUserRegion : tsUserRegionList) {
             System.out.println(tsUserRegion.getRegion().getRegion());
             for (Location location : locationList) {
@@ -499,6 +501,7 @@ public class DirectiveHelper extends HelperBase {
                         UPSList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType =" + UPSType.getId()));
                         firewallList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType =" + firewallType.getId()));
                         cameraList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType =" + cameraType.getId()));
+                        APList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType =" + APType.getId()));
                     }
                 }
             }
@@ -532,6 +535,7 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("cameraList", cameraList);
         request.setAttribute("NVRList", NVRList);
         request.setAttribute("DVRList", DVRList);
+        request.setAttribute("APList", APList);
         request.getRequestDispatcher("devices.jsp").forward(request, response);
     }
 
