@@ -21,7 +21,7 @@ var initTicketPerTimeChart = function () {
     var options = {
         title: 'Daily Ticket Per Time',
         curveType: 'function',
-        chartArea: {left: 20, top: 40, width: 330},
+        chartArea: {left: 20, top: 40 ,width:"100%"},
         vAxis: {
             ticks: [-1, 0, 1, 2, 3, 4, 5, 10],
             textStyle: {
@@ -35,10 +35,9 @@ var initTicketPerTimeChart = function () {
                 bold: true
             }
         },
-        width: 350,
         height: 250,
         titleTextStyle: {
-            fontSize: 18,
+            fontSize: 15,
             fontName: 'Exo'
         },
         legend: {

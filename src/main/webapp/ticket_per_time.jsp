@@ -9,7 +9,7 @@
 <div class="col-lg-4 col-sm-12">
     <div class="card mt-3">
         <div class="card-body">
-            <div id="ticket_category_per_time" style="width:280px ;height:250px;"></div>
+            <div id="ticket_category_per_time" style="height:250px;"></div>
         </div>
     </div>
 </div>

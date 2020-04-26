@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<div id="${param.regionAbb}_device_chart" style="width:280px ;height:250px ;"></div>
+<div id="${param.regionAbb}_device_chart" style="height:250px ;"></div>
 <script type="text/javascript">
     google.charts.load('current', {'packages': ['corechart']});
     google.charts.setOnLoadCallback(function () {

@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="col-lg-4 col-sm-12">
     <div class="card mt-3">
-        <div class="card-body">
+        <div class="card-body px-0">
             <div id="${param.region}_device_chart">
 
                 <jsp:include page="device_chart.jsp">

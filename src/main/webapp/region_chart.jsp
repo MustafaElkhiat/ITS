@@ -26,7 +26,7 @@
     </c:otherwise>
 </c:choose>
 --%>
-<div id="${param.regionAbb}_chart_div" style="width:280px ;height:250px;"></div>
+<div id="${param.regionAbb}_chart_div" style="height:250px;"></div>
 
 <script>
     // Load the Visualization API and the corechart package.

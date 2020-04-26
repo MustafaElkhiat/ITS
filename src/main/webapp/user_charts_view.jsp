@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="col-lg-4 col-sm-12">
     <div class="card mt-3">
-        <div class="card-body">
+        <div class="card-body px-0">
             <div id="${param.user}_ticket_chart" >
                 <jsp:include page="ticket_chart.jsp">
                     <jsp:param name="user" value="${param.user}"/>

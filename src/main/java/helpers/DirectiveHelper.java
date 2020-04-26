@@ -601,7 +601,7 @@ public class DirectiveHelper extends HelperBase {
         request = getUserPrivilege(user, request);
         List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
         Device device = (Device) hibernateHelper.retreiveData(Device.class, Long.valueOf(request.getParameter("device")));
-        List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + tsUserRegionList.get(0).getRegion().getId() + " order by location");
+        List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + device.getLocationDepartment().getLocation().getRegion().getId() + " order by location");
         List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + device.getLocationDepartment().getLocation().getId());
 
         List<Department> departmentList = new ArrayList<>();
@@ -612,7 +612,7 @@ public class DirectiveHelper extends HelperBase {
         Department department = device.getLocationDepartment().getDepartment();
         List<PCType> pcTypeList = hibernateHelper.retreiveData("from PCType order by pcType");
         List<OS> osList = hibernateHelper.retreiveData("from OS order by OS");
-        List<Employee> employeeList = hibernateHelper.retreiveData("from Employee where department = " + department.getId() + " order by name");
+        List<Employee> employeeList = hibernateHelper.retreiveData("from Employee where locationDepartment = " + device.getLocationDepartment().getId() + " order by name");
         List<PrinterConnection> printerConnectionList = hibernateHelper.retreiveData("from PrinterConnection order by connection");
         request.setAttribute("printerConnectionList", printerConnectionList);
         request.setAttribute("osList", osList);

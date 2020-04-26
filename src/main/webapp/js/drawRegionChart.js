@@ -16,16 +16,15 @@ var initRegionChart = function () {
     // Set chart options
     var options = {
         pieHole: 0.35,
-        width: 280,
         height: 250,
         chartArea: {
             top: 40,
             left: 10,
-            width: 260,
-            height: 200
+            height: 200,
+            width:"100%"
         },
         titleTextStyle: {
-            fontSize: 18,
+            fontSize: 15,
             fontName: 'Exo'
         },
         legend: {

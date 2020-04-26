@@ -34,7 +34,7 @@ var initTicketBarChart = function () {
         },
         chartArea: {
             height: '80%',
-            width: '70%'
+            width: '100%'
         },
         seriesType: 'bars',
         colors: ['#007bff', '#ffc107', '#6c757d', '#28a745', '#dc3545', '#6E2571', '#17a2b8']
