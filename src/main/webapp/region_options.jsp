@@ -13,7 +13,7 @@
 </c:if>
 <c:forEach items="${regionList}" var="region">
     <c:choose>
-        <c:when test="${param.selected == region.id}">
+        <c:when test="${param.selected == region.region.id}">
             <option selected value="${region.region.id}">${region.region.region}   (${region.region.abbreviation})</option>
         </c:when>
         <c:otherwise>
