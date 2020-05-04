@@ -1311,6 +1311,7 @@ public class ControllerHelper extends HelperBase {
         pc.setModel(model);
         pc.setSerialNum(serial_num);
         pc.setOffice(office);
+        pc.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0),deviceType));
         pc.setPurchaseDate(purchase_date);
         pc.setNeedToUpgrade(need_to_upgrade);
 
@@ -1376,6 +1377,7 @@ public class ControllerHelper extends HelperBase {
         printer.setModel(model);
         printer.setSerialNum(serial_num);
         printer.setOffice(office);
+        printer.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0),deviceType));
         printer.setPurchaseDate(purchase_date);
         printer.setNeedToUpgrade(need_to_upgrade);
         if (request.getParameter("device_id") == null) {
@@ -1428,6 +1430,7 @@ public class ControllerHelper extends HelperBase {
         attendance.setSerialNum(serial_num);
         attendance.setOffice(office);
         attendance.setPurchaseDate(purchase_date);
+        attendance.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0),deviceType));
         attendance.setNeedToUpgrade(need_to_upgrade);
         if (request.getParameter("device_id") == null) {
             hibernateHelper.saveData(attendance);
@@ -1476,7 +1479,7 @@ public class ControllerHelper extends HelperBase {
             pbx = (PBX) hibernateHelper.retreiveData(PBX.class, Long.valueOf(request.getParameter("device_id")));
         }
         pbx.setVendor(vendor);
-
+        pbx.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0),deviceType));
         pbx.setModel(model);
         pbx.setSerialNum(serial_num);
         pbx.setOffice(office);
@@ -1528,6 +1531,7 @@ public class ControllerHelper extends HelperBase {
         device1.setSerialNum(serial_num);
         device1.setOffice(office);
         device1.setPurchaseDate(purchase_date);
+        device1.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0),deviceType));
         device1.setNeedToUpgrade(need_to_upgrade);
         device1.setVendor(vendor);
         if (request.getParameter("device_id") == null) {
@@ -1575,6 +1579,7 @@ public class ControllerHelper extends HelperBase {
         videoRecorder.setSerialNum(serial_num);
         videoRecorder.setOffice(office);
         videoRecorder.setPurchaseDate(purchase_date);
+        videoRecorder.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0),deviceType));
         videoRecorder.setNeedToUpgrade(need_to_upgrade);
         if (request.getParameter("device_id") == null) {
             hibernateHelper.saveData(videoRecorder);
@@ -1795,5 +1800,24 @@ public class ControllerHelper extends HelperBase {
         OS os = new OS(added_os);
         hibernateHelper.saveData(os);
         return (1);
+    }
+
+    public int recodingDevices() throws IOException {
+        List<Device> deviceList = hibernateHelper.retreiveData("from Device");
+        for (Device device : deviceList) {
+            device.setDeviceNumCode(0);
+            hibernateHelper.updateData(device);
+        }
+        for (Device device : deviceList) {
+            List<Device> devices = hibernateHelper.retreiveData("from Device where deviceNumCode > 0 and locationDepartment = " + device.getLocationDepartment().getId() + " and deviceType = " + device.getDeviceType().getId());
+            device.setDeviceNumCode(devices.size() + 1);
+            hibernateHelper.updateData(device);
+        }
+        return (0);
+    }
+
+    private int getDeviceCode(LocationDepartment locationDepartment, DeviceType deviceType) {
+        List<Device> deviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType = " + deviceType.getId());
+        return deviceList.size() + 1;
     }
 }

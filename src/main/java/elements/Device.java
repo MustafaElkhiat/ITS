@@ -17,6 +17,8 @@ public class Device {
     private long id;
     @Column(name = "device")
     private String device;
+    @Column(name = "device_num_code")
+    private int deviceNumCode;
     @Column(name = "office")
     private String office;
     @Column(name = "model")
@@ -153,5 +155,12 @@ public class Device {
         this.deviceType = deviceType;
     }
 
+    public int getDeviceNumCode() {
+        return deviceNumCode;
+    }
+
+    public void setDeviceNumCode(int deviceNumCode) {
+        this.deviceNumCode = deviceNumCode;
+    }
 
 }

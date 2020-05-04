@@ -83,6 +83,26 @@ $(document).ready(function () {
             });
         });
     });
+    $("#recoding_devices").click(function () {
+        stopTimers();
+        info("Device recoding is started", "");
+        $.ajax({
+            url: "Controller",
+            data: {
+                n: "42"
+
+            },
+            type: "POST",
+
+            success: function (result, status, xhr) {
+                if (result == 0) {
+                    success("Devices had been recoded", "");
+
+                }
+            }
+        });
+    });
+
     setupTimers();
 });
 

@@ -190,6 +190,9 @@ public class Controller extends HttpServlet {
                 case(41):
                     response.getWriter().println(controllerHelper.getTicketBarChartData());
                     break;
+                case(42):
+                    response.getWriter().println(controllerHelper.recodingDevices());
+                    break;
 
             }
         }

@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="edit_device_privilege" value=""/>
 <c:if test="${P_6}">
     <c:set var="edit_device_privilege" value="device"/>
@@ -52,7 +53,8 @@
                         </c:choose>
                         <tr class="${edit_device_privilege} CAM link" device-id="${device.id}">
                             <td>${count}</td>
-                            <td>${device.locationDepartment.location.region.abbreviation}-${device.locationDepartment.location.abbreviation}-${device.locationDepartment.department.abbreviation}-${device.deviceType.abbreviation}-${device.device}</td>
+                            <td>${device.locationDepartment.location.region.abbreviation}-${device.locationDepartment.location.abbreviation}-${device.locationDepartment.department.abbreviation}-${device.deviceType.abbreviation}-<fmt:formatNumber
+                                    type="number" minIntegerDigits="3" value="${device.deviceNumCode}"/></td>
                             <td>${device.vendor}</td>
                             <td>${device.model}</td>
                             <td>${device.mac_address}</td>

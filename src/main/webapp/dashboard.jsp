@@ -66,6 +66,8 @@
                 <c:if test="${current_user.role.id == 6}">
                     <a class="nav-link font-weight-bold mr-1" id="Privileges" data-toggle="pill" role="tab"
                        aria-selected="false"><i class="fas fa-shield-alt"></i> Privileges</a>
+                    <a class="nav-link font-weight-bold mr-1" id="recoding_devices" data-toggle="pill" role="tab"
+                       aria-selected="false"><i class="fas fa-laptop-code"></i> Recoding Devices</a>
                 </c:if>
 
                 <%-- <a class="nav-link font-weight-bold" id="waiting_list" data-toggle="pill" role="tab"
