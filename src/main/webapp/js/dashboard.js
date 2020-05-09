@@ -1,4 +1,26 @@
 $(document).ready(function () {
+    $("#logout_btn").click(function () {
+        bootbox.confirm({
+            title: "Log out",
+            message: "Are you sure you want to sign out?",
+            closeButton: false,
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancel',
+                    className: 'btn-danger'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Confirm',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    $("#logout_form").submit();
+                }
+            }
+        });
+    });
     $("#dashboard").click(function () {
         stopTimers();
         $("#content_place").load('Directive', {d: 43});

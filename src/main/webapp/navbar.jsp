@@ -59,9 +59,9 @@
                    data-target="#change_password_modal">Change Password</a>
             </div>
         </div>
-        <form class="form-inline my-2 my-lg-0" action="" method="post">
+        <form id="logout_form" class="form-inline my-2 my-lg-0" target="_self" action="" method="post">
             <input type="hidden" name="n" value="2">
-            <button class="btn btn-outline-primary my-2 my-sm-0" style="width:120px" type="submit"><i
+            <button id="logout_btn" class="btn btn-outline-primary my-2 my-sm-0" style="width:120px" type="button"><i
                     class="fas fa-sign-out-alt"></i>
                 Sign Out
             </button>
