@@ -193,6 +193,9 @@ public class Controller extends HttpServlet {
                 case(42):
                     response.getWriter().println(controllerHelper.recodingDevices());
                     break;
+                case(43):
+                    response.getWriter().println(controllerHelper.resetPassword());
+                    break;
 
             }
         }

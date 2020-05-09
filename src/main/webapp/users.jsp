@@ -10,7 +10,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="edit_user" value=""/>
 <c:if test="${P_15}">
-    <c:set var="edit_user" value="user"/>
+    <c:set var="edit_user" value="edit_user"/>
+</c:if>
+<c:if test="${P_18}">
+    <c:set var="reset_pass" value="reset_pass"/>
 </c:if>
 <jsp:include page="page_header.jsp">
     <jsp:param name="title" value="Users"/>
@@ -44,7 +47,7 @@
                     </thead>
                     <tbody id="user_table_body">
                     <c:forEach items="${userList}" var="user" varStatus="userLoop">
-                        <tr class="${edit_user} link" user-id="${user.id}">
+                        <tr class="${edit_user} ${reset_pass} link context-menu-one" user-id="${user.id}">
                             <td>${userLoop.count}</td>
                             <td>${user.name}</td>
                             <td>${user.role.role}</td>

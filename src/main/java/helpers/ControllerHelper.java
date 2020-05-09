@@ -1660,6 +1660,13 @@ public class ControllerHelper extends HelperBase {
         return 0;
     }
 
+    public int resetPassword() throws IOException {
+        User user = (User) hibernateHelper.retreiveData(User.class,Long.valueOf(request.getParameter("user")));
+        user.setActivated(false);
+        user.setPassword("0000");
+        hibernateHelper.updateData(user);
+        return 0;
+    }
     private void editUserDetails(User user) throws IOException {
         String name = request.getParameter("name");
         String username = request.getParameter("username");

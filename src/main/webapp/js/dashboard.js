@@ -46,14 +46,42 @@ $(document).ready(function () {
         $("#content_place").load('Directive', {d: 40}, function () {
             $("#search_user").searchTable("user_table_body");
             $("#user_table").sortTableNow();
-            $(".user").click(function () {
-                $("#content_place").load('Directive', {d: 41, user: $(this).attr("user-id")}, editUser);
-            });
+            if ($(".context-menu-one").hasClass("edit_user") && $(".context-menu-one").hasClass("reset_pass")) {
+                $(function () {
+                    $('#user_table_body').contextMenu({
+                        selector: '.context-menu-one',
+                        trigger: 'left',
+                        callback: function (key, options) {
+                            var user = $(this).attr("user-id");
+                            if (key == "edit") {
+                                $("#content_place").load('Directive', {d: 41, user: $(this).attr("user-id")}, editUser);
+                            } else if (key == "reset") {
+
+                                resetPasswordDialog(user);
+                            }
+                        },
+                        items: {
+                            "edit": {name: "Edit User Data"},
+                            "reset": {name: "Reset Password"},
+
+                        }
+                    });
+                });
+            } else {
+                $(".edit_user").click(function () {
+                    $("#content_place").load('Directive', {d: 41, user: $(this).attr("user-id")}, editUser);
+                });
+                $(".reset_pass").click(function () {
+                    resetPasswordDialog($(this).attr("user-id"));
+                });
+            }
+
             $("#add_user").click(function () {
                 $("#content_place").load('Directive', {d: 38}, addUser);
             });
         });
     });
+
     $("#employees").click(function () {
         stopTimers();
         $("#content_place").load('Directive', {d: 46}, function () {
@@ -84,23 +112,43 @@ $(document).ready(function () {
         });
     });
     $("#recoding_devices").click(function () {
-        stopTimers();
-        info("Device recoding is started", "");
-        $.ajax({
-            url: "Controller",
-            data: {
-                n: "42"
-
+        //stopTimers();
+        bootbox.confirm({
+            title: "Recoding Devices",
+            message: "Are you sure you want to recode devices?",
+            closeButton: false,
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancel',
+                    className: 'btn-danger'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Confirm',
+                    className: 'btn-success'
+                }
             },
-            type: "POST",
+            callback: function (result) {
+                if (result) {
+                    info("Device recoding is started", "");
+                    $.ajax({
+                        url: "Controller",
+                        data: {
+                            n: "42"
 
-            success: function (result, status, xhr) {
-                if (result == 0) {
-                    success("Devices had been recoded", "");
+                        },
+                        type: "POST",
 
+                        success: function (result, status, xhr) {
+                            if (result == 0) {
+                                success("Devices had been recoded", "");
+
+                            }
+                        }
+                    });
                 }
             }
         });
+
     });
 
     setupTimers();
@@ -795,4 +843,43 @@ var loadRegionDevicesRatioSection = function () {
 }
 var clearClass = function (Class) {
     $("." + Class).empty();
+}
+var resetPassword = function (user) {
+    $.ajax({
+        url: "Controller",
+        data: {
+            n: "43",
+            user: user
+        },
+        type: "POST",
+
+        success: function (result, status, xhr) {
+            if (result == 0) {
+
+                success("User password has been reset", "");
+            }
+        }
+    });
+}
+var resetPasswordDialog = function (user) {
+    bootbox.confirm({
+        title: "Reset Password",
+        message: "Are you sure you want to reset the password?",
+        closeButton: false,
+        buttons: {
+            cancel: {
+                label: '<i class="fa fa-times"></i> Cancel',
+                className: 'btn-danger'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Confirm',
+                className: 'btn-success'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                resetPassword(user);
+            }
+        }
+    });
 }

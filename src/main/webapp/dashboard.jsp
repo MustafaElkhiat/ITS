@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="css/google_chart_tooltip.css"/>
     <link rel="stylesheet" href="css/google_chart_util.css"/>
     <link rel="stylesheet" href="css/floating-labels.css"/>
+    <link rel="stylesheet" href="css/jquery.contextMenu.min.css"/>
     <link rel="stylesheet" href="css/print.css"/>
     <link rel="stylesheet" href="css/custom.css"/>
     <script src="js/jquery-3.2.1.min.js"></script>
@@ -101,6 +102,8 @@
 <script src="js/drawRegionChart.js"></script>
 <script src="js/drawTicketChart.js"></script>
 <script src="js/drawDeviceChart.js"></script>
+<script src="js/jquery.contextMenu.min.js"></script>
+<script src="js/jquery.ui.position.min.js"></script>
 <script src="js/dashboard.js"></script>
 
 

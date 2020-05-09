@@ -353,3 +353,7 @@ select {
 .accordion .card:first-of-type {
     border-bottom: 1px solid rgba(0, 0, 0, .125) !important;
 }
+
+.context-menu-item.context-menu-hover {
+    background-color: #007bff !important;
+}
