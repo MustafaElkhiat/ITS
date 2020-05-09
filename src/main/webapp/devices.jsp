@@ -66,6 +66,10 @@
                 <a class="nav-link bg-primary red-active" id="AP-tab" data-toggle="tab" href="#AP" role="tab" aria-controls="contact"
                    aria-selected="false">Access Point <span class="badge badge-light">${fn:length(APList)}</span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link bg-primary red-active" id="mob-tab" data-toggle="tab" href="#mob" role="tab" aria-controls="contact"
+                   aria-selected="false">Mobile <span class="badge badge-light">${fn:length(mobList)}</span></a>
+            </li>
 
         </ul>
         <div class="tab-content" id="myTabContent">
@@ -105,7 +109,9 @@
             <div class="tab-pane fade" id="AP" role="tabpanel" aria-labelledby="AP-tab">
                 <jsp:include page="AP_tab.jsp"/>
             </div>
-
+            <div class="tab-pane fade" id="mob" role="tabpanel" aria-labelledby="mob-tab">
+                <jsp:include page="mob_tab.jsp"/>
+            </div>
         </div>
 
     </div>

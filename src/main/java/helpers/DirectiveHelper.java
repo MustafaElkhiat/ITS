@@ -471,6 +471,7 @@ public class DirectiveHelper extends HelperBase {
         DeviceType NVRType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 7);
         DeviceType DVRType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 3);
         DeviceType APType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 12);
+        DeviceType mobType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 13);
         List<PC> deviceList = new ArrayList<>();
         List<Printer> printerList = new ArrayList<>();
         List<PBX> pbxList = new ArrayList<>();
@@ -483,6 +484,7 @@ public class DirectiveHelper extends HelperBase {
         List<Device> firewallList = new ArrayList<>();
         List<Device> cameraList = new ArrayList<>();
         List<Device> APList = new ArrayList<>();
+        List<Device> mobList = new ArrayList<>();
         for (TSUserRegion tsUserRegion : tsUserRegionList) {
             System.out.println(tsUserRegion.getRegion().getRegion());
             for (Location location : locationList) {
@@ -502,6 +504,7 @@ public class DirectiveHelper extends HelperBase {
                         firewallList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType =" + firewallType.getId()));
                         cameraList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType =" + cameraType.getId()));
                         APList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType =" + APType.getId()));
+                        mobList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType =" + mobType.getId()));
                     }
                 }
             }
@@ -536,6 +539,7 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("NVRList", NVRList);
         request.setAttribute("DVRList", DVRList);
         request.setAttribute("APList", APList);
+        request.setAttribute("mobList", mobList);
         request.getRequestDispatcher("devices.jsp").forward(request, response);
     }
 

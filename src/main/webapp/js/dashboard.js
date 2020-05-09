@@ -252,7 +252,7 @@ var device_data = function (type, location, department) {
         $("#device_data").load('attendance_data.jsp', saveAttendance);
     } else if (type == 8) {
         $("#device_data").load('Directive', {d: 33, department: department, location: location}, savePBX);
-    } else if (type == 5 || type == 6 || type == 10 || type == 11 || type == 12) {
+    } else if (type == 5 || type == 6 || type == 10 || type == 11 || type == 12 || type == 13) {
         $("#device_data").load('device_data.jsp', saveDevice);
     } else if (type == 3 || type == 7) {
         $("#device_data").load('video_recorder_data.jsp', saveVideoRecorder);
