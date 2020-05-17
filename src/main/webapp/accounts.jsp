@@ -21,7 +21,7 @@
                 <jsp:param name="id" value="search_account"/>
             </jsp:include>
 
-            <div class="scroll" style="height:350px;">
+            <div class="scroll tables_height">
                 <table id="account_table" class="table table-striped table-striped">
                     <thead>
                     <tr class="table-bordered bg-lightGray">

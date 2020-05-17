@@ -21,7 +21,7 @@
             <jsp:include page="search_field.jsp">
                 <jsp:param name="id" value="search_FW"/>
             </jsp:include>
-            <div class="scroll" style="height:300px;">
+            <div class="scroll devices_tab_table">
                 <table id="FW_table" class="table table-striped table-bordered" style="width: 2500px;">
                     <thead>
                     <tr class="table-bordered bg-lightGray">

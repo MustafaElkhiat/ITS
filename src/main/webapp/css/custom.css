@@ -336,3 +336,6 @@ select {
 .devices_tab_table{
     height: calc(100vh - 430px);
 }
+.tables_height{
+    height: calc(100vh - 320px);
+}
