@@ -9,8 +9,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="edit_employee" value=""/>
+<c:set var="release_employee" value=""/>
 <c:if test="${P_16}">
     <c:set var="edit_employee" value="edit_employee"/>
+</c:if>
+<c:if test="${P_19}">
+    <c:set var="release_employee" value="release_employee"/>
 </c:if>
 <jsp:include page="page_header.jsp">
     <jsp:param name="title" value="Employees"/>
@@ -39,7 +43,7 @@
                     </thead>
                     <tbody id="employee_table_body">
                     <c:forEach var="employee" items="${employeeList}" varStatus="loop">
-                        <tr class="${edit_employee} link" employee-id="${employee.id}">
+                        <tr class="${edit_employee} ${release_employee} link context-menu-one" employee-id="${employee.id}">
                             <td>${loop.count}</td>
                             <td>${employee.name}</td>
                             <td>${employee.position}</td>

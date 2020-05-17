@@ -110,7 +110,7 @@
                 <jsp:include page="AP_tab.jsp"/>
             </div>
             <div class="tab-pane fade" id="mob" role="tabpanel" aria-labelledby="mob-tab">
-                <jsp:include page="mob_tab.jsp"/>
+                <jsp:include page="mobile_tab.jsp"/>
             </div>
         </div>
 

@@ -196,6 +196,24 @@ public class Directive extends HttpServlet {
                 case (58):
                     directiveHelper.goToActionSection();
                     break;
+                case(59):
+                    directiveHelper.goToAccessories();
+                    break;
+                case(60):
+                    directiveHelper.goToAddAccessory();
+                    break;
+                case(61):
+                    directiveHelper.goToAccounts();
+                    break;
+                case(62):
+                    directiveHelper.goToAddAccount();
+                    break;
+                case(63):
+                    directiveHelper.goToMobileData();
+                    break;
+                case(64):
+                    directiveHelper.goToEmployeeRelease();
+                    break;
             }
         }
     }

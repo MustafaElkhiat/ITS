@@ -213,7 +213,55 @@ var savePBX = function () {
         form.addClass("was-validated");
     });
 }
+var saveMobile = function () {
+    $("#mobile_submit").click(function () {
+        var form = $(this).parents('form:first');
+        if ($(".needs-validation")[9].checkValidity() === true) {
+            var need_to_upgrade;
+            if ($("#need_to_upgrade").is(":checked")) {
+                need_to_upgrade = true;
+            } else {
+                need_to_upgrade = false;
+            }
 
+            $.ajax({
+                url: "Controller",
+                data: {
+                    n: "46",
+                    device_id: $("#device_id").val(),
+                    device: $("#device").val(),
+                    vendor: $("#vendor").val(),
+                    model: $("#model").val(),
+                    mac_address: $("#mac_address").val(),
+                    ip_address: $("#ip_address").val(),
+                    serial_num: $("#serial_num").val(),
+                    purchase_date: $("#purchase_date").val(),
+                    office: $("#office").val(),
+                    location: form.find("#location_").val(),
+                    department: form.find("#department_").val(),
+                    device_type: form.find("#device_type_").val(),
+                    device_num: $("#device_num").val(),
+                    employee: form.find("#employee_").val(),
+                    need_to_upgrade: need_to_upgrade
+                },
+                type: "POST",
+
+                success: function (result, status, xhr) {
+                    form.removeClass("was-validated");
+                    if (result > 0) {
+                        success("Mobile has been saved", "");
+                        $("#device_modal_form").trigger("reset");
+                        //$("#content_place").load('Directive', {d: 15, ticket: result.trim()});
+                    } else {
+                        success("Mobile has been edited", "");
+                    }
+                }
+            });
+
+        }
+        form.addClass("was-validated");
+    });
+}
 var saveDevice = function () {
     $("#device_submit").click(function () {
         var form = $(this).parents('form:first');
@@ -320,7 +368,7 @@ var updateDevices = function (device_type) {
         savePrinter();
     } else if (device_type == 9) {
         saveAttendance();
-    } else if (device_type == 8) {
+    } else if (device_type == 8 || device_type == 13) {
         savePBX();
     } else if (device_type == 4 || device_type == 5 || device_type == 6 || device_type == 10 || device_type == 11 || device_type == 12) {
         saveDevice();

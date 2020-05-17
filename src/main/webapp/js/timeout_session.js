@@ -13,7 +13,8 @@ function doInactive() {
     //alert("لقد تخطيت الفترة المسموحة من فضلك اعد تسجيل الدخول");
     //var ip = "localhost";
     //var port = "12000";
-    var ip = "10.0.96.51";
+    //var ip = "10.0.96.51";
+    var ip = "10.0.170.50";
     var port = "9999";
     bootbox.alert({
         message: "You have exceeded the allowed period Please log back in",

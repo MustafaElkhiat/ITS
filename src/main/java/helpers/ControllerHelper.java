@@ -257,10 +257,14 @@ public class ControllerHelper extends HelperBase {
         String name = request.getParameter("name");
         String position = request.getParameter("position");
         String staffID = request.getParameter("staff_id");
+
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
         Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
         LocationDepartment locationDepartment = null;
         List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department =" + department.getId());
+        List<Accessory> accessoryList = hibernateHelper.retreiveData("from Accessory");
+        List<Account> accountList = hibernateHelper.retreiveData("from Account");
+
         if (locationDepartmentList.size() == 0) {
             locationDepartment = new LocationDepartment(location, department);
             hibernateHelper.saveData(locationDepartment);
@@ -268,7 +272,75 @@ public class ControllerHelper extends HelperBase {
             locationDepartment = locationDepartmentList.get(0);
         }
         if (request.getParameter("employee") != null) {
+            String accessory = request.getParameter("accessory");
+            String account = request.getParameter("account");
+            String username = request.getParameter("username");
             Employee employee = (Employee) hibernateHelper.retreiveData(Employee.class, Long.valueOf(request.getParameter("employee")));
+            List<EmployeeAccessory> employeeAccessoryList = hibernateHelper.retreiveData("from EmployeeAccessory where employee = " + employee.getId());
+            List<EmployeeAccount> employeeAccountList = hibernateHelper.retreiveData("from EmployeeAccount where employee = " + employee.getId());
+            for (EmployeeAccessory employeeAccessory : employeeAccessoryList) {
+                if (!accessory.equals("")) {
+                    System.out.println("Accessory : " + accessory);
+                    for (int i = 0; i < accessory.split(",").length; i++) {
+                        Accessory accessory1 = (Accessory) hibernateHelper.retreiveData(Accessory.class, Long.valueOf(accessory.split(",")[i]));
+                        //List<EmployeeAccessory> employeeAccessoryList = hibernateHelper.retreiveData("from EmployeeAccessory where employee = " + employee.getId() + " and accessory = " + accessory1.getId());
+                        if (employeeAccessory.getAccessory().getId() == accessory1.getId()) {
+                            employeeAccessory.setValid(true);
+                            employeeAccessory.setVendor(request.getParameter("vendor").split(",")[i]);
+                            if (accessory1.getId() == 1 || accessory1.getId() == 2) {
+                                employeeAccessory.setPhoneNumber(request.getParameter("second_value").split(",")[i]);
+                            } else if (accessory1.getId() == 3 || accessory1.getId() == 4) {
+                                employeeAccessory.setSerialNumber(request.getParameter("second_value").split(",")[i]);
+                            }
+                            hibernateHelper.updateData(employeeAccessory);
+                            break;
+                        } else if (employeeAccessory.getAccessory().getId() != accessory1.getId() && i == (accessory.split(",").length - 1)) {
+                            employeeAccessory.setValid(false);
+                            employeeAccessory.setVendor(null);
+                            employeeAccessory.setPhoneNumber(null);
+                            employeeAccessory.setSerialNumber(null);
+                            hibernateHelper.updateData(employeeAccessory);
+                        }
+                        //hibernateHelper.updateData(employeeAccessory);
+                    }
+                } else {
+                    employeeAccessory.setValid(false);
+                    employeeAccessory.setVendor(null);
+                    employeeAccessory.setPhoneNumber(null);
+                    employeeAccessory.setSerialNumber(null);
+                    hibernateHelper.updateData(employeeAccessory);
+
+                }
+
+            }
+            for (EmployeeAccount employeeAccount : employeeAccountList) {
+                if (!account.equals("")) {
+                    for (int i = 0; i < account.split(",").length; i++) {
+                        Account account1 = (Account) hibernateHelper.retreiveData(Account.class, Long.valueOf(account.split(",")[i]));
+                        //List<EmployeeAccessory> employeeAccessoryList = hibernateHelper.retreiveData("from EmployeeAccessory where employee = " + employee.getId() + " and accessory = " + accessory1.getId());
+                        if (employeeAccount.getAccount().getId() == account1.getId()) {
+                            employeeAccount.setValid(true);
+                            employeeAccount.setUsername(username.split(",")[i]);
+                            hibernateHelper.updateData(employeeAccount);
+                            break;
+                        } else if (employeeAccount.getAccount().getId() != account1.getId() && i == (account.split(",").length - 1)) {
+                            employeeAccount.setValid(false);
+                            employeeAccount.setUsername(null);
+
+                            hibernateHelper.updateData(employeeAccount);
+                        }
+                        //hibernateHelper.updateData(employeeAccessory);
+                    }
+                } else {
+                    employeeAccount.setValid(false);
+                    employeeAccount.setUsername(null);
+
+                    hibernateHelper.updateData(employeeAccount);
+
+                }
+
+            }
+
             employee.setName(name);
             employee.setPosition(position);
             employee.setStaffID(staffID);
@@ -276,8 +348,17 @@ public class ControllerHelper extends HelperBase {
             hibernateHelper.updateData(employee);
             return (0);
         } else {
+
             Employee employee = new Employee(name, position, staffID, locationDepartment);
             hibernateHelper.saveData(employee);
+            for (Accessory accessory : accessoryList) {
+                EmployeeAccessory employeeAccessory = new EmployeeAccessory(accessory, employee);
+                hibernateHelper.saveData(employeeAccessory);
+            }
+            for (Account account : accountList) {
+                EmployeeAccount employeeAccount = new EmployeeAccount(account, employee);
+                hibernateHelper.saveData(employeeAccount);
+            }
             return (1);
         }
     }
@@ -303,6 +384,32 @@ public class ControllerHelper extends HelperBase {
             }
             return (privilege.getId());
         }
+    }
+
+    public long addAccessory() throws IOException {
+
+        List<Employee> employeeList = hibernateHelper.retreiveData("from Employee");
+        Accessory accessory = new Accessory(request.getParameter("accessory"));
+        hibernateHelper.saveData(accessory);
+        for (Employee employee : employeeList) {
+            EmployeeAccessory employeeAccessory = new EmployeeAccessory(accessory, employee);
+            hibernateHelper.saveData(employeeAccessory);
+        }
+        return (accessory.getId());
+
+    }
+
+    public long addAccount() throws IOException {
+
+        List<Employee> employeeList = hibernateHelper.retreiveData("from Employee");
+        Account account = new Account(request.getParameter("account"));
+        hibernateHelper.saveData(account);
+        for (Employee employee : employeeList) {
+            EmployeeAccount employeeAccount = new EmployeeAccount(account, employee);
+            hibernateHelper.saveData(employeeAccount);
+        }
+        return (account.getId());
+
     }
 
     public int addDepartment() throws IOException {
@@ -1311,7 +1418,7 @@ public class ControllerHelper extends HelperBase {
         pc.setModel(model);
         pc.setSerialNum(serial_num);
         pc.setOffice(office);
-        pc.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0),deviceType));
+        pc.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0), deviceType));
         pc.setPurchaseDate(purchase_date);
         pc.setNeedToUpgrade(need_to_upgrade);
 
@@ -1377,7 +1484,7 @@ public class ControllerHelper extends HelperBase {
         printer.setModel(model);
         printer.setSerialNum(serial_num);
         printer.setOffice(office);
-        printer.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0),deviceType));
+        printer.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0), deviceType));
         printer.setPurchaseDate(purchase_date);
         printer.setNeedToUpgrade(need_to_upgrade);
         if (request.getParameter("device_id") == null) {
@@ -1430,7 +1537,7 @@ public class ControllerHelper extends HelperBase {
         attendance.setSerialNum(serial_num);
         attendance.setOffice(office);
         attendance.setPurchaseDate(purchase_date);
-        attendance.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0),deviceType));
+        attendance.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0), deviceType));
         attendance.setNeedToUpgrade(need_to_upgrade);
         if (request.getParameter("device_id") == null) {
             hibernateHelper.saveData(attendance);
@@ -1479,7 +1586,7 @@ public class ControllerHelper extends HelperBase {
             pbx = (PBX) hibernateHelper.retreiveData(PBX.class, Long.valueOf(request.getParameter("device_id")));
         }
         pbx.setVendor(vendor);
-        pbx.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0),deviceType));
+        pbx.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0), deviceType));
         pbx.setModel(model);
         pbx.setSerialNum(serial_num);
         pbx.setOffice(office);
@@ -1501,6 +1608,59 @@ public class ControllerHelper extends HelperBase {
             return 0;
         }
     }
+    public long saveMobile() throws ParseException, IOException {
+        Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
+        Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
+        DeviceType deviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, Long.valueOf(request.getParameter("device_type")));
+        Employee employee = null;
+        if (!request.getParameter("employee").equals("")) {
+            employee = (Employee) hibernateHelper.retreiveData(Employee.class, Long.valueOf(request.getParameter("employee")));
+        }
+        String device = request.getParameter("device");
+        String vendor = request.getParameter("vendor");
+        String model = request.getParameter("model");
+        String mac_address = request.getParameter("mac_address");
+        String serial_num = request.getParameter("serial_num");
+        String ip_address = request.getParameter("ip_address");
+        String office = request.getParameter("office");
+        String device_num = request.getParameter("device_num");
+        String purchase_date_string = request.getParameter("purchase_date");
+        Date purchase_date = null;
+        if (!purchase_date_string.equals("")) {
+            purchase_date = new SimpleDateFormat("yyyy-MM-dd").parse(purchase_date_string);
+        }
+        boolean need_to_upgrade = Boolean.valueOf(request.getParameter("need_to_upgrade"));
+        Mobile mobile = null;
+        if (request.getParameter("device_id") == null) {
+            mobile = new Mobile(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType, device_num, employee);
+        } else {
+            mobile = (Mobile) hibernateHelper.retreiveData(PBX.class, Long.valueOf(request.getParameter("device_id")));
+        }
+        mobile.setVendor(vendor);
+        mobile.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0), deviceType));
+        mobile.setModel(model);
+        mobile.setSerialNum(serial_num);
+        mobile.setOffice(office);
+        mobile.setPurchaseDate(purchase_date);
+        mobile.setNeedToUpgrade(need_to_upgrade);
+        if (request.getParameter("device_id") == null) {
+            hibernateHelper.saveData(mobile);
+            return mobile.getId();
+        } else {
+            mobile.setDevice(device);
+            mobile.setMac_address(mac_address);
+            mobile.setIp_address(ip_address);
+            mobile.setLocationDepartment(locationDepartmentList.get(0));
+
+            mobile.setDeviceType(deviceType);
+            mobile.setDeviceNum(device_num);
+            mobile.setEmployee(employee);
+            hibernateHelper.updateData(mobile);
+            return 0;
+        }
+    }
+
 
     public long saveDevice() throws ParseException, IOException {
         Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
@@ -1531,7 +1691,7 @@ public class ControllerHelper extends HelperBase {
         device1.setSerialNum(serial_num);
         device1.setOffice(office);
         device1.setPurchaseDate(purchase_date);
-        device1.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0),deviceType));
+        device1.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0), deviceType));
         device1.setNeedToUpgrade(need_to_upgrade);
         device1.setVendor(vendor);
         if (request.getParameter("device_id") == null) {
@@ -1579,7 +1739,7 @@ public class ControllerHelper extends HelperBase {
         videoRecorder.setSerialNum(serial_num);
         videoRecorder.setOffice(office);
         videoRecorder.setPurchaseDate(purchase_date);
-        videoRecorder.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0),deviceType));
+        videoRecorder.setDeviceNumCode(getDeviceCode(locationDepartmentList.get(0), deviceType));
         videoRecorder.setNeedToUpgrade(need_to_upgrade);
         if (request.getParameter("device_id") == null) {
             hibernateHelper.saveData(videoRecorder);
@@ -1661,12 +1821,13 @@ public class ControllerHelper extends HelperBase {
     }
 
     public int resetPassword() throws IOException {
-        User user = (User) hibernateHelper.retreiveData(User.class,Long.valueOf(request.getParameter("user")));
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         user.setActivated(false);
         user.setPassword("0000");
         hibernateHelper.updateData(user);
         return 0;
     }
+
     private void editUserDetails(User user) throws IOException {
         String name = request.getParameter("name");
         String username = request.getParameter("username");

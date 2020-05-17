@@ -109,16 +109,76 @@ $(document).ready(function () {
         $("#content_place").load('Directive', {d: 46}, function () {
             $("#search_employee").searchTable("employee_table_body");
             $("#employee_table").sortTableNow();
-            $(".edit_employee").click(function () {
-                $("#employees").removeClass("active");
-                $("#content_place").load('Directive', {d: 47, employee: $(this).attr("employee-id")}, function () {
-                    editEmployee();
-                    afterLoadingRegionSection();
+            if ($(".context-menu-one").hasClass("edit_employee") && $(".context-menu-one").hasClass("release_employee")) {
+                $(function () {
+                    $('#employee_table_body').contextMenu({
+                        selector: '.context-menu-one',
+                        trigger: 'left',
+                        callback: function (key, options) {
+                            var employee = $(this).attr("employee-id");
+                            if (key == "edit") {
+
+                                $("#employees").removeClass("active");
+                                $("#content_place").load('Directive', {
+                                    d: 47,
+                                    employee: $(this).attr("employee-id")
+                                }, function () {
+                                    checkbox_accessories();
+                                    checkbox_accounts();
+                                    editEmployee();
+                                    afterLoadingRegionSection();
+                                });
+
+                            } else if (key == "release") {
+                                release_employee($(this).attr("employee-id"));
+                            }
+                        },
+                        items: {
+                            "edit": {name: "Edit Employee Data"},
+                            "release": {name: "Release Employee"},
+
+                        }
+                    });
                 });
-            });
+            } else {
+                $(".edit_employee").click(function () {
+                    $("#employees").removeClass("active");
+                    $("#content_place").load('Directive', {d: 47, employee: $(this).attr("employee-id")}, function () {
+                        checkbox_accessories();
+                        checkbox_accounts();
+
+                        editEmployee();
+                        afterLoadingRegionSection();
+                    });
+                });
+                $(".release_employee").click(function () {
+                    release_employee($(this).attr("employee-id"));
+                });
+            }
+
         });
     });
 
+    var release_employee = function (employee) {
+        $("#content_place").load('Directive', {
+            d: 64,
+            employee: employee
+        }, function () {
+            $(".card").hover(function () {
+                $(".fa-print").parent().removeClass("d-none");
+
+            }, function () {
+                $(".fa-print").parent().addClass("d-none");
+            });
+            print_card();
+
+        });
+    }
+    var print_card = function () {
+        $(".fa-print").click(function () {
+            $.print($(this).parent().parent().parent().parent());
+        });
+    }
     $("#Privileges").click(function () {
         stopTimers();
         $("#content_place").load('Directive', {d: 48}, function () {
@@ -130,6 +190,34 @@ $(document).ready(function () {
             $("#add_privilege").click(function () {
                 $("#Privileges").removeClass("active");
                 $("#content_place").load('Directive', {d: 49}, add_privilege);
+            });
+        });
+    });
+    $("#accessories").click(function () {
+        stopTimers();
+        $("#content_place").load('Directive', {d: 59}, function () {
+            $("#search_accessory").searchTable("accessory_table_body");
+            $("#accessory_table").sortTableNow();
+            /*$(".edit_privilege").click(function () {
+                $("#content_place").load('Directive', {d: 50, privilege: $(this).attr("privilege-id")}, edit_privilege);
+            });*/
+            $("#add_accessory").click(function () {
+                $("#accessories").removeClass("active");
+                $("#content_place").load('Directive', {d: 60}, add_accessory);
+            });
+        });
+    });
+    $("#accounts").click(function () {
+        stopTimers();
+        $("#content_place").load('Directive', {d: 61}, function () {
+            $("#search_account").searchTable("account_table_body");
+            $("#account_table").sortTableNow();
+            /*$(".edit_privilege").click(function () {
+                $("#content_place").load('Directive', {d: 50, privilege: $(this).attr("privilege-id")}, edit_privilege);
+            });*/
+            $("#add_account").click(function () {
+                $("#accounts").removeClass("active");
+                $("#content_place").load('Directive', {d: 62}, add_account);
             });
         });
     });
@@ -176,6 +264,40 @@ $(document).ready(function () {
     setupTimers();
 });
 
+var checkbox_accessories = function () {
+    $('.accessory_checkbox').click(function () {
+        if ($(this).is(":checked")) {
+            $(this).parent().parent().parent().parent().parent().find(".vendor_col").removeClass("d-none");
+            $(this).parent().parent().parent().parent().parent().find(".vendor").attr("required");
+            if ($(this).val() == 1 || $(this).val() == 2) {
+                $(this).parent().parent().parent().parent().parent().find(".phone_col").removeClass("d-none");
+                $(this).parent().parent().parent().parent().parent().find(".phone_num").attr("required");
+            } else if ($(this).val() == 3 || $(this).val() == 4) {
+                $(this).parent().parent().parent().parent().parent().find(".serial_col").removeClass("d-none");
+                $(this).parent().parent().parent().parent().parent().find(".serial_num").attr("required");
+            }
+
+        } else {
+            $(this).parent().parent().parent().parent().parent().find(".vendor_col").addClass("d-none");
+            $(this).parent().parent().parent().parent().parent().find(".phone_col").addClass("d-none");
+            $(this).parent().parent().parent().parent().parent().find(".serial_col").addClass("d-none");
+            $(this).parent().parent().parent().parent().parent().find(".vendor").removeAttr("required");
+            $(this).parent().parent().parent().parent().parent().find(".phone_num").removeAttr("required");
+            $(this).parent().parent().parent().parent().parent().find(".serial_num").removeAttr("required");
+        }
+    });
+}
+var checkbox_accounts = function () {
+    $('.account_checkbox').click(function () {
+        if ($(this).is(":checked")) {
+            $(this).parent().parent().parent().parent().parent().find(".username_col").removeClass("d-none");
+            $(this).parent().parent().parent().parent().parent().find(".username").attr("required");
+        } else {
+            $(this).parent().parent().parent().parent().parent().find(".username_col").addClass("d-none");
+            $(this).parent().parent().parent().parent().parent().find(".username").removeAttr("required");
+        }
+    });
+}
 var add_device = function () {
     $("#devices").removeClass("active");
     $("#content_place").load('Directive', {d: 31}, function () {
@@ -183,6 +305,64 @@ var add_device = function () {
         afterLoadingRegionSection();
 
     })
+}
+var add_accessory = function () {
+
+    $("#add_accessory_submit").click(function () {
+        var form = $(this).parents('form:first');
+        if ($(".needs-validation")[1].checkValidity() === true) {
+
+            $.ajax({
+                url: "Controller",
+                data: {
+                    n: "44",
+                    accessory: $("#accessory").val()
+
+                },
+                type: "POST",
+
+                success: function (result, status, xhr) {
+                    if (result > 0) {
+                        form.removeClass("was-validated");
+                        success("Accessory has been added", "");
+                        form.trigger("reset");
+
+                    }
+                }
+            });
+
+        }
+        form.addClass("was-validated");
+    });
+}
+var add_account = function () {
+
+    $("#add_account_submit").click(function () {
+        var form = $(this).parents('form:first');
+        if ($(".needs-validation")[1].checkValidity() === true) {
+
+            $.ajax({
+                url: "Controller",
+                data: {
+                    n: "45",
+                    account: $("#account").val()
+
+                },
+                type: "POST",
+
+                success: function (result, status, xhr) {
+                    if (result > 0) {
+                        form.removeClass("was-validated");
+                        success("Account has been added", "");
+                        form.trigger("reset");
+
+                    }
+                }
+            });
+
+        }
+        form.addClass("was-validated");
+    });
 }
 var add_privilege = function () {
     $("#add_privilege_submit").click(function () {
@@ -252,7 +432,7 @@ var device_data = function (type, location, department) {
         $("#device_data").load('attendance_data.jsp', saveAttendance);
     } else if (type == 8) {
         $("#device_data").load('Directive', {d: 33, department: department, location: location}, savePBX);
-    } else if (type == 5 || type == 6 || type == 10 || type == 11 || type == 12 || type == 13) {
+    } else if (type == 5 || type == 6 || type == 10 || type == 11 || type == 12) {
         $("#device_data").load('device_data.jsp', saveDevice);
     } else if (type == 3 || type == 7) {
         $("#device_data").load('video_recorder_data.jsp', saveVideoRecorder);
@@ -261,6 +441,8 @@ var device_data = function (type, location, department) {
             saveDevice();
             cameraIP_MAC();
         });
+    } else if (type == 13) {
+        $("#device_data").load('Directive', {d: 63, department: department, location: location}, saveMobile);
     }
 
 }
@@ -652,6 +834,10 @@ var viewDevice = function () {
                     department: $("#department_").val()
                 });
             });
+            $("#device_type_").change(function () {
+                device_data($("#device_type_").val(), $("#location_").val(), $("#department_").val());
+            });
+
         });
     });
 
@@ -664,6 +850,45 @@ var editEmployee = function () {
     $("#edit_employee_submit").click(function () {
         var form = $(this).parents('form:first');
         if ($(".needs-validation")[9].checkValidity() === true) {
+            var accessory_array = "";
+            var vendor_array = "";
+            var second_value_array = "";
+            var account_array = "";
+            var username_array = "";
+            $('.accessory_checkbox').each(function () {
+
+                if ($(this).is(":checked")) {
+                    if (accessory_array.length == 0) {
+                        accessory_array += $(this).val();
+                        vendor_array += $(this).parent().parent().parent().parent().parent().find(".vendor").val();
+                        if ($(this).val() == 1 || $(this).val() == 2) {
+                            second_value_array += $(this).parent().parent().parent().parent().parent().find(".phone_num").val();
+                        } else if ($(this).val() == 3 || $(this).val() == 4) {
+                            second_value_array += $(this).parent().parent().parent().parent().parent().find(".serial_num").val();
+                        }
+                    } else {
+                        accessory_array += "," + $(this).val();
+                        vendor_array += "," + $(this).parent().parent().parent().parent().parent().find(".vendor").val();
+                        if ($(this).val() == 1 || $(this).val() == 2) {
+                            second_value_array += "," + $(this).parent().parent().parent().parent().parent().find(".phone_num").val();
+                        } else if ($(this).val() == 3 || $(this).val() == 4) {
+                            second_value_array += "," + $(this).parent().parent().parent().parent().parent().find(".serial_num").val();
+                        }
+                    }
+                }
+            });
+
+            $(".account_checkbox").each(function () {
+                if ($(this).is(":checked")) {
+                    if (account_array.length == 0) {
+                        account_array += $(this).val();
+                        username_array += $(this).parent().parent().parent().parent().parent().find(".username").val();
+                    } else {
+                        account_array += "," + $(this).val();
+                        username_array += "," + $(this).parent().parent().parent().parent().parent().find(".username").val();
+                    }
+                }
+            })
             $.ajax({
                 url: "Controller",
                 data: {
@@ -673,7 +898,12 @@ var editEmployee = function () {
                     staff_id: $("#edit_staff_id").val(),
                     location: $("#location_").val(),
                     department: $("#department_").val(),
-                    employee: $("#employee").val()
+                    employee: $("#employee").val(),
+                    accessory: accessory_array,
+                    vendor: vendor_array,
+                    second_value: second_value_array,
+                    account: account_array,
+                    username: username_array
                 },
                 type: "POST",
 

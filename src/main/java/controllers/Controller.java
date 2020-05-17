@@ -196,6 +196,19 @@ public class Controller extends HttpServlet {
                 case(43):
                     response.getWriter().println(controllerHelper.resetPassword());
                     break;
+                case(44):
+                    response.getWriter().println(controllerHelper.addAccessory());
+                    break;
+                case(45):
+                    response.getWriter().println(controllerHelper.addAccount());
+                    break;
+                case (46):
+                    try {
+                        response.getWriter().println(controllerHelper.saveMobile());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    break;
 
             }
         }

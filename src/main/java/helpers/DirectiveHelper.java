@@ -484,7 +484,7 @@ public class DirectiveHelper extends HelperBase {
         List<Device> firewallList = new ArrayList<>();
         List<Device> cameraList = new ArrayList<>();
         List<Device> APList = new ArrayList<>();
-        List<Device> mobList = new ArrayList<>();
+        List<Mobile> mobList = new ArrayList<>();
         for (TSUserRegion tsUserRegion : tsUserRegionList) {
             System.out.println(tsUserRegion.getRegion().getRegion());
             for (Location location : locationList) {
@@ -504,7 +504,7 @@ public class DirectiveHelper extends HelperBase {
                         firewallList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType =" + firewallType.getId()));
                         cameraList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType =" + cameraType.getId()));
                         APList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType =" + APType.getId()));
-                        mobList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType =" + mobType.getId()));
+                        mobList.addAll(hibernateHelper.retreiveData("from Mobile where locationDepartment = " + locationDepartment.getId()));
                     }
                 }
             }
@@ -580,6 +580,15 @@ public class DirectiveHelper extends HelperBase {
         List<Employee> employeeList = hibernateHelper.retreiveData("from Employee where locationDepartment = " + locationDepartmentList.get(0).getId() + " order by name");
         request.setAttribute("employeeList", employeeList);
         request.getRequestDispatcher("PBX_data.jsp").forward(request, response);
+    }
+
+    public void goToMobileData() throws ServletException, IOException {
+        Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
+        Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
+        List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
+        List<Employee> employeeList = hibernateHelper.retreiveData("from Employee where locationDepartment = " + locationDepartmentList.get(0).getId() + " order by name");
+        request.setAttribute("employeeList", employeeList);
+        request.getRequestDispatcher("mobile_data.jsp").forward(request, response);
     }
 
     public void goToAddDevice() throws ServletException, IOException {
@@ -850,19 +859,26 @@ public class DirectiveHelper extends HelperBase {
 
     public void goToEditEmployee() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
+        List<Accessory> accessoryList = hibernateHelper.retreiveData("from Accessory order by accessory");
+        List<Account> accountList = hibernateHelper.retreiveData("from Account order by account");
         Employee employee = (Employee) hibernateHelper.retreiveData(Employee.class, Long.valueOf(request.getParameter("employee")));
+        List<EmployeeAccessory> employeeAccessoryList = hibernateHelper.retreiveData("from EmployeeAccessory where valid = true and employee = " + employee.getId());
+        List<EmployeeAccount> employeeAccountList = hibernateHelper.retreiveData("from EmployeeAccount where valid = true and employee = " + employee.getId());
         List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
         List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + employee.getLocationDepartment().getLocation().getRegion().getId() + " order by location");
         List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + employee.getLocationDepartment().getLocation().getId());
-
         List<Department> departmentList = new ArrayList<>();
         for (LocationDepartment locationDepartment : locationDepartmentList) {
             departmentList.add(locationDepartment.getDepartment());
         }
         request.setAttribute("regionList", tsUserRegionList);
+        request.setAttribute("accessoryList", accessoryList);
+        request.setAttribute("accountList", accountList);
         request.setAttribute("departmentList", departmentList);
         request.setAttribute("locationList", locationList);
         request.setAttribute("employee", employee);
+        request.setAttribute("employeeAccessoryList", employeeAccessoryList);
+        request.setAttribute("employeeAccountList", employeeAccountList);
         request.getRequestDispatcher("edit_employee.jsp").forward(request, response);
     }
 
@@ -882,6 +898,26 @@ public class DirectiveHelper extends HelperBase {
         request.getRequestDispatcher("edit_privilege.jsp").forward(request, response);
     }
 
+    public void goToAccessories() throws ServletException, IOException {
+        List<Accessory> accessoryList = hibernateHelper.retreiveData("from Accessory");
+        request.setAttribute("accessoryList", accessoryList);
+        request.getRequestDispatcher("accessories.jsp").forward(request, response);
+    }
+
+    public void goToAddAccessory() throws ServletException, IOException {
+        request.getRequestDispatcher("add_accessory.jsp").forward(request, response);
+    }
+
+    public void goToAccounts() throws ServletException, IOException {
+        List<Account> accountList = hibernateHelper.retreiveData("from Account");
+        request.setAttribute("accountList", accountList);
+        request.getRequestDispatcher("accounts.jsp").forward(request, response);
+    }
+
+    public void goToAddAccount() throws ServletException, IOException {
+        request.getRequestDispatcher("add_account.jsp").forward(request, response);
+    }
+
     public void goToActionSection() throws ServletException, IOException {
         if (user.getRole().getId() == 2) {
             request.setAttribute("branch_manager", true);
@@ -889,6 +925,27 @@ public class DirectiveHelper extends HelperBase {
             request.setAttribute("branch_manager", false);
         }
         request.getRequestDispatcher("action_section.jsp").forward(request, response);
+    }
+
+    public void goToEmployeeRelease() throws ServletException, IOException {
+        request = getUserPrivilege(user, request);
+        Employee employee = (Employee) hibernateHelper.retreiveData(Employee.class, Long.valueOf(request.getParameter("employee")));
+        List<PC> pcList = hibernateHelper.retreiveData("from PC where employee = " + employee.getId());
+        List<Printer> printerList = hibernateHelper.retreiveData("from Printer where employee = " + employee.getId());
+        List<PBX> IPPhoneList = hibernateHelper.retreiveData("from PBX where employee = " + employee.getId());
+        List<Mobile> mobileList = hibernateHelper.retreiveData("from Mobile where employee = " + employee.getId());
+        List<EmployeeAccessory> employeeAccessoryList = hibernateHelper.retreiveData("from EmployeeAccessory where valid = true and employee = " + employee.getId());
+        List<EmployeeAccount> employeeAccountList = hibernateHelper.retreiveData("from EmployeeAccount where valid = true and employee =" + employee.getId());
+        request.setAttribute("employee", employee);
+        request.setAttribute("pcList", pcList);
+        request.setAttribute("printerList", printerList);
+        request.setAttribute("IPPhoneList", IPPhoneList);
+        request.setAttribute("mobileList", mobileList);
+        request.setAttribute("employeeAccessoryList", employeeAccessoryList);
+        request.setAttribute("employeeAccountList", employeeAccountList);
+        request.getRequestDispatcher("employee_release.jsp").forward(request, response);
+
+
     }
 
 

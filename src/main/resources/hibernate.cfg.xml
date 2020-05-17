@@ -88,11 +88,16 @@ Contributor(s):
         <mapping class="elements.OS"/>
         <mapping class="elements.Printer"/>
         <mapping class="elements.PBX"/>
+        <mapping class="elements.Mobile"/>
         <mapping class="elements.Attendance"/>
         <mapping class="elements.VideoRecorder"/>
         <mapping class="elements.PrinterConnection"/>
         <mapping class="elements.Privilege"/>
         <mapping class="elements.UserPrivilege"/>
+        <mapping class="elements.Account"/>
+        <mapping class="elements.Accessory"/>
+        <mapping class="elements.EmployeeAccessory"/>
+        <mapping class="elements.EmployeeAccount"/>
         <mapping class="login.elements.Role"/>
         <mapping class="login.elements.User"/>
 

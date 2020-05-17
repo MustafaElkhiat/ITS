@@ -11,7 +11,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>ITS</title>
-    <base href="/ITS/" target="_blank">
+
     <link rel="shortcut icon" href="photos/favicon.ico" type="image/x-icon">
     <link rel="icon" href="photos/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="css/google_chart_util.css"/>
     <link rel="stylesheet" href="css/floating-labels.css"/>
     <link rel="stylesheet" href="css/jquery.contextMenu.min.css"/>
-    <link rel="stylesheet" href="css/print.css"/>
+    <link rel="stylesheet" href="css/paper.css"/>
     <link rel="stylesheet" href="css/custom.css"/>
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/loader.js"></script>
@@ -67,6 +67,10 @@
                 <c:if test="${current_user.role.id == 6}">
                     <a class="nav-link font-weight-bold mr-1" id="Privileges" data-toggle="pill" role="tab"
                        aria-selected="false"><i class="fas fa-shield-alt"></i> Privileges</a>
+                    <a class="nav-link font-weight-bold mr-1" id="accessories" data-toggle="pill" role="tab"
+                       aria-selected="false"><i class="fas fa-paperclip"></i> Accessories</a>
+                    <a class="nav-link font-weight-bold mr-1" id="accounts" data-toggle="pill" role="tab"
+                       aria-selected="false"><i class="fas fa-bullseye"></i> Accounts</a>
                     <a class="nav-link font-weight-bold mr-1" id="recoding_devices" data-toggle="pill" role="tab"
                        aria-selected="false"><i class="fas fa-laptop-code"></i> Recoding Devices</a>
                 </c:if>
@@ -89,8 +93,6 @@
 <script src="js/datepicker.en.js"></script>
 <script src="js/toastr.js"></script>
 <script src="js/toastr_functions.js"></script>
-<script src="js/print.js"></script>
-<script src="js/printThis.js"></script>
 <script src="js/bootbox.all.min.js"></script>
 <script src="js/timeout_session.js"></script>
 <script src="js/filterTable.js"></script>
@@ -104,6 +106,7 @@
 <script src="js/drawDeviceChart.js"></script>
 <script src="js/jquery.contextMenu.min.js"></script>
 <script src="js/jquery.ui.position.min.js"></script>
+<script src="js/jQuery.print.min.js"></script>
 <script src="js/dashboard.js"></script>
 
 

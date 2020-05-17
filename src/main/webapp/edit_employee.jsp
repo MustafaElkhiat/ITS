@@ -54,7 +54,8 @@
                         <div class="input-group">
                             <select class="form-control region_" id="region_" name="region" required autofocus>
                                 <jsp:include page="region_options.jsp">
-                                    <jsp:param name="selected" value="${employee.locationDepartment.location.region.id}"/>
+                                    <jsp:param name="selected"
+                                               value="${employee.locationDepartment.location.region.id}"/>
                                 </jsp:include>
                             </select>
                             <c:if test="${P_1}">  <%-- 1 Add Region--%>
@@ -80,11 +81,22 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col">
+                        <jsp:include page="accessory_card.jsp"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <jsp:include page="account_card.jsp"/>
+                </div>
+            </div>
+            <div class="row">
                 <div class="offset-4 col-2">
                     <button type="reset" class="btn btn-secondary btn-full-width reset">Clear</button>
                 </div>
                 <div class="col-2">
-                    <button type="button" id="edit_employee_submit" class="btn btn-primary btn-full-width">Submit</button>
+                    <button type="button" id="edit_employee_submit" class="btn btn-primary btn-full-width">Submit
+                    </button>
                 </div>
             </div>
         </form>

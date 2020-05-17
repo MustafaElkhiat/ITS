@@ -155,6 +155,9 @@
                     <c:when test="${device.deviceType.id == 9}">
                         <jsp:include page="attendance_data.jsp"/>
                     </c:when>
+                    <c:when test="${device.deviceType.id == 13}">
+                        <jsp:include page="mobile_data.jsp"/>
+                    </c:when>
                 </c:choose>
 
             </div>
