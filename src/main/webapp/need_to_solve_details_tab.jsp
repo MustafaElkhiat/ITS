@@ -36,7 +36,7 @@
                             <td>${count}</td>
                             <td>${ticketsAssignedTo.ticket.id}</td>
                             <td>${ticketsAssignedTo.ticket.device.locationDepartment.location.region.abbreviation}-${ticketsAssignedTo.ticket.device.locationDepartment.location.abbreviation}-${ticketsAssignedTo.ticket.device.locationDepartment.department.abbreviation}-${ticketsAssignedTo.ticket.device.deviceType.abbreviation}-<fmt:formatNumber
-                                    type="number" minIntegerDigits="3" value="${ticketsClosed.device.deviceNumCode}"/></td>
+                                    type="number" minIntegerDigits="3" value="${ticketsAssignedTo.ticket.device.deviceNumCode}"/></td>
                             <td>${ticketsAssignedTo.ticket.problem}</td>
                             <td>${ticketsAssignedTo.ticket.subCategory.category.category}</td>
                             <td>${ticketsAssignedTo.ticket.subCategory.sub_category}</td>

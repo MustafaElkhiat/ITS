@@ -30,7 +30,6 @@
                         <th>Category<i class="fas float-left my-2"></i></th>
                         <th>Sub-Category<i class="fas float-left my-2"></i></th>
                         <th>Assigned To<i class="fas float-left my-2"></i></th>
-                        <th>Status<i class="fas float-left my-2"></i></th>
                     </tr>
                     </thead>
                     <tbody id="assign_to_table_body">
@@ -60,12 +59,11 @@
                             <td class="${current_status_bg} text-white">${ticketAssignedBy.ticket.currentStatus.status}</td>
                             <td>${ticketAssignedBy.ticket.id}</td>
                             <td>${ticketAssignedBy.ticket.device.locationDepartment.location.region.abbreviation}-${ticketAssignedBy.ticket.device.locationDepartment.location.abbreviation}-${ticketAssignedBy.ticket.device.locationDepartment.department.abbreviation}-${ticketAssignedBy.ticket.device.deviceType.abbreviation}-<fmt:formatNumber
-                                    type="number" minIntegerDigits="3" value="${ticketsClosed.device.deviceNumCode}"/></td>
+                                    type="number" minIntegerDigits="3" value="${ticketAssignedBy.ticket.device.deviceNumCode}"/></td>
                             <td>${ticketAssignedBy.ticket.problem}</td>
                             <td>${ticketAssignedBy.ticket.subCategory.category.category}</td>
                             <td>${ticketAssignedBy.ticket.subCategory.sub_category}</td>
                             <td>${ticketAssignedBy.assignedTo.name}</td>
-                            <td>${ticketAssignedBy.ticket.currentStatus.status}</td>
                         </tr>
                         <c:set var="count" value="${count+1}"/>
                     </c:forEach>

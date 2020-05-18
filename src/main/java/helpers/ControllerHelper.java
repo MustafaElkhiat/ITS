@@ -1338,32 +1338,55 @@ public class ControllerHelper extends HelperBase {
         return data;
     }
 
-    public Object getTicketNeedToCloseCount(User user) {
-        int count = 0;
-        List<Ticket> needToCloseTicketList = new ArrayList<>();
-        //User user  = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
+    /*
+        public Object getTicketNeedToCloseCount(User user) {
+            int count = 0;
+            List<Ticket> needToCloseTicketList = new ArrayList<>();
+            //User user  = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
 
-        //User user = (User) request.getSession().getAttribute("user");
-        if (user.getRole().getId() == 2) {
-            List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where TSUser = " + user.getId());
-            List<Ticket> solvedTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 4"); // 4 solved
-            //Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
-            List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + tsUserRegionList.get(0).getRegion().getId());
-            for (Location location : regionLocationList) {
-                List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
-                for (LocationDepartment locationDepartment : locationDepartmentList) {
-                    List<Device> regionDeviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
-                    for (Device device : regionDeviceList) {
-                        for (Ticket ticket : solvedTicketList) {
-                            if (device.getId() == ticket.getDevice().getId()) {
-                                count++;
+            //User user = (User) request.getSession().getAttribute("user");
+            if (user.getRole().getId() == 2) {
+                List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where TSUser = " + user.getId());
+                List<Ticket> solvedTicketList = hibernateHelper.retreiveData("from Ticket where currentStatus = 4"); // 4 solved
+                //Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
+                List<Location> regionLocationList = hibernateHelper.retreiveData("from Location where region = " + tsUserRegionList.get(0).getRegion().getId());
+                for (Location location : regionLocationList) {
+                    List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+                    for (LocationDepartment locationDepartment : locationDepartmentList) {
+                        List<Device> regionDeviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                        for (Device device : regionDeviceList) {
+                            for (Ticket ticket : solvedTicketList) {
+                                if (device.getId() == ticket.getDevice().getId()) {
+                                    count++;
+                                }
                             }
                         }
                     }
                 }
             }
+            return count;
         }
-        return count;
+    */
+    public Object getTicketNeedToCloseCount(User user) {
+        if (user.getRole().getId() == 2) {
+            List<TicketStatus> ticketSolvedList = new ArrayList<>();
+            Status solvedStatus = (Status) hibernateHelper.retreiveData(Status.class, (long) 4);
+            List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId());
+            System.out.println("(1): " + tsUserRegionList.size());
+            for (TSUserRegion tsUserRegion : tsUserRegionList) {
+                List<TSUserRegion> tsUserRegionList2 = hibernateHelper.retreiveData("from TSUserRegion where valid = true and region = " + tsUserRegion.getRegion().getId());
+                System.out.println("(2): " + tsUserRegionList.size());
+                for (TSUserRegion tsUserRegion2 : tsUserRegionList2) {
+                    ticketSolvedList.addAll(hibernateHelper.retreiveData("from TicketStatus where done = false and status = " + solvedStatus.getId() + " and TSUser = " + tsUserRegion2.getTSUser().getId()));
+
+                }
+            }
+            System.out.println("(3):" + ticketSolvedList.size());
+
+            return ticketSolvedList.size();
+        } else {
+            return 0;
+        }
     }
 
     public Object getTicketInProgressByUserCount(User user) {
@@ -1608,6 +1631,7 @@ public class ControllerHelper extends HelperBase {
             return 0;
         }
     }
+
     public long saveMobile() throws ParseException, IOException {
         Location location = (Location) hibernateHelper.retreiveData(Location.class, Long.valueOf(request.getParameter("location")));
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
