@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set value="1" var="count"/>
 <c:set value="" var="current_status_bg"/>
 <div class="card card-outline-primary">
@@ -58,7 +59,8 @@
                             <td>${count}</td>
                             <td class="${current_status_bg} text-white">${ticketAssignedBy.ticket.currentStatus.status}</td>
                             <td>${ticketAssignedBy.ticket.id}</td>
-                            <td>${ticketAssignedBy.ticket.device.locationDepartment.location.region.abbreviation}-${ticketAssignedBy.ticket.device.locationDepartment.location.abbreviation}-${ticketAssignedBy.ticket.device.locationDepartment.department.abbreviation}-${ticketAssignedBy.ticket.device.deviceType.abbreviation}-${ticketAssignedBy.ticket.device.device}</td>
+                            <td>${ticketAssignedBy.ticket.device.locationDepartment.location.region.abbreviation}-${ticketAssignedBy.ticket.device.locationDepartment.location.abbreviation}-${ticketAssignedBy.ticket.device.locationDepartment.department.abbreviation}-${ticketAssignedBy.ticket.device.deviceType.abbreviation}-<fmt:formatNumber
+                                    type="number" minIntegerDigits="3" value="${ticketsClosed.device.deviceNumCode}"/></td>
                             <td>${ticketAssignedBy.ticket.problem}</td>
                             <td>${ticketAssignedBy.ticket.subCategory.category.category}</td>
                             <td>${ticketAssignedBy.ticket.subCategory.sub_category}</td>

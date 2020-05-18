@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set value="1" var="count"/>
 <div class="card card-outline-warning">
     <div class="card-body">
@@ -34,7 +35,8 @@
                         <tr class="link-warning ticket_edit" ticket-id="${ticketsInProgress.ticket.id}">
                             <td>${count}</td>
                             <td>${ticketsInProgress.ticket.id}</td>
-                            <td>${ticketsInProgress.ticket.device.locationDepartment.location.region.abbreviation}-${ticketsInProgress.ticket.device.locationDepartment.location.abbreviation}-${ticketsInProgress.ticket.device.locationDepartment.department.abbreviation}-${ticketsInProgress.ticket.device.deviceType.abbreviation}-${ticketsInProgress.ticket.device.device}</td>
+                            <td>${ticketsInProgress.ticket.device.locationDepartment.location.region.abbreviation}-${ticketsInProgress.ticket.device.locationDepartment.location.abbreviation}-${ticketsInProgress.ticket.device.locationDepartment.department.abbreviation}-${ticketsInProgress.ticket.device.deviceType.abbreviation}-<fmt:formatNumber
+                                    type="number" minIntegerDigits="3" value="${ticketsClosed.device.deviceNumCode}"/></td>
                             <td>${ticketsInProgress.ticket.problem}</td>
                             <td>${ticketsInProgress.ticket.subCategory.category.category}</td>
                             <td>${ticketsInProgress.ticket.subCategory.sub_category}</td>
