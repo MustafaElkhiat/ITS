@@ -9,6 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set value="1" var="count"/>
+<c:set value="" var="current_status_bg"/>
 <div class="card card-outline-primary">
     <div class="card-body">
         <h5 class="card-title">Assigned To</h5>
@@ -21,6 +22,7 @@
                     <thead>
                     <tr class="table-bordered bg-lightGray">
                         <th>#<i class="fas float-left my-2"></i></th>
+                        <th>Current Status<i class="fas float-left my-2"></i></th>
                         <th>Ticket ID<i class="fas float-left my-2"></i></th>
                         <th>Device<i class="fas float-left my-2"></i></th>
                         <th>Problem<i class="fas float-left my-2"></i></th>
@@ -32,8 +34,29 @@
                     </thead>
                     <tbody id="assign_to_table_body">
                     <c:forEach items="${ticketsAssignedByList}" var="ticketAssignedBy">
+                        <c:choose>
+                            <c:when test="${ticketAssignedBy.ticket.currentStatus.id == 1}">
+                                <c:set value="bg-primary" var="current_status_bg"/>
+                            </c:when>
+                            <c:when test="${ticketAssignedBy.ticket.currentStatus.id == 2}">
+                                <c:set value="bg-warning" var="current_status_bg"/>
+                            </c:when>
+                            <c:when test="${ticketAssignedBy.ticket.currentStatus.id == 3}">
+                                <c:set value="bg-secondary" var="current_status_bg"/>
+                            </c:when>
+                            <c:when test="${ticketAssignedBy.ticket.currentStatus.id == 4}">
+                                <c:set value="bg-success" var="current_status_bg"/>
+                            </c:when>
+                            <c:when test="${ticketAssignedBy.ticket.currentStatus.id == 5}">
+                                <c:set value="bg-closed" var="current_status_bg"/>
+                            </c:when>
+
+                        </c:choose>
+
+
                         <tr class="ticket link" ticket-id="${ticketAssignedBy.ticket.id}">
                             <td>${count}</td>
+                            <td class="${current_status_bg} text-white">${ticketAssignedBy.ticket.currentStatus.status}</td>
                             <td>${ticketAssignedBy.ticket.id}</td>
                             <td>${ticketAssignedBy.ticket.device.locationDepartment.location.region.abbreviation}-${ticketAssignedBy.ticket.device.locationDepartment.location.abbreviation}-${ticketAssignedBy.ticket.device.locationDepartment.department.abbreviation}-${ticketAssignedBy.ticket.device.deviceType.abbreviation}-${ticketAssignedBy.ticket.device.device}</td>
                             <td>${ticketAssignedBy.ticket.problem}</td>
