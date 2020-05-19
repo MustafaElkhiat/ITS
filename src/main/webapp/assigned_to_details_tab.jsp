@@ -19,17 +19,17 @@
                 <jsp:param name="id" value="search_assign_to"/>
             </jsp:include>
             <div class="scroll devices_tab_table">
-                <table id="assign_to_table" class="table table-striped table-bordered" style="width:1500px;">
+                <table id="assign_to_table" class="table table-striped table-bordered" style="width:2000px;">
                     <thead>
                     <tr class="table-bordered bg-lightGray">
-                        <th>#<i class="fas float-left my-2"></i></th>
-                        <th>Current Status<i class="fas float-left my-2"></i></th>
-                        <th>Ticket ID<i class="fas float-left my-2"></i></th>
-                        <th>Device<i class="fas float-left my-2"></i></th>
-                        <th>Problem<i class="fas float-left my-2"></i></th>
-                        <th>Category<i class="fas float-left my-2"></i></th>
-                        <th>Sub-Category<i class="fas float-left my-2"></i></th>
-                        <th>Assigned To<i class="fas float-left my-2"></i></th>
+                        <th>#<i class="fas float-right"></i></th>
+                        <th>Current Status<i class="fas float-right"></i></th>
+                        <th>Ticket ID<i class="fas float-right"></i></th>
+                        <th>Device<i class="fas float-right"></i></th>
+                        <th>Problem<i class="fas float-right"></i></th>
+                        <th>Category<i class="fas float-right"></i></th>
+                        <th>Sub-Category<i class="fas float-right"></i></th>
+                        <th>Assigned To<i class="fas float-right"></i></th>
                     </tr>
                     </thead>
                     <tbody id="assign_to_table_body">
@@ -59,7 +59,8 @@
                             <td class="${current_status_bg} text-white">${ticketAssignedBy.ticket.currentStatus.status}</td>
                             <td>${ticketAssignedBy.ticket.id}</td>
                             <td>${ticketAssignedBy.ticket.device.locationDepartment.location.region.abbreviation}-${ticketAssignedBy.ticket.device.locationDepartment.location.abbreviation}-${ticketAssignedBy.ticket.device.locationDepartment.department.abbreviation}-${ticketAssignedBy.ticket.device.deviceType.abbreviation}-<fmt:formatNumber
-                                    type="number" minIntegerDigits="3" value="${ticketAssignedBy.ticket.device.deviceNumCode}"/></td>
+                                    type="number" minIntegerDigits="3"
+                                    value="${ticketAssignedBy.ticket.device.deviceNumCode}"/></td>
                             <td>${ticketAssignedBy.ticket.problem}</td>
                             <td>${ticketAssignedBy.ticket.subCategory.category.category}</td>
                             <td>${ticketAssignedBy.ticket.subCategory.sub_category}</td>
