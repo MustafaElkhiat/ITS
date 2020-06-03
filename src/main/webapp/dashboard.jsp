@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="css/all.min.css"/>
     <link rel="stylesheet" href="css/line-awesome.min.css"/>
     <link rel="stylesheet" href="css/Exo.css"/>
+    <link rel="stylesheet" href="css/print.css"/>
     <link rel="stylesheet" href="css/datepicker.min.css"/>
     <link rel="stylesheet" href="css/customCheckbox.css"/>
     <link rel="stylesheet" href="css/toastr.css"/>
@@ -26,6 +27,7 @@
     <link rel="stylesheet" href="css/floating-labels.css"/>
     <link rel="stylesheet" href="css/jquery.contextMenu.min.css"/>
     <link rel="stylesheet" href="css/paper.css"/>
+    <link rel="stylesheet" href="css/preloader.css"/>
     <link rel="stylesheet" href="css/custom.css"/>
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/loader.js"></script>
@@ -74,6 +76,10 @@
                     <a class="nav-link font-weight-bold mr-1" id="recoding_devices" data-toggle="pill" role="tab"
                        aria-selected="false"><i class="fas fa-laptop-code"></i> Recoding Devices</a>
                 </c:if>
+                <c:if test="${current_user.role.id == 6 || current_user.role.id == 2 || current_user.role.id == 1}">
+                    <a class="nav-link font-weight-bold mr-1" id="weekly" data-toggle="pill" role="tab"
+                       aria-selected="false"><i class="fas fa-clipboard-list"></i> Weekly Report</a>
+                </c:if>
 
                 <%-- <a class="nav-link font-weight-bold" id="waiting_list" data-toggle="pill" role="tab"
                     aria-selected="false"><i class="far fa-clipboard"></i> Waiting List</a>--%>
@@ -94,6 +100,9 @@
 <script src="js/toastr.js"></script>
 <script src="js/toastr_functions.js"></script>
 <script src="js/bootbox.all.min.js"></script>
+<script src="js/print_div.js"></script>
+<script src="js/print.js"></script>
+<script src="js/jQuery.print.min.js"></script>
 <script src="js/timeout_session.js"></script>
 <script src="js/filterTable.js"></script>
 <script src="js/sortTable.js"></script>
@@ -106,7 +115,6 @@
 <script src="js/drawDeviceChart.js"></script>
 <script src="js/jquery.contextMenu.min.js"></script>
 <script src="js/jquery.ui.position.min.js"></script>
-<script src="js/jQuery.print.min.js"></script>
 <script src="js/dashboard.js"></script>
 
 

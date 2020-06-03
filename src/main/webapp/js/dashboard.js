@@ -260,8 +260,44 @@ $(document).ready(function () {
         });
 
     });
+    $("#weekly").click(function () {
+        stopTimers();
+        $("#content_place").load('Directive', {d: 66}, function () {
 
+            $('#actual_date').datepicker({
+                onSelect: function (formattedDate, date, inst) {
+
+                    if (formattedDate.search("--") > 0) {
+                        $("#preview").load("preloader.jsp");
+                        var firstDate = formattedDate.slice(0, formattedDate.search("--"));
+                        var secondDate = formattedDate.slice(formattedDate.search("--") + 2, formattedDate.length);
+                        $("#preview").load("Directive", {
+                            d: 65,
+                            firstDate: firstDate,
+                            secondDate: secondDate
+                        }, function () {
+                            $(".card").hover(function () {
+                                $(this).find(".fa-print").parent().removeClass("d-none");
+
+                            }, function () {
+                                $(this).find(".fa-print").parent().addClass("d-none");
+                            });
+                            $(".fa-print").click(function () {
+                                $.print($(this).parent().parent().parent().parent().parent());
+                            });
+
+                        });
+                    }
+                }
+            });
+
+            $("#actual_date").click(function () {
+                $("#actual_date").val("");
+            });
+        });
+    });
     setupTimers();
+
 });
 
 var checkbox_accessories = function () {

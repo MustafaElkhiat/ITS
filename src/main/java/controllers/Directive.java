@@ -214,6 +214,12 @@ public class Directive extends HttpServlet {
                 case(64):
                     directiveHelper.goToEmployeeRelease();
                     break;
+                case(65):
+                    directiveHelper.goToWeeklyReportPreview();
+                    break;
+                case(66):
+                    directiveHelper.goToWeeklyReport();
+                    break;
             }
         }
     }

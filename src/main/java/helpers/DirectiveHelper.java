@@ -948,5 +948,46 @@ public class DirectiveHelper extends HelperBase {
 
     }
 
+    public void goToWeeklyReport() throws ServletException, IOException {
+        request.getRequestDispatcher("weekly_report.jsp").forward(request, response);
+    }
 
+    public void goToWeeklyReportPreview() throws ServletException, IOException {
+        List<Ticket> ticketList = new ArrayList<>();
+
+        List<TicketStatus> ticketStatusList = new ArrayList<>();
+        Region region = null;
+        String firstDate = request.getParameter("firstDate");
+        String secondDate = request.getParameter("secondDate");
+        System.out.println(firstDate + " -- " + secondDate);
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser =" + user.getId());
+        for (TSUserRegion tsUserRegion : tsUserRegionList) {
+            region = tsUserRegion.getRegion();
+            List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + tsUserRegion.getRegion().getId());
+            for (Location location : locationList) {
+                List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+                for (LocationDepartment locationDepartment : locationDepartmentList) {
+                    List<Device> deviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                    for (Device device : deviceList) {
+                        ticketList.addAll(hibernateHelper.retreiveData("from Ticket where device =" + device.getId() + " and startDate between '" + firstDate + "' and '" + secondDate + "'"));
+
+                    }
+                }
+            }
+        }
+        for (Ticket ticket : ticketList) {
+            if (ticket.getCurrentStatus().getId() == (long) 5) {
+                ticketStatusList.addAll(hibernateHelper.retreiveData("from TicketStatus where status  = 4 and ticket =" + ticket.getId()));
+            } else {
+                ticketStatusList.addAll(hibernateHelper.retreiveData("from TicketStatus where done = false and ticket =" + ticket.getId()));
+            }
+
+        }
+        System.out.println("ticketSize : " + ticketList.size());
+        System.out.println("ticketStatusSize : " + ticketStatusList.size());
+        request.setAttribute("region", region);
+        request.setAttribute("ticketList", ticketList);
+        request.setAttribute("ticketStatusList", ticketStatusList);
+        request.getRequestDispatcher("weekly_report_preview.jsp").forward(request, response);
+    }
 }
