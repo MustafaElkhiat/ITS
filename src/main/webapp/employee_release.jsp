@@ -12,7 +12,7 @@
 <jsp:include page="page_header.jsp">
     <jsp:param name="title" value="Release Employee"/>
 </jsp:include>
-<div id="section-to-print" class="mx-auto mt-3 no-margin-print">
+<div id="section-to-print" class="mx-auto mt-3 no-margin-print printable">
     <card class="card A4" style="border:black solid 1px;">
         <div class="card-body">
             <div class="row">

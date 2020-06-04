@@ -176,7 +176,7 @@ $(document).ready(function () {
     }
     var print_card = function () {
         $(".fa-print").click(function () {
-            $.print($(this).parent().parent().parent().parent());
+            $.print($(this).parent().parent().parent().parent().parent());
         });
     }
     $("#Privileges").click(function () {
