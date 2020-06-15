@@ -12,8 +12,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>ITS - Dashboard</title>
 
+    <link rel="shortcut icon" href="photos/logo-png.png">
+    <!--
     <link rel="shortcut icon" href="photos/favicon.ico" type="image/x-icon">
     <link rel="icon" href="photos/favicon.ico" type="image/x-icon">
+    -->
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/all.min.css"/>
     <link rel="stylesheet" href="css/line-awesome.min.css"/>
