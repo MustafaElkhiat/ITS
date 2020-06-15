@@ -18,6 +18,9 @@
 </c:if>
 <jsp:include page="page_header.jsp">
     <jsp:param name="title" value="Employees"/>
+    <jsp:param name="button" value="${P_8}"/>
+    <jsp:param name="button_id" value="add_employee"/>
+    <jsp:param name="button_title" value="<i class='fas fa-plus'></i> Add Employee"/>
 </jsp:include>
 <div class="card mt-3">
     <div class="card-body">

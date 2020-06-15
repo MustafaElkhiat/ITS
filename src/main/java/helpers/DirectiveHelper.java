@@ -857,6 +857,17 @@ public class DirectiveHelper extends HelperBase {
 
     }
 
+    public void goToAddEmployee() throws ServletException, IOException {
+        request = getUserPrivilege(user, request);
+        List<Accessory> accessoryList = hibernateHelper.retreiveData("from Accessory order by accessory");
+        List<Account> accountList = hibernateHelper.retreiveData("from Account order by account");
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
+        request.setAttribute("regionList", tsUserRegionList);
+        request.setAttribute("accessoryList", accessoryList);
+        request.setAttribute("accountList", accountList);
+
+        request.getRequestDispatcher("add_employee.jsp").forward(request, response);
+    }
     public void goToEditEmployee() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
         List<Accessory> accessoryList = hibernateHelper.retreiveData("from Accessory order by accessory");
@@ -891,6 +902,7 @@ public class DirectiveHelper extends HelperBase {
     public void goToAddPrivilege() throws ServletException, IOException {
         request.getRequestDispatcher("add_privilege.jsp").forward(request, response);
     }
+
 
     public void goToEditPrivilege() throws ServletException, IOException {
         Privilege privilege = (Privilege) hibernateHelper.retreiveData(Privilege.class, Long.valueOf(request.getParameter("privilege")));
