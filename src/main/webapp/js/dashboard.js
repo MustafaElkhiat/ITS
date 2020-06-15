@@ -1,3 +1,4 @@
+var documentTitle = "ITS - ";
 $(document).ready(function () {
     $("#logout_btn").click(function () {
         bootbox.confirm({
@@ -22,10 +23,12 @@ $(document).ready(function () {
         });
     });
     $("#dashboard").click(function () {
+        document.title = documentTitle + "Dashboard";
         stopTimers();
         $("#content_place").load('Directive', {d: 43});
     });
     $("#new_ticket").click(function () {
+        document.title = documentTitle + "New Ticket";
         stopTimers();
         $("#content_place").load('Directive', {d: 1}, function () {
             afterLoadingRegionSection();
@@ -33,6 +36,7 @@ $(document).ready(function () {
         });
     });
     $("#my_ticket").click(function () {
+        document.title = documentTitle + "My Tickets";
         stopTimers();
         var user = $("#current_user").val();
         $("#content_place").load('ticket_details.jsp', {user: user}, function () {
@@ -42,6 +46,7 @@ $(document).ready(function () {
         )
     });
     $("#devices").click(function () {
+        document.title = documentTitle + "Devices";
         stopTimers();
         $("#content_place").load('Directive', {d: 28}, function () {
             deviceTabsSearchSorting();
@@ -64,6 +69,7 @@ $(document).ready(function () {
         });
     });
     $("#users").click(function () {
+        document.title = documentTitle + "Users";
         stopTimers();
         $("#content_place").load('Directive', {d: 40}, function () {
             $("#search_user").searchTable("user_table_body");
@@ -105,12 +111,14 @@ $(document).ready(function () {
     });
 
     $("#employees").click(function () {
+        document.title = documentTitle + "Employees";
         stopTimers();
         $("#content_place").load('Directive', {d: 46}, function () {
             $("#search_employee").searchTable("employee_table_body");
             $("#employee_table").sortTableNow();
             $("#add_employee").click(function(){
                 $("#content_place").load('Directive', {d: 67}, function () {
+                    document.title = documentTitle + "Add Employee";
                     checkbox_accessories();
                     checkbox_accounts();
                     editEmployee();
@@ -131,6 +139,7 @@ $(document).ready(function () {
                                     d: 47,
                                     employee: $(this).attr("employee-id")
                                 }, function () {
+                                    document.title = documentTitle + "Edit Employee";
                                     checkbox_accessories();
                                     checkbox_accounts();
                                     editEmployee();
@@ -150,6 +159,7 @@ $(document).ready(function () {
                 });
             } else {
                 $(".edit_employee").click(function () {
+                    document.title = documentTitle + "Edit Employee";
                     $("#employees").removeClass("active");
                     $("#content_place").load('Directive', {d: 47, employee: $(this).attr("employee-id")}, function () {
                         checkbox_accessories();
@@ -168,6 +178,7 @@ $(document).ready(function () {
     });
 
     var release_employee = function (employee) {
+        document.title = documentTitle + "Release Employee";
         $("#content_place").load('Directive', {
             d: 64,
             employee: employee
@@ -188,6 +199,7 @@ $(document).ready(function () {
         });
     }
     $("#Privileges").click(function () {
+        document.title = documentTitle + "Privileges";
         stopTimers();
         $("#content_place").load('Directive', {d: 48}, function () {
             $("#search_privilege").searchTable("privilege_table_body");
@@ -202,6 +214,7 @@ $(document).ready(function () {
         });
     });
     $("#accessories").click(function () {
+        document.title = documentTitle + "Accessories";
         stopTimers();
         $("#content_place").load('Directive', {d: 59}, function () {
             $("#search_accessory").searchTable("accessory_table_body");
@@ -216,6 +229,7 @@ $(document).ready(function () {
         });
     });
     $("#accounts").click(function () {
+        document.title = documentTitle + "Accounts";
         stopTimers();
         $("#content_place").load('Directive', {d: 61}, function () {
             $("#search_account").searchTable("account_table_body");
@@ -269,6 +283,7 @@ $(document).ready(function () {
 
     });
     $("#weekly").click(function () {
+        document.title = documentTitle + "Weekly Report";
         stopTimers();
         $("#content_place").load('Directive', {d: 66}, function () {
 
@@ -343,6 +358,7 @@ var checkbox_accounts = function () {
     });
 }
 var add_device = function () {
+    document.title = documentTitle + "Add Device";
     $("#devices").removeClass("active");
     $("#content_place").load('Directive', {d: 31}, function () {
         $('#purchase_date').datepicker();
@@ -351,7 +367,7 @@ var add_device = function () {
     })
 }
 var add_accessory = function () {
-
+    document.title = documentTitle + "Add Accessory";
     $("#add_accessory_submit").click(function () {
         var form = $(this).parents('form:first');
         if ($(".needs-validation")[1].checkValidity() === true) {
@@ -380,7 +396,7 @@ var add_accessory = function () {
     });
 }
 var add_account = function () {
-
+    document.title = documentTitle + "Add Account";
     $("#add_account_submit").click(function () {
         var form = $(this).parents('form:first');
         if ($(".needs-validation")[1].checkValidity() === true) {
@@ -409,6 +425,7 @@ var add_account = function () {
     });
 }
 var add_privilege = function () {
+    document.title = documentTitle + "Add Privilege";
     $("#add_privilege_submit").click(function () {
         var form = $(this).parents('form:first');
         if ($(".needs-validation")[1].checkValidity() === true) {
@@ -438,6 +455,7 @@ var add_privilege = function () {
 }
 
 var edit_privilege = function () {
+    document.title = documentTitle + "Edit Privilege";
     $("#edit_privilege_submit").click(function () {
         var form = $(this).parents('form:first');
         if ($(".needs-validation")[1].checkValidity() === true) {
@@ -891,6 +909,7 @@ var resetForm = function () {
 }
 
 var editEmployee = function () {
+
     $("#edit_employee_submit").click(function () {
         var form = $(this).parents('form:first');
         if ($(".needs-validation")[9].checkValidity() === true) {
@@ -969,6 +988,7 @@ var editEmployee = function () {
 }
 
 var addUser = function () {
+    document.title = documentTitle + "Add User";
     $("#new_user_submit").click(function () {
         var form = $(this).parents('form:first');
         if ($(".needs-validation")[1].checkValidity() === true) {
@@ -1047,6 +1067,7 @@ var addUser = function () {
 }
 
 var editUser = function () {
+    document.title = documentTitle + "Edit User";
     $("#edit_user_submit").click(function () {
         var form = $(this).parents('form:first');
         if ($(".needs-validation")[1].checkValidity() === true) {

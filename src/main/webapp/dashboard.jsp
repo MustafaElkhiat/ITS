@@ -10,7 +10,7 @@
 <html dir="ltr">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>ITS</title>
+    <title>ITS - Dashboard</title>
 
     <link rel="shortcut icon" href="photos/favicon.ico" type="image/x-icon">
     <link rel="icon" href="photos/favicon.ico" type="image/x-icon">
