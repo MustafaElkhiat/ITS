@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="css/jquery.contextMenu.min.css"/>
     <link rel="stylesheet" href="css/paper.css"/>
     <link rel="stylesheet" href="css/preloader.css"/>
+    <link rel="stylesheet" href="css/FAB.css"/>
     <link rel="stylesheet" href="css/custom.css"/>
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/loader.js"></script>
@@ -46,7 +47,7 @@
 
 <div class="container-fluid mt-4 pt-5">
     <div class="row">
-        <nav class="col-2 d-none d-block bg-light sidebar sidebar-sticky no-print ">
+        <nav id="sidebar_menu" class="col-2 d-none d-block bg-light sidebar sidebar-sticky no-print ">
 
             <div class="nav flex-column mt-4 nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link font-weight-bold mr-1 active" id="dashboard" data-toggle="pill" role="tab"
@@ -93,6 +94,13 @@
             <div id="content_place" class="mx-3 no-margin-print pt-2">
                 <jsp:include page="dashboard_details.jsp"/>
             </div>
+        </div>
+    </div>
+    <div class="btn-group-fab" role="group" aria-label="FAB Menu">
+        <div>
+            <button id="fab_btn" type="button" class="btn btn-main btn-primary has-tooltip" data-placement="right" title="Hide Menu"><i
+                    class="fa fa-bars"></i></button>
+
         </div>
     </div>
 </div>

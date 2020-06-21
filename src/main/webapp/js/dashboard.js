@@ -319,6 +319,19 @@ $(document).ready(function () {
             });
         });
     });
+    $("#fab_btn").click(function () {
+        if ($("#sidebar_menu").hasClass("d-block")) {
+            $("#sidebar_menu").removeClass("d-block");
+            $("#content_place").parent().removeClass("col-10");
+            $("#content_place").parent().addClass("col-12");
+            $(this).attr("title","Show Menu");
+        } else {
+            $("#sidebar_menu").addClass("d-block");
+            $("#content_place").parent().addClass("col-10");
+            $("#content_place").parent().removeClass("col-12");
+            $(this).attr("title","Hide Menu");
+        }
+    });
     setupTimers();
 
 });
