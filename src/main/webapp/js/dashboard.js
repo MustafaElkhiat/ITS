@@ -1,27 +1,6 @@
 var documentTitle = "ITS - ";
 $(document).ready(function () {
-    $("#logout_btn").click(function () {
-        bootbox.confirm({
-            title: "Log out",
-            message: "Are you sure you want to sign out?",
-            closeButton: false,
-            buttons: {
-                cancel: {
-                    label: '<i class="fa fa-times"></i> Cancel',
-                    className: 'btn-danger'
-                },
-                confirm: {
-                    label: '<i class="fa fa-check"></i> Confirm',
-                    className: 'btn-success'
-                }
-            },
-            callback: function (result) {
-                if (result) {
-                    $("#logout_form").submit();
-                }
-            }
-        });
-    });
+    logout();
     $("#dashboard").click(function () {
         document.title = documentTitle + "Dashboard";
         stopTimers();
@@ -1174,7 +1153,7 @@ var loadRegionDevicesRatioSection = function () {
 var clearClass = function (Class) {
     $("." + Class).empty();
 }
-var resetPassword = function (user) {
+/*var resetPassword = function (user) {
     $.ajax({
         url: "Controller",
         data: {
@@ -1212,4 +1191,4 @@ var resetPasswordDialog = function (user) {
             }
         }
     });
-}
+}*/

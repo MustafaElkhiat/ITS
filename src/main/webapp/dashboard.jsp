@@ -126,6 +126,7 @@
 <script src="js/drawDeviceChart.js"></script>
 <script src="js/jquery.contextMenu.min.js"></script>
 <script src="js/jquery.ui.position.min.js"></script>
+<script src="js/navbarFunctions.js"></script>
 <script src="js/dashboard.js"></script>
 
 

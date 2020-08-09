@@ -10,14 +10,18 @@
 <html dir="ltr">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>ITS</title>
+    <title>ITS - Dashboard</title>
     <base href="/ITS/" target="_blank">
+    <link rel="shortcut icon" href="photos/logo-png.png">
+    <!--
     <link rel="shortcut icon" href="photos/favicon.ico" type="image/x-icon">
     <link rel="icon" href="photos/favicon.ico" type="image/x-icon">
+    -->
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/all.min.css"/>
     <link rel="stylesheet" href="css/line-awesome.min.css"/>
     <link rel="stylesheet" href="css/Exo.css"/>
+    <link rel="stylesheet" href="css/toastr.css"/>
     <link rel="stylesheet" href="css/google_chart_tooltip.css"/>
     <link rel="stylesheet" href="css/google_chart_util.css"/>
     <link rel="stylesheet" href="css/floating-labels.css"/>
@@ -117,6 +121,13 @@
 <script src="js/drawDeviceChart.js"></script>
 <script src="js/drawTicketPerTimeChart.js"></script>
 <script src="js/drawTicketBarChart.js"></script>
-
+<script src="js/changePassword.js"></script>
+<script src="js/toastr.js"></script>
+<script src="js/toastr_functions.js"></script>
+<script src="js/bootbox.all.min.js"></script>
+<script src="js/navbarFunctions.js"></script>
+<script>
+    logout();
+</script>
 </body>
 </html>
