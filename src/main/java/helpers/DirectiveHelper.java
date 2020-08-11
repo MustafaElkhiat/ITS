@@ -859,10 +859,13 @@ public class DirectiveHelper extends HelperBase {
 
     public void goToAddEmployee() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
+        List<Department> departmentList = hibernateHelper.retreiveData("from Department order by department");
+
         List<Accessory> accessoryList = hibernateHelper.retreiveData("from Accessory order by accessory");
         List<Account> accountList = hibernateHelper.retreiveData("from Account order by account");
         List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
         request.setAttribute("regionList", tsUserRegionList);
+        request.setAttribute("departmentList", departmentList);
         request.setAttribute("accessoryList", accessoryList);
         request.setAttribute("accountList", accountList);
 

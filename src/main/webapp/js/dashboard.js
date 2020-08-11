@@ -95,9 +95,10 @@ $(document).ready(function () {
         $("#content_place").load('Directive', {d: 46}, function () {
             $("#search_employee").searchTable("employee_table_body");
             $("#employee_table").sortTableNow();
-            $("#add_employee").click(function(){
+            $("#add_employee").click(function () {
                 $("#content_place").load('Directive', {d: 67}, function () {
                     document.title = documentTitle + "Add Employee";
+                    $("#location_section,#department_section").empty();
                     checkbox_accessories();
                     checkbox_accounts();
                     editEmployee();
@@ -303,12 +304,12 @@ $(document).ready(function () {
             $("#sidebar_menu").removeClass("d-block");
             $("#content_place").parent().removeClass("col-10");
             $("#content_place").parent().addClass("col-12");
-            $(this).attr("title","Show Menu");
+            $(this).attr("title", "Show Menu");
         } else {
             $("#sidebar_menu").addClass("d-block");
             $("#content_place").parent().addClass("col-10");
             $("#content_place").parent().removeClass("col-12");
-            $(this).attr("title","Hide Menu");
+            $(this).attr("title", "Hide Menu");
         }
     });
     setupTimers();
