@@ -16,7 +16,7 @@
 <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
 
 
-    <img src="photos/New%20Logo/sescotrans_logo.png" width="160" height="59" alt="" mr-3>
+    <img src="photos/New%20Logo/sescotrans_logo.png" width="160" height="59" alt="" class="ml-3">
     <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
