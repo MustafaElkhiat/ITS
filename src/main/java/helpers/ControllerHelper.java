@@ -6,7 +6,6 @@ import elements.*;
 import login.elements.Role;
 import login.elements.User;
 
-import javax.json.Json;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -1367,7 +1366,7 @@ public class ControllerHelper extends HelperBase {
             return count;
         }
     */
-    public Object getTicketNeedToCloseCount(User user) {
+    /*public Object getTicketNeedToCloseCount(User user) {
         if (user.getRole().getId() == 2) {
             List<TicketStatus> ticketSolvedList = new ArrayList<>();
             Status solvedStatus = (Status) hibernateHelper.retreiveData(Status.class, (long) 4);
@@ -1382,6 +1381,30 @@ public class ControllerHelper extends HelperBase {
                 }
             }
             System.out.println("(3):" + ticketSolvedList.size());
+
+            return ticketSolvedList.size();
+        } else {
+            return 0;
+        }
+    }*/
+
+    public Object getTicketNeedToCloseCount(User user) {
+        if (user.getRole().getId() == 2) {
+            List<TicketStatus> ticketSolvedList = new ArrayList<>();
+            Status solvedStatus = (Status) hibernateHelper.retreiveData(Status.class, (long) 4);
+            List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId());
+            for (TSUserRegion tsUserRegion : tsUserRegionList) {
+                List<Location> locationList = hibernateHelper.retreiveData("From Location where region = " + tsUserRegion.getRegion().getId());
+                for (Location location : locationList) {
+                    List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+                    for (LocationDepartment locationDepartment : locationDepartmentList) {
+                        List<Device> deviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                        for (Device device : deviceList) {
+                            ticketSolvedList.addAll(hibernateHelper.retreiveData("From Ticket where done = false and currentStatus =" + solvedStatus.getId() + " and device =" + device.getId()));
+                        }
+                    }
+                }
+            }
 
             return ticketSolvedList.size();
         } else {

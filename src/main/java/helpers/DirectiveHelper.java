@@ -5,7 +5,6 @@ import login.elements.Role;
 import login.elements.User;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -245,7 +244,7 @@ public class DirectiveHelper extends HelperBase {
         return hibernateHelper.retreiveData("from Ticket where done = false and solvedBy = " + user.getId());
     }
 
-    private List getTicketNeedToClose(Region region) {
+    /*private List getTicketNeedToClose(Region region) {
         Status solvedStatus = (Status) hibernateHelper.retreiveData(Status.class, (long) 4);
         List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where region = " + region.getId());
         List<TicketStatus> ticketSolvedList = new ArrayList<>();
@@ -254,7 +253,23 @@ public class DirectiveHelper extends HelperBase {
 
         }
         return ticketSolvedList;
+    }*/
+    private List getTicketNeedToClose(Region region) {
+        Status solvedStatus = (Status) hibernateHelper.retreiveData(Status.class, (long) 4);
+        List<Ticket> ticketSolvedList = new ArrayList<>();
+        List<Location> locationList = hibernateHelper.retreiveData("From Location where region = " + region.getId());
+        for (Location location : locationList) {
+            List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+            for (LocationDepartment locationDepartment : locationDepartmentList) {
+                List<Device> deviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                for (Device device : deviceList) {
+                    ticketSolvedList.addAll(hibernateHelper.retreiveData("From Ticket where done = false and currentStatus =" + solvedStatus.getId() + " and device =" + device.getId()));
+                }
+            }
+        }
+        return ticketSolvedList;
     }
+
 
     private List getTicketsClosedByUser(User user) {
         return hibernateHelper.retreiveData("from Ticket where done = true and (solvedBy = " + user.getId() + " or closedBy = " + user.getId() + ")");
@@ -871,6 +886,7 @@ public class DirectiveHelper extends HelperBase {
 
         request.getRequestDispatcher("add_employee.jsp").forward(request, response);
     }
+
     public void goToEditEmployee() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
         List<Accessory> accessoryList = hibernateHelper.retreiveData("from Accessory order by accessory");

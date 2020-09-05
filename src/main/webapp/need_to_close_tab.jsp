@@ -14,7 +14,7 @@
         <c:if test="${fn:length(ticketsSolvedList) > 0}">
             <c:forEach items="${ticketsSolvedList}" var="ticketsSolved">
                 <button type="button" class="btn btn-outline-info ticket_edit mt-1"
-                        ticket-id="${ticketsSolved.ticket.id}">Ticket ID ${ticketsSolved.ticket.id}</button>
+                        ticket-id="${ticketsSolved.id}">Ticket ID ${ticketsSolved.id}</button>
             </c:forEach>
         </c:if>
     </div>

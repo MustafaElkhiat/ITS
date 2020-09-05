@@ -31,15 +31,15 @@
                     </thead>
                     <tbody id="need_to_close_table_body">
                     <c:forEach items="${ticketsSolvedList}" var="ticketsSolved" varStatus="loop">
-                        <tr class="ticket link ticket_edit" ticket-id="${ticketsSolved.ticket.id}">
+                        <tr class="ticket link ticket_edit" ticket-id="${ticketsSolved.id}">
                             <td>${loop.count}</td>
-                            <td>${ticketsSolved.ticket.id}</td>
-                            <td>${ticketsSolved.ticket.device.locationDepartment.location.region.abbreviation}-${ticketsSolved.ticket.device.locationDepartment.location.abbreviation}-${ticketsSolved.ticket.device.locationDepartment.department.abbreviation}-${ticketsSolved.ticket.device.deviceType.abbreviation}-<fmt:formatNumber
-                                    type="number" minIntegerDigits="3" value="${ticketsSolved.ticket.device.deviceNumCode}"/></td>
-                            <td>${ticketsSolved.ticket.problem}</td>
-                            <td>${ticketsSolved.ticket.subCategory.category.category}</td>
-                            <td>${ticketsSolved.ticket.subCategory.sub_category}</td>
-                            <td>${ticketsSolved.TSUser.name}</td>
+                            <td>${ticketsSolved.id}</td>
+                            <td>${ticketsSolved.device.locationDepartment.location.region.abbreviation}-${ticketsSolved.device.locationDepartment.location.abbreviation}-${ticketsSolved.device.locationDepartment.department.abbreviation}-${ticketsSolved.device.deviceType.abbreviation}-<fmt:formatNumber
+                                    type="number" minIntegerDigits="3" value="${ticketsSolved.device.deviceNumCode}"/></td>
+                            <td>${ticketsSolved.problem}</td>
+                            <td>${ticketsSolved.subCategory.category.category}</td>
+                            <td>${ticketsSolved.subCategory.sub_category}</td>
+                            <td>${ticketsSolved.solvedBy.name}</td>
                         </tr>
                     </c:forEach>
                     </tbody>
