@@ -12,7 +12,7 @@
     <c:if test="${loop.index % 3 == 0}">
         <div class="row">
     </c:if>
-    <jsp:include page="/user_charts_view.jsp">
+    <jsp:include page="/charts/user_charts_view.jsp">
         <jsp:param name="user" value="${userRegion.TSUser.id}"/>
     </jsp:include>
 

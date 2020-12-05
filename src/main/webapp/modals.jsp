@@ -38,7 +38,7 @@
                         <div class="input-group">
                             <select class="form-control" id="select_region_" name="select_region" required
                                     autofocus>
-                                <jsp:include page="region_options.jsp"/>
+                                <jsp:include page="select_options/region_options.jsp"/>
                             </select>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                         <label>Department</label>
                         <div class="input-group">
                             <select class="form-control department_select" id="department_select" name="department" required autofocus>
-                                <jsp:include page="department_options.jsp"/>
+                                <jsp:include page="select_options/department_options.jsp"/>
                             </select>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                                 <div class="input-group">
                                     <select class="form-control region_" id="region_select" name="region" required
                                             autofocus>
-                                        <jsp:include page="region_options.jsp"/>
+                                        <jsp:include page="select_options/region_options.jsp"/>
                                     </select>
                                     <c:if test="${P_1}">
                                         <div class="input-group-append">
@@ -414,7 +414,7 @@
                         <div class="input-group">
                             <select class="form-control" id="select_category_" name="select_categroy_" required
                                     autofocus>
-                                <jsp:include page="category_options.jsp"/>
+                                <jsp:include page="select_options/category_options.jsp"/>
                             </select>
                         </div>
                     </div>
@@ -511,7 +511,7 @@
                                 <div class="input-group">
                                     <select class="form-control region_" id="region_select_employee" name="region" required
                                             autofocus>
-                                        <jsp:include page="region_options.jsp"/>
+                                        <jsp:include page="select_options/region_options.jsp"/>
                                     </select>
                                     <c:if test="${P_1}">
                                         <div class="input-group-append">

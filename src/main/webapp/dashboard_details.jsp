@@ -12,7 +12,7 @@
     <jsp:param name="title" value="Dashboard   From 2020-02-25 - Until Now"/>
 </jsp:include>
 <c:if test="${current_user.role.id != 1 && current_user.role.id !=3}">
-    <jsp:include page="ticket_section.jsp">
+    <jsp:include page="sections/ticket_section.jsp">
         <jsp:param name="user" value="${current_user.id}"/>
     </jsp:include>
 </c:if>

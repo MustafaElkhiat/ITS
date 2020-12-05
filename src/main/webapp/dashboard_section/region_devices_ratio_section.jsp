@@ -11,7 +11,7 @@
 <c:if test="${current_user.role.id == 1 || current_user.role.id == 3 || current_user.role.id == 6}">
     <div class="row">
 
-        <jsp:include page="/device_charts_view.jsp">
+        <jsp:include page="/charts/device_charts_view.jsp">
             <jsp:param name="region" value="ALL"/>
             <jsp:param name="regionAbb" value="ALL"/>
             <jsp:param name="regionT" value="All Regions"/>
@@ -24,7 +24,7 @@
     <c:if test="${loop.index % 3 == 0}">
         <div class="row">
     </c:if>
-    <jsp:include page="/device_charts_view.jsp">
+    <jsp:include page="/charts/device_charts_view.jsp">
         <jsp:param name="region" value="${userRegion.region.id}"/>
         <jsp:param name="regionAbb" value="${userRegion.region.abbreviation}"/>
         <jsp:param name="regionT" value="${userRegion.region.region}"/>

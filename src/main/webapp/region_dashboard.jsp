@@ -74,15 +74,15 @@
                 <div class="card mt-3">
                     <div class="card-body">
                         <div class="row">
-                            <jsp:include page="ticket_per_time.jsp">
+                            <jsp:include page="new_ticket/ticket_per_time.jsp">
                                 <jsp:param name="region" value="${region.id}"/>
                             </jsp:include>
-                            <jsp:include page="region_charts_view.jsp">
+                            <jsp:include page="charts/region_charts_view.jsp">
                                 <jsp:param name="region" value="${region.id}"/>
                                 <jsp:param name="regionAbb" value="${region.abbreviation}"/>
                                 <jsp:param name="regionT" value="${region.region}"/>
                             </jsp:include>
-                            <jsp:include page="device_charts_view.jsp">
+                            <jsp:include page="charts/device_charts_view.jsp">
                                 <jsp:param name="region" value="${region.id}"/>
                                 <jsp:param name="regionAbb" value="${region.abbreviation}"/>
                                 <jsp:param name="regionT" value="${region.region}"/>
@@ -93,14 +93,14 @@
                 <div class="card mt-3">
                     <div class="card-body">
                         <h5 class="card-title">L2 Engineers Ticket Ratio</h5>
-                        <jsp:include page="ticket_bar_chart.jsp">
+                        <jsp:include page="charts/ticket_bar_chart.jsp">
                             <jsp:param name="region" value="${region.id}"/>
                         </jsp:include>
                         <c:forEach items="${userRegions}" var="userRegion" varStatus="loop">
                             <c:if test="${loop.index % 3 == 0}">
                                 <div class="row">
                             </c:if>
-                            <jsp:include page="user_charts_view.jsp">
+                            <jsp:include page="charts/user_charts_view.jsp">
                                 <jsp:param name="user" value="${userRegion.TSUser.id}"/>
                             </jsp:include>
 
