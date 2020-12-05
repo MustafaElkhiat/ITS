@@ -486,7 +486,8 @@ public class DirectiveHelper extends HelperBase {
         DeviceType NVRType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 7);
         DeviceType DVRType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 3);
         DeviceType APType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 12);
-        DeviceType mobType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 13);
+        DeviceType rackType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 14);
+        DeviceType handheldType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, (long) 15);
         List<PC> deviceList = new ArrayList<>();
         List<Printer> printerList = new ArrayList<>();
         List<PBX> pbxList = new ArrayList<>();
@@ -500,6 +501,8 @@ public class DirectiveHelper extends HelperBase {
         List<Device> cameraList = new ArrayList<>();
         List<Device> APList = new ArrayList<>();
         List<Mobile> mobList = new ArrayList<>();
+        List<Device> rackList = new ArrayList<>();
+        List<Device> handheldList = new ArrayList<>();
         for (TSUserRegion tsUserRegion : tsUserRegionList) {
             System.out.println(tsUserRegion.getRegion().getRegion());
             for (Location location : locationList) {
@@ -520,6 +523,8 @@ public class DirectiveHelper extends HelperBase {
                         cameraList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType =" + cameraType.getId()));
                         APList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + " and deviceType =" + APType.getId()));
                         mobList.addAll(hibernateHelper.retreiveData("from Mobile where locationDepartment = " + locationDepartment.getId()));
+                        rackList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + "and deviceType =" + rackType.getId()));
+                        handheldList.addAll(hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId() + "and deviceType =" + handheldType.getId()));
                     }
                 }
             }
@@ -555,6 +560,8 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("DVRList", DVRList);
         request.setAttribute("APList", APList);
         request.setAttribute("mobList", mobList);
+        request.setAttribute("rackList", rackList);
+        request.setAttribute("handheldList", handheldList);
         request.getRequestDispatcher("devices.jsp").forward(request, response);
     }
 

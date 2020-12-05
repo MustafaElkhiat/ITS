@@ -70,7 +70,14 @@
                 <a class="nav-link bg-primary red-active" id="mob-tab" data-toggle="tab" href="#mob" role="tab" aria-controls="contact"
                    aria-selected="false">Mobile <span class="badge badge-light">${fn:length(mobList)}</span></a>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link bg-primary red-active" id="rack-tab" data-toggle="tab" href="#rack" role="tab" aria-controls="contact"
+                   aria-selected="false">Rack <span class="badge badge-light">${fn:length(rackList)}</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link bg-primary red-active" id="handheld-tab" data-toggle="tab" href="#handheld" role="handheld" aria-controls="contact"
+                   aria-selected="false">Handheld <span class="badge badge-light">${fn:length(handheldList)}</span></a>
+            </li>
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade" id="PC" role="tabpanel" aria-labelledby="PC-tab">
@@ -111,6 +118,12 @@
             </div>
             <div class="tab-pane fade" id="mob" role="tabpanel" aria-labelledby="mob-tab">
                 <jsp:include page="mobile_tab.jsp"/>
+            </div>
+            <div class="tab-pane fade" id="rack" role="tabpanel" aria-labelledby="rack-tab">
+                <jsp:include page="rack_tab.jsp"/>
+            </div>
+            <div class="tab-pane fade" id="handheld" role="tabpanel" aria-labelledby="handheld-tab">
+                <jsp:include page="handheld_tab.jsp"/>
             </div>
         </div>
 

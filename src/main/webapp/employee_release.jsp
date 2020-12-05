@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="mr-auto ml-3">
-                    <img src="photos/sescotranspng-160.png" width="160" height="59" alt="">
+                    <img src="photos/New%20Logo/sescotrans_logo.png" width="160" height="59" alt="">
                 </div>
                 <div class="ml-auto mr-3">
                     <img src="photos/TS.PNG" width="160" height="59" alt="">
