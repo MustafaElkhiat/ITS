@@ -18,7 +18,7 @@ $(document).ready(function () {
         document.title = documentTitle + "My Tickets";
         stopTimers();
         var user = $("#current_user").val();
-        $("#content_place").load('ticket_details.jsp', {user: user}, function () {
+        $("#content_place").load('Directive', {d: 69}, function () {
                 $("#search_REF").searchTable("table_REF");
                 $("#mytable_REF").sortTableNow();
             }
@@ -297,6 +297,15 @@ $(document).ready(function () {
             $("#actual_date").click(function () {
                 $("#actual_date").val("");
             });
+        });
+    });
+    $("#opened_tickets").click(function () {
+        document.title = documentTitle + "Opened Ticket";
+        stopTimers();
+        $("#content_place").load('Directive', {d: 68}, function () {
+            $("#search_opened").searchTable("opened_table_body");
+            $("#opened_table").sortTableNow();
+            ticket_edit();
         });
     });
     $("#fab_btn").click(function () {
@@ -734,28 +743,28 @@ var afterLoadingActionSection = function (isCreated) {
     });
     $("#in_progress_btn").click(function () {
         setStatusValue($(this).attr('status_value'));
-        $("#action_detail_section").load('progress_in_section.jsp', function () {
+        $("#action_detail_section").load('sections/progress_in_section.jsp', function () {
             action_(isCreated)
         });
 
     });
     $("#pending_btn").click(function () {
         setStatusValue($(this).attr('status_value'));
-        $("#action_detail_section").load('pending_section.jsp', function () {
+        $("#action_detail_section").load('sections/pending_section.jsp', function () {
             action_(isCreated)
         });
 
     });
     $("#solved_btn").click(function () {
         setStatusValue($(this).attr('status_value'));
-        $("#action_detail_section").load('solved_section.jsp', function () {
+        $("#action_detail_section").load('sections/solved_section.jsp', function () {
             action_(isCreated)
         });
 
     });
     $("#closed_btn").click(function () {
         setStatusValue($(this).attr('status_value'));
-        $("#action_detail_section").load('closed_section.jsp', function () {
+        $("#action_detail_section").load('sections/closed_section.jsp', function () {
             action_(isCreated)
         });
 

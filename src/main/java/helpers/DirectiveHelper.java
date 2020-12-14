@@ -41,7 +41,7 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("categoryList", categoryList);
         request.setAttribute("departmentList", departmentList);
 
-        request.getRequestDispatcher("new_ticket.jsp").forward(request, response);
+        request.getRequestDispatcher("new_ticket/new_ticket.jsp").forward(request, response);
     }
 
     public void goToLocationSection() throws ServletException, IOException {
@@ -49,7 +49,7 @@ public class DirectiveHelper extends HelperBase {
         Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
         List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + region.getId() + " order by location");
         request.setAttribute("locationList", locationList);
-        request.getRequestDispatcher("location_section.jsp").forward(request, response);
+        request.getRequestDispatcher("sections/location_section.jsp").forward(request, response);
     }
 
     public void goToDepartmentSection() throws ServletException, IOException {
@@ -63,14 +63,20 @@ public class DirectiveHelper extends HelperBase {
             departmentList.add(locationDepartment.getDepartment());
         }
         request.setAttribute("departmentList", departmentList);
-        request.getRequestDispatcher("department_section.jsp").forward(request, response);
+        request.getRequestDispatcher("sections/department_section.jsp").forward(request, response);
+    }
+
+    public void goToMyTickets() throws ServletException, IOException {
+        request = getUserPrivilege(user, request);
+        request.setAttribute("user", user);
+        request.getRequestDispatcher("new_ticket/ticket_details.jsp").forward(request, response);
     }
 
     public void goToDeviceTypeSection() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
         List<DeviceType> deviceTypeList = hibernateHelper.retreiveData("from DeviceType order by deviceType");
         request.setAttribute("deviceTypeList", deviceTypeList);
-        request.getRequestDispatcher("device_type_section.jsp").forward(request, response);
+        request.getRequestDispatcher("sections/device_type_section.jsp").forward(request, response);
     }
 
     public void goToDeviceSection() throws ServletException, IOException {
@@ -81,26 +87,26 @@ public class DirectiveHelper extends HelperBase {
         List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location =" + location.getId() + " and department = " + department.getId());
         List<Device> deviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartmentList.get(0).getId() + " and deviceType = " + deviceType.getId());
         request.setAttribute("deviceList", deviceList);
-        request.getRequestDispatcher("device_section.jsp").forward(request, response);
+        request.getRequestDispatcher("sections/device_section.jsp").forward(request, response);
     }
 
     public void goToDeviceInfo() throws ServletException, IOException {
         Device device = (Device) hibernateHelper.retreiveData(Device.class, Long.valueOf(request.getParameter("device")));
         request.setAttribute("device", device);
-        request.getRequestDispatcher("device_info.jsp").forward(request, response);
+        request.getRequestDispatcher("new_ticket/device_info.jsp").forward(request, response);
     }
 
     public void goToRegionOptions() throws ServletException, IOException {
         List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId());
         request.setAttribute("regionList", tsUserRegionList);
-        request.getRequestDispatcher("region_options.jsp").forward(request, response);
+        request.getRequestDispatcher("select_options/region_options.jsp").forward(request, response);
     }
 
 
     public void goToOSOptions() throws ServletException, IOException {
         List<OS> osList = hibernateHelper.retreiveData("from OS order by OS");
         request.setAttribute("osList", osList);
-        request.getRequestDispatcher("os_options.jsp").forward(request, response);
+        request.getRequestDispatcher("select_options/os_options.jsp").forward(request, response);
     }
 
     public void goToLocationOptions() throws ServletException, IOException {
@@ -108,7 +114,7 @@ public class DirectiveHelper extends HelperBase {
         Region region = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(request.getParameter("region")));
         List<Location> locationList = hibernateHelper.retreiveData("from Location where region = " + region.getId() + " order by location");
         request.setAttribute("locationList", locationList);
-        request.getRequestDispatcher("location_options.jsp").forward(request, response);
+        request.getRequestDispatcher("select_options/location_options.jsp").forward(request, response);
     }
 
     public void goToDepartmentOptions() throws ServletException, IOException {
@@ -122,13 +128,13 @@ public class DirectiveHelper extends HelperBase {
         }
         request.setAttribute("departmentList", departmentList);
         //response.sendRedirect(");
-        request.getRequestDispatcher("department_options.jsp").forward(request, response);
+        request.getRequestDispatcher("select_options/department_options.jsp").forward(request, response);
     }
 
     public void goToDeviceTypeOptions() throws ServletException, IOException {
         List<DeviceType> deviceTypeList = hibernateHelper.retreiveData("from DeviceType order by deviceType");
         request.setAttribute("deviceTypeList", deviceTypeList);
-        request.getRequestDispatcher("device_type_options.jsp").forward(request, response);
+        request.getRequestDispatcher("select_options/device_type_options.jsp").forward(request, response);
     }
 
     public void goToDeviceOptions() throws ServletException, IOException {
@@ -136,33 +142,33 @@ public class DirectiveHelper extends HelperBase {
         DeviceType deviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, Long.valueOf(request.getParameter("device_type")));
         List<Device> deviceList = hibernateHelper.retreiveData("from Device where department = " + department.getId() + " and deviceType = " + deviceType.getId());
         request.setAttribute("deviceList", deviceList);
-        request.getRequestDispatcher("device_options.jsp").forward(request, response);
+        request.getRequestDispatcher("select_options/device_options.jsp").forward(request, response);
     }
 
     public void goToProblemCommentSection() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
         List<Category> categoryList = hibernateHelper.retreiveData("from Category order by category");
         request.setAttribute("categoryList", categoryList);
-        request.getRequestDispatcher("problem_comment_section.jsp").forward(request, response);
+        request.getRequestDispatcher("sections/problem_comment_section.jsp").forward(request, response);
     }
 
     public void goToCategoryOptions() throws ServletException, IOException {
         List<Category> categoryList = hibernateHelper.retreiveData("from Category order by category");
         request.setAttribute("categoryList", categoryList);
-        request.getRequestDispatcher("category_options.jsp").forward(request, response);
+        request.getRequestDispatcher("select_options/category_options.jsp").forward(request, response);
     }
 
     public void goToSubCategorySection() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
         List<SubCategory> subCategoryList = hibernateHelper.retreiveData("from SubCategory where category = " + request.getParameter("category") + " order by sub_category");
         request.setAttribute("subCategoryList", subCategoryList);
-        request.getRequestDispatcher("sub_category_section.jsp").forward(request, response);
+        request.getRequestDispatcher("sections/sub_category_section.jsp").forward(request, response);
     }
 
     public void goToSubCategoryOptions() throws ServletException, IOException {
         List<SubCategory> subCategoryList = hibernateHelper.retreiveData("from SubCategory where category = " + request.getParameter("category") + " order by sub_category");
         request.setAttribute("subCategoryList", subCategoryList);
-        request.getRequestDispatcher("sub_category_options.jsp").forward(request, response);
+        request.getRequestDispatcher("select_options/sub_category_options.jsp").forward(request, response);
     }
 
     public void goToAssignToSection() throws ServletException, IOException {
@@ -172,7 +178,7 @@ public class DirectiveHelper extends HelperBase {
         List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and region = " + region.getId() + " order by region");
         request.setAttribute("tsUserRegionList", tsUserRegionList);
         request.setAttribute("currentUser", user);
-        request.getRequestDispatcher("assign_to_section.jsp").forward(request, response);
+        request.getRequestDispatcher("sections/assign_to_section.jsp").forward(request, response);
     }
 
     public void goToTicketReport() throws ServletException, IOException {
@@ -189,7 +195,7 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("allTicketStatusList", allTicketStatusList);
         request.setAttribute("ticketStatus", getTicketStatus(ticket));
         request.setAttribute("status", getStatusStyle(ticket.getCurrentStatus()));
-        request.getRequestDispatcher("ticket_report.jsp").forward(request, response);
+        request.getRequestDispatcher("reports/ticket_report.jsp").forward(request, response);
     }
 
     public void goToTicketEdit() throws ServletException, IOException {
@@ -211,7 +217,7 @@ public class DirectiveHelper extends HelperBase {
         } else {
             request.setAttribute("branch_manager", false);
         }
-        request.getRequestDispatcher("edit_ticket.jsp").forward(request, response);
+        request.getRequestDispatcher("edit_pages/edit_ticket.jsp").forward(request, response);
     }
 
     private String getStatusStyle(Status status) {
@@ -242,6 +248,35 @@ public class DirectiveHelper extends HelperBase {
 
     private List getTicketsSolvedByUser(User user) {
         return hibernateHelper.retreiveData("from Ticket where done = false and solvedBy = " + user.getId());
+    }
+
+    private List getOpenedTickets(Region region) {
+        if (region == null) {
+            return hibernateHelper.retreiveData("from Ticket where done = false and (currentStatus =  1 or currentStatus = 2 or currentStatus = 3)");
+        } else {
+            List<Ticket> openedTicketsList = new ArrayList<>();
+            List<Location> locationList = hibernateHelper.retreiveData("From Location where region = " + region.getId());
+            for (Location location : locationList) {
+                List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId());
+                for (LocationDepartment locationDepartment : locationDepartmentList) {
+                    List<Device> deviceList = hibernateHelper.retreiveData("from Device where locationDepartment = " + locationDepartment.getId());
+                    for (Device device : deviceList) {
+                        openedTicketsList.addAll(hibernateHelper.retreiveData("From Ticket where done = false and (currentStatus =  1 or currentStatus = 2 or currentStatus = 3) and device =" + device.getId()));
+                    }
+                }
+            }
+            return openedTicketsList;
+        }
+    }
+
+    private List getOpenedTicketsStatus(Region region) {
+        List<TicketStatus> ticketStatusList = new ArrayList<>();
+        List<Ticket> openedTicketsList = getOpenedTickets(region);
+        for (Ticket ticket : openedTicketsList) {
+            ticketStatusList.addAll(hibernateHelper.retreiveData("from TicketStatus where done = false and ticket = " + ticket.getId()));
+        }
+        System.out.println("Szeeee:" + ticketStatusList.size());
+        return ticketStatusList;
     }
 
     /*private List getTicketNeedToClose(Region region) {
@@ -294,14 +329,14 @@ public class DirectiveHelper extends HelperBase {
         User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         request.setAttribute("tickets", getTickets());
         request.setAttribute("ticketsAssignedByList", getTicketsAssignedByUser(user));
-        request.getRequestDispatcher("assigned_to_tab.jsp").forward(request, response);
+        request.getRequestDispatcher("tabs/assigned_to_tab.jsp").forward(request, response);
     }
 
     public void goToAssignedToDetailsTab() throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         request.setAttribute("tickets", getTickets());
         request.setAttribute("ticketsAssignedByList", getTicketsAssignedByUser(user));
-        request.getRequestDispatcher("assigned_to_details_tab.jsp").forward(request, response);
+        request.getRequestDispatcher("tabs/assigned_to_details_tab.jsp").forward(request, response);
     }
 
     public void goToNeedToSolveTab() throws ServletException, IOException {
@@ -309,16 +344,31 @@ public class DirectiveHelper extends HelperBase {
         User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         request.setAttribute("tickets", getTickets());
         request.setAttribute("ticketsAssignedToList", getTicketsAssignedToUser(user));
-        request.getRequestDispatcher("need_to_solve_tab.jsp").forward(request, response);
+        request.getRequestDispatcher("tabs/need_to_solve_tab.jsp").forward(request, response);
     }
 
     public void goToNeedToSolveDetailsTab() throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         request.setAttribute("tickets", getTickets());
         request.setAttribute("ticketsAssignedToList", getTicketsAssignedToUser(user));
-        request.getRequestDispatcher("need_to_solve_details_tab.jsp").forward(request, response);
+        request.getRequestDispatcher("tabs/need_to_solve_details_tab.jsp").forward(request, response);
     }
 
+    public void goToOpenedTickets() throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        List<TSUserRegion> tsUserRegionList = hibernateHelper.retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId());
+        //System.out.println("tsUserRegionList size :"+tsUserRegionList.size());
+        Region region = null;
+        if (tsUserRegionList.size() == 1) {
+            region = tsUserRegionList.get(0).getRegion();
+            //System.out.println("region1 :" + region.getRegion());
+        }
+        //System.out.println("region2 :" + region.getRegion());
+        request.setAttribute("tickets", getTickets());
+        request.setAttribute("openedTicketsList", getOpenedTickets(region));
+        request.setAttribute("openedTicketStatusList", getOpenedTicketsStatus(region));
+        request.getRequestDispatcher("reports/opened_tickets.jsp").forward(request, response);
+    }
 
     public void goToNeedToCloseTab() throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
@@ -332,7 +382,7 @@ public class DirectiveHelper extends HelperBase {
         } else {
             request.setAttribute("ticketsSolvedList", null);
         }
-        request.getRequestDispatcher("need_to_close_tab.jsp").forward(request, response);
+        request.getRequestDispatcher("tabs/need_to_close_tab.jsp").forward(request, response);
     }
 
     public void goToNeedToCloseDetailsTab() throws ServletException, IOException {
@@ -347,7 +397,7 @@ public class DirectiveHelper extends HelperBase {
         } else {
             request.setAttribute("ticketsSolvedList", null);
         }
-        request.getRequestDispatcher("need_to_close_details_tab.jsp").forward(request, response);
+        request.getRequestDispatcher("tabs/need_to_close_details_tab.jsp").forward(request, response);
     }
 
     /*public void goToNeedToCloseDetailsTab() throws ServletException, IOException {
@@ -363,53 +413,53 @@ public class DirectiveHelper extends HelperBase {
         User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         request.setAttribute("ticketsSolvedList", getTicketsSolvedByUser(user));
         request.setAttribute("user", user);
-        request.getRequestDispatcher("solved_tab.jsp").forward(request, response);
+        request.getRequestDispatcher("tabs/solved_tab.jsp").forward(request, response);
     }
 
     public void goToSolvedDetailsTab() throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         request.setAttribute("ticketsSolvedList", getTicketsSolvedByUser(user));
         request.setAttribute("user", user);
-        request.getRequestDispatcher("solved_details_tab.jsp").forward(request, response);
+        request.getRequestDispatcher("tabs/solved_details_tab.jsp").forward(request, response);
     }
 
     public void goToClosedTab() throws ServletException, IOException {
         //User user = (User) request.getSession().getAttribute("user");
         User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         request.setAttribute("ticketsClosedList", getTicketsClosedByUser(user));
-        request.getRequestDispatcher("closed_tab.jsp").forward(request, response);
+        request.getRequestDispatcher("tabs/closed_tab.jsp").forward(request, response);
     }
 
     public void goToClosedDetailsTab() throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         request.setAttribute("ticketsClosedList", getTicketsClosedByUser(user));
-        request.getRequestDispatcher("closed_details_tab.jsp").forward(request, response);
+        request.getRequestDispatcher("tabs/closed_details_tab.jsp").forward(request, response);
     }
 
     public void goToInProgressTab() throws ServletException, IOException {
         //User user = (User) request.getSession().getAttribute("user");
         User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         request.setAttribute("ticketsInProgressList", getTicketsInProgressByUser(user));
-        request.getRequestDispatcher("in_progress_tab.jsp").forward(request, response);
+        request.getRequestDispatcher("tabs/in_progress_tab.jsp").forward(request, response);
     }
 
     public void goToInProgressDetailsTab() throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         request.setAttribute("ticketsInProgressList", getTicketsInProgressByUser(user));
-        request.getRequestDispatcher("in_progress_details_tab.jsp").forward(request, response);
+        request.getRequestDispatcher("tabs/in_progress_details_tab.jsp").forward(request, response);
     }
 
     public void goToPendingTab() throws ServletException, IOException {
         //User user = (User) request.getSession().getAttribute("user");
         User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
         request.setAttribute("ticketsPendingList", getTicketsPendingByUser(user));
-        request.getRequestDispatcher("pending_tab.jsp").forward(request, response);
+        request.getRequestDispatcher("tabs/pending_tab.jsp").forward(request, response);
     }
 
     public void goToPendingDetailsTab() throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         request.setAttribute("ticketsPendingList", getTicketsPendingByUser(user));
-        request.getRequestDispatcher("pending_details_tab.jsp").forward(request, response);
+        request.getRequestDispatcher("tabs/pending_details_tab.jsp").forward(request, response);
     }
 
     public void goToTicketChart() throws ServletException, IOException {
@@ -424,7 +474,7 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("solvedCount", controllerHelper.getTicketSolvedByUserCount(user));
         request.setAttribute("closedCount", controllerHelper.getTicketClosedByUserCount(user));
         request.setAttribute("needToCloseCount", controllerHelper.getTicketNeedToCloseCount(user));
-        request.getRequestDispatcher("ticket_chart.jsp").forward(request, response);
+        request.getRequestDispatcher("charts/ticket_chart.jsp").forward(request, response);
     }
 
     public void goToRegionChart() throws ServletException, IOException {
@@ -447,7 +497,7 @@ public class DirectiveHelper extends HelperBase {
             request.setAttribute("pendingRegionCount", controllerHelper.getTicketPendingRegionCount());
             request.setAttribute("solvedRegionCount", controllerHelper.getTicketSolvedRegionCount());
         }
-        request.getRequestDispatcher("region_chart.jsp").forward(request, response);
+        request.getRequestDispatcher("charts/region_chart.jsp").forward(request, response);
     }
 
 
@@ -470,7 +520,7 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("UPS_count", controllerHelper.getRegionUPSCount(request.getParameter("region")));
         request.setAttribute("FW_count", controllerHelper.getRegionFWCount(request.getParameter("region")));
         request.setAttribute("AP_count", controllerHelper.getRegionAPCount(request.getParameter("region")));
-        request.getRequestDispatcher("device_chart.jsp").forward(request, response);
+        request.getRequestDispatcher("charts/device_chart.jsp").forward(request, response);
         return;
     }
 
@@ -562,13 +612,13 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("mobList", mobList);
         request.setAttribute("rackList", rackList);
         request.setAttribute("handheldList", handheldList);
-        request.getRequestDispatcher("devices.jsp").forward(request, response);
+        request.getRequestDispatcher("tables/devices.jsp").forward(request, response);
     }
 
     public void goToPCTypeOptions() throws ServletException, IOException {
         List<PCType> pcTypeList = hibernateHelper.retreiveData("from PCType order by pcType");
         request.setAttribute("pcTypeList", pcTypeList);
-        request.getRequestDispatcher("pc_type_options.jsp").forward(request, response);
+        request.getRequestDispatcher("select_options/pc_type_options.jsp").forward(request, response);
     }
 
     public void goToPCData() throws ServletException, IOException {
@@ -581,7 +631,7 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("osList", osList);
         request.setAttribute("pcTypeList", pcTypeList);
         request.setAttribute("employeeList", employeeList);
-        request.getRequestDispatcher("pc_data.jsp").forward(request, response);
+        request.getRequestDispatcher("devices_data/pc_data.jsp").forward(request, response);
     }
 
     public void goToPrinterData() throws ServletException, IOException {
@@ -592,7 +642,7 @@ public class DirectiveHelper extends HelperBase {
         List<Employee> employeeList = hibernateHelper.retreiveData("from Employee where locationDepartment = " + locationDepartmentList.get(0).getId() + " order by name");
         request.setAttribute("printerConnectionList", printerConnectionList);
         request.setAttribute("employeeList", employeeList);
-        request.getRequestDispatcher("printer_data.jsp").forward(request, response);
+        request.getRequestDispatcher("devices_data/printer_data.jsp").forward(request, response);
     }
 
     public void goToPBXData() throws ServletException, IOException {
@@ -601,7 +651,7 @@ public class DirectiveHelper extends HelperBase {
         List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
         List<Employee> employeeList = hibernateHelper.retreiveData("from Employee where locationDepartment = " + locationDepartmentList.get(0).getId() + " order by name");
         request.setAttribute("employeeList", employeeList);
-        request.getRequestDispatcher("PBX_data.jsp").forward(request, response);
+        request.getRequestDispatcher("devices_data/PBX_data.jsp").forward(request, response);
     }
 
     public void goToMobileData() throws ServletException, IOException {
@@ -610,7 +660,7 @@ public class DirectiveHelper extends HelperBase {
         List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
         List<Employee> employeeList = hibernateHelper.retreiveData("from Employee where locationDepartment = " + locationDepartmentList.get(0).getId() + " order by name");
         request.setAttribute("employeeList", employeeList);
-        request.getRequestDispatcher("mobile_data.jsp").forward(request, response);
+        request.getRequestDispatcher("devices_data/mobile_data.jsp").forward(request, response);
     }
 
     public void goToAddDevice() throws ServletException, IOException {
@@ -629,7 +679,7 @@ public class DirectiveHelper extends HelperBase {
         List<Category> categoryList = hibernateHelper.retreiveData("from Category order by category");
         request.setAttribute("categoryList", categoryList);
         request.setAttribute("regionList", tsUserRegionList);
-        request.getRequestDispatcher("add_device.jsp").forward(request, response);
+        request.getRequestDispatcher("add_pages/add_device.jsp").forward(request, response);
     }
 
     public void goToEditDevice() throws ServletException, IOException {
@@ -658,7 +708,7 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("locationList", locationList);
         request.setAttribute("regionList", tsUserRegionList);
         request.setAttribute("deviceTypeList", deviceTypeList);
-        request.getRequestDispatcher("edit_device.jsp").forward(request, response);
+        request.getRequestDispatcher("edit_pages/edit_device.jsp").forward(request, response);
     }
 
     public void goToEmployeeOptions() throws ServletException, IOException {
@@ -672,7 +722,7 @@ public class DirectiveHelper extends HelperBase {
             employeeList = new ArrayList<>();
         }
         request.setAttribute("employeeList", employeeList);
-        request.getRequestDispatcher("employee_options.jsp").forward(request, response);
+        request.getRequestDispatcher("select_options/employee_options.jsp").forward(request, response);
     }
 
     public void goToAddUser() throws ServletException, IOException {
@@ -682,7 +732,7 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("roleList", roleList);
         request.setAttribute("privilegeList", privilegeList);
         request.setAttribute("regionList", regionList);
-        request.getRequestDispatcher("add_user.jsp").forward(request, response);
+        request.getRequestDispatcher("add_pages/add_user.jsp").forward(request, response);
     }
 
     private HttpServletRequest getUserPrivilege(User user, HttpServletRequest request) {
@@ -831,7 +881,7 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("userPrivilegeList", userPrivilegeList);
         request.setAttribute("privilegeList", privilegeList);
         request.setAttribute("userList", userList);
-        request.getRequestDispatcher("users.jsp").forward(request, response);
+        request.getRequestDispatcher("tables/users.jsp").forward(request, response);
     }
 
     public void goToEmployees() throws ServletException, IOException {
@@ -858,7 +908,7 @@ public class DirectiveHelper extends HelperBase {
             }
             request.setAttribute("employeeList", regionEmployeeList);
         }
-        request.getRequestDispatcher("employees.jsp").forward(request, response);
+        request.getRequestDispatcher("tables/employees.jsp").forward(request, response);
     }
 
     public void goToEditUser() throws ServletException, IOException {
@@ -875,7 +925,7 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("regionList", regionList);
         request.setAttribute("userRegionList", userRegionList);
         request.setAttribute("userPrivilegeList", userPrivilegeList);
-        request.getRequestDispatcher("edit_user.jsp").forward(request, response);
+        request.getRequestDispatcher("edit_pages/edit_user.jsp").forward(request, response);
 
     }
 
@@ -891,7 +941,7 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("accessoryList", accessoryList);
         request.setAttribute("accountList", accountList);
 
-        request.getRequestDispatcher("add_employee.jsp").forward(request, response);
+        request.getRequestDispatcher("add_pages/add_employee.jsp").forward(request, response);
     }
 
     public void goToEditEmployee() throws ServletException, IOException {
@@ -916,44 +966,44 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("employee", employee);
         request.setAttribute("employeeAccessoryList", employeeAccessoryList);
         request.setAttribute("employeeAccountList", employeeAccountList);
-        request.getRequestDispatcher("edit_employee.jsp").forward(request, response);
+        request.getRequestDispatcher("edit_pages/edit_employee.jsp").forward(request, response);
     }
 
     public void goToPrivileges() throws ServletException, IOException {
         List<Privilege> privilegeList = hibernateHelper.retreiveData("from Privilege");
         request.setAttribute("privilegeList", privilegeList);
-        request.getRequestDispatcher("privileges.jsp").forward(request, response);
+        request.getRequestDispatcher("tables/privileges.jsp").forward(request, response);
     }
 
     public void goToAddPrivilege() throws ServletException, IOException {
-        request.getRequestDispatcher("add_privilege.jsp").forward(request, response);
+        request.getRequestDispatcher("add_pages/add_privilege.jsp").forward(request, response);
     }
 
 
     public void goToEditPrivilege() throws ServletException, IOException {
         Privilege privilege = (Privilege) hibernateHelper.retreiveData(Privilege.class, Long.valueOf(request.getParameter("privilege")));
         request.setAttribute("privilege", privilege);
-        request.getRequestDispatcher("edit_privilege.jsp").forward(request, response);
+        request.getRequestDispatcher("edit_pages/edit_privilege.jsp").forward(request, response);
     }
 
     public void goToAccessories() throws ServletException, IOException {
         List<Accessory> accessoryList = hibernateHelper.retreiveData("from Accessory");
         request.setAttribute("accessoryList", accessoryList);
-        request.getRequestDispatcher("accessories.jsp").forward(request, response);
+        request.getRequestDispatcher("tables/accessories.jsp").forward(request, response);
     }
 
     public void goToAddAccessory() throws ServletException, IOException {
-        request.getRequestDispatcher("add_accessory.jsp").forward(request, response);
+        request.getRequestDispatcher("add_pages/add_accessory.jsp").forward(request, response);
     }
 
     public void goToAccounts() throws ServletException, IOException {
         List<Account> accountList = hibernateHelper.retreiveData("from Account");
         request.setAttribute("accountList", accountList);
-        request.getRequestDispatcher("accounts.jsp").forward(request, response);
+        request.getRequestDispatcher("tables/accounts.jsp").forward(request, response);
     }
 
     public void goToAddAccount() throws ServletException, IOException {
-        request.getRequestDispatcher("add_account.jsp").forward(request, response);
+        request.getRequestDispatcher("add_pages/add_account.jsp").forward(request, response);
     }
 
     public void goToActionSection() throws ServletException, IOException {
@@ -962,7 +1012,7 @@ public class DirectiveHelper extends HelperBase {
         } else {
             request.setAttribute("branch_manager", false);
         }
-        request.getRequestDispatcher("action_section.jsp").forward(request, response);
+        request.getRequestDispatcher("sections/action_section.jsp").forward(request, response);
     }
 
     public void goToEmployeeRelease() throws ServletException, IOException {
@@ -981,13 +1031,13 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("mobileList", mobileList);
         request.setAttribute("employeeAccessoryList", employeeAccessoryList);
         request.setAttribute("employeeAccountList", employeeAccountList);
-        request.getRequestDispatcher("employee_release.jsp").forward(request, response);
+        request.getRequestDispatcher("tables/employee_release.jsp").forward(request, response);
 
 
     }
 
     public void goToWeeklyReport() throws ServletException, IOException {
-        request.getRequestDispatcher("weekly_report.jsp").forward(request, response);
+        request.getRequestDispatcher("reports/weekly_report.jsp").forward(request, response);
     }
 
     public void goToWeeklyReportPreview() throws ServletException, IOException {
@@ -1026,6 +1076,6 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("region", region);
         request.setAttribute("ticketList", ticketList);
         request.setAttribute("ticketStatusList", ticketStatusList);
-        request.getRequestDispatcher("weekly_report_preview.jsp").forward(request, response);
+        request.getRequestDispatcher("reports/weekly_report_preview.jsp").forward(request, response);
     }
 }

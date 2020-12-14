@@ -83,6 +83,8 @@
                 <c:if test="${current_user.role.id == 6 || current_user.role.id == 2 || current_user.role.id == 1}">
                     <a class="nav-link font-weight-bold mr-1" id="weekly" data-toggle="pill" role="tab"
                        aria-selected="false"><i class="fas fa-clipboard-list"></i> Weekly Report</a>
+                    <a class="nav-link font-weight-bold mr-1" id="opened_tickets" data-toggle="pill" role="tab"
+                       aria-selected="false"><i class="fas fa-clipboard-list"></i> Opened Tickets</a>
                 </c:if>
 
                 <%-- <a class="nav-link font-weight-bold" id="waiting_list" data-toggle="pill" role="tab"

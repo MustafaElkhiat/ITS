@@ -1,6 +1,5 @@
 package controllers;
 
-import helpers.ControllerHelper;
 import helpers.DirectiveHelper;
 
 import javax.servlet.ServletException;
@@ -196,33 +195,40 @@ public class Directive extends HttpServlet {
                 case (58):
                     directiveHelper.goToActionSection();
                     break;
-                case(59):
+                case (59):
                     directiveHelper.goToAccessories();
                     break;
-                case(60):
+                case (60):
                     directiveHelper.goToAddAccessory();
                     break;
-                case(61):
+                case (61):
                     directiveHelper.goToAccounts();
                     break;
-                case(62):
+                case (62):
                     directiveHelper.goToAddAccount();
                     break;
-                case(63):
+                case (63):
                     directiveHelper.goToMobileData();
                     break;
-                case(64):
+                case (64):
                     directiveHelper.goToEmployeeRelease();
                     break;
-                case(65):
+                case (65):
                     directiveHelper.goToWeeklyReportPreview();
                     break;
-                case(66):
+                case (66):
                     directiveHelper.goToWeeklyReport();
                     break;
-                case(67):
+                case (67):
                     directiveHelper.goToAddEmployee();
                     break;
+                case (68):
+                    directiveHelper.goToOpenedTickets();
+                    break;
+                case (69):
+                    directiveHelper.goToMyTickets();
+                    break;
+
             }
         }
     }
