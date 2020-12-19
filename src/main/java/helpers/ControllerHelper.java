@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import elements.*;
 import login.elements.Role;
 import login.elements.User;
+import utilites.Emails;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -511,6 +512,7 @@ public class ControllerHelper extends HelperBase {
         //TicketStatus(String reason, Ticket ticket, Status status, User TSUser)
         TicketStatus ticketStatus = new TicketStatus(null, ticket, assignTo_status, assignedBy);
         hibernateHelper.saveData(ticketStatus);
+        Emails.assignToEmail(assignedTo.getEmail(), assignedTo.getName(), assignedBy.getName(), ticket.getId());
         return ticket.getId();
     }
 
@@ -591,6 +593,9 @@ public class ControllerHelper extends HelperBase {
         }
         TicketStatus ticketStatus = new TicketStatus(steps, ticket, solved_status, user);
         hibernateHelper.saveData(ticketStatus);
+        for (User manager : (List<User>) getManagerBranch(getRegionOfTicket(ticket))) {
+            Emails.solvedEmail(manager.getEmail(), manager.getName(), user.getName(), ticket.getId());
+        }
         return ticket.getId();
     }
 
@@ -624,6 +629,7 @@ public class ControllerHelper extends HelperBase {
         ticketStatus.setDoneDate(new Date());
         ticketStatus.setDoneTime(new Date());
         hibernateHelper.saveData(ticketStatus);
+        Emails.closedEmail(ticket.getSolvedBy().getEmail(), ticket.getSolvedBy().getName(), user.getName(), ticket.getId());
         return ticket.getId();
     }
 
@@ -678,6 +684,26 @@ public class ControllerHelper extends HelperBase {
             }
             return count;
         }
+    }
+
+    public List getTSUsersOfRegion(Region region) {
+        return hibernateHelper.retreiveData("from TSUserRegion where valid = true and region =" + region.getId());
+    }
+
+    public List getManagerBranch(Region region) {
+        Role branchManager = (Role) hibernateHelper.retreiveData(Role.class, (long) 2);
+        List<User> branchManagerList = new ArrayList<>();
+        List<TSUserRegion> userRegion = getTSUsersOfRegion(region);
+        for (TSUserRegion tsUserRegion : userRegion) {
+            if (tsUserRegion.getTSUser().getRole().getId() == branchManager.getId()) {
+                branchManagerList.add(tsUserRegion.getTSUser());
+            }
+        }
+        return branchManagerList;
+    }
+
+    public Region getRegionOfTicket(Ticket ticket) {
+        return ticket.getDevice().getLocationDepartment().getLocation().getRegion();
     }
 
     public int getRegionPrinterCount(String regionID) {
@@ -1811,15 +1837,18 @@ public class ControllerHelper extends HelperBase {
         String name = request.getParameter("name");
         String username = request.getParameter("username");
         String phoneNum = request.getParameter("phone_num");
+        String email = request.getParameter("email");
         List<User> usernameList = hibernateHelper.retreiveData("from User where username = '" + username + "'");
         List<User> phoneNumList = hibernateHelper.retreiveData("from User where phoneNum = '" + phoneNum + "'");
         if (usernameList.size() == 0 && phoneNumList.size() == 0) {
             Role role = (Role) hibernateHelper.retreiveData(Role.class, Long.valueOf(request.getParameter("role")));
             User user = new User(username, name, phoneNum, role);
+            user.setEmail(email);
             hibernateHelper.saveData(user);
             String privileges = request.getParameter("privileges");
             System.out.println("privileges : " + privileges.length());
             String regions = request.getParameter("regions");
+            List<Privilege> priList = new ArrayList<>();
             for (Privilege privilege : privilegeList) {
                 UserPrivilege userPrivilege = new UserPrivilege(user, privilege);
                 if (privileges.length() > 0) {
@@ -1827,24 +1856,28 @@ public class ControllerHelper extends HelperBase {
                         Privilege pri = (Privilege) hibernateHelper.retreiveData(Privilege.class, Long.valueOf(privileges.split(",")[i]));
                         if (pri.getId() == privilege.getId()) {
                             userPrivilege.setValid(true);
+                            priList.add(pri);
                             break;
                         }
                     }
                 }
                 hibernateHelper.saveData(userPrivilege);
             }
-
+            List<Region> regList = new ArrayList<>();
             for (Region region : regionList) {
                 TSUserRegion tsUserRegion = new TSUserRegion(user, region);
                 for (int i = 0; i < regions.split(",").length; i++) {
                     Region reg = (Region) hibernateHelper.retreiveData(Region.class, Long.valueOf(regions.split(",")[i]));
                     if (reg.getId() == region.getId()) {
                         tsUserRegion.setValid(true);
+                        regList.add(reg);
                         break;
                     }
                 }
                 hibernateHelper.saveData(tsUserRegion);
             }
+            Emails.addAccountEmail(user.getEmail(), user.getName(), user.getUserName(), user.getRole().getRole(), regList, priList);
+
 
         /*for (int i = 0; i < privileges.split(",").length; i++) {
 
@@ -1872,6 +1905,7 @@ public class ControllerHelper extends HelperBase {
         user.setActivated(false);
         user.setPassword("0000");
         hibernateHelper.updateData(user);
+        Emails.resetPasswordEmail(user.getEmail(), user.getName());
         return 0;
     }
 
@@ -1879,12 +1913,14 @@ public class ControllerHelper extends HelperBase {
         String name = request.getParameter("name");
         String username = request.getParameter("username");
         String phoneNum = request.getParameter("phone_num");
+        String email = request.getParameter("email");
         Role role = (Role) hibernateHelper.retreiveData(Role.class, Long.valueOf(request.getParameter("role")));
         List<Privilege> privilegeList = hibernateHelper.retreiveData("from Privilege");
         List<Region> regionList = hibernateHelper.retreiveData("from Region");
         user.setName(name);
         user.setUserName(username);
         user.setPhoneNum(phoneNum);
+        user.setEmail(email);
         user.setRole(role);
         hibernateHelper.updateData(user);
         String privileges = request.getParameter("privileges");

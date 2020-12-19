@@ -14,7 +14,7 @@
     <div class="card-body">
         <form id="create_user_form" method="post" class="needs-validation mx-3" novalidate>
             <div class="row mt-2">
-                <div class="col-3 mt-2">
+                <div class="col-4 mt-2">
                     <div class="form-label-group">
                         <input type="text" id="name" name="name" class="form-control"
                                placeholder="Name" autocomplete="off"
@@ -24,7 +24,7 @@
                     </div>
                 </div>
 
-                <div class="col-3 mt-2">
+                <div class="col-4 mt-2">
                     <div class="form-label-group">
                         <input type="text" id="username" name="username" class="form-control"
                                placeholder="UserName" autocomplete="off"
@@ -33,7 +33,7 @@
                         <label for="username">UserName</label>
                     </div>
                 </div>
-                <div class="col-3 mt-2">
+                <div class="col-4 mt-2">
                     <div class="form-label-group">
                         <input type="number" id="phone_num" name="phone_num" class="form-control"
                                placeholder="Phone Number" autocomplete="off"
@@ -43,7 +43,19 @@
                     </div>
                 </div>
 
-                <div class="col-3 ">
+            </div>
+            <div class="row">
+                <div class="col-4 mt-2">
+                    <div class="form-label-group">
+                        <input type="email" id="email" name="email" class="form-control"
+                               placeholder="Email" autocomplete="off"
+                               required="" value="${user.email}"
+                               autofocus="">
+                        <label for="email">Email</label>
+                    </div>
+                </div>
+
+                <div class="col-4 ">
                     <div class="select-wrap">
                         <label>Role</label>
                         <div class="input-group">

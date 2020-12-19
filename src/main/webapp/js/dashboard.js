@@ -1031,6 +1031,7 @@ var addUser = function () {
                     username: $("#username").val(),
                     phone_num: $("#phone_num").val(),
                     role: $("#role").val(),
+                    email:$("#email").val(),
                     privileges: privilege_array,
                     regions: region_array
                 },
@@ -1111,6 +1112,7 @@ var editUser = function () {
                     username: $("#username").val(),
                     phone_num: $("#phone_num").val(),
                     role: $("#role").val(),
+                    email:$("#email").val(),
                     privileges: privilege_array,
                     regions: region_array
                 },
