@@ -63,3 +63,43 @@ function resetPasswordDialog(user) {
         }
     });
 }
+
+function suspenseAccount(user) {
+    $.ajax({
+        url: "Controller",
+        data: {
+            n: "47",
+            user: user
+        },
+        type: "POST",
+
+        success: function (result, status, xhr) {
+            if (result == 0) {
+
+                success("User has been suspended", "");
+            }
+        }
+    });
+}
+function suspenseAccountDialog(user) {
+    bootbox.confirm({
+        title: "Suspense User",
+        message: "Are you sure you want to suspense this user?",
+        closeButton: false,
+        buttons: {
+            cancel: {
+                label: '<i class="fa fa-times"></i> Cancel',
+                className: 'btn-danger'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Confirm',
+                className: 'btn-success'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                suspenseAccount(user);
+            }
+        }
+    });
+}

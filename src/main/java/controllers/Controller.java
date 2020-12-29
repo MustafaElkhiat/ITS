@@ -1,7 +1,6 @@
 package controllers;
 
 import helpers.ControllerHelper;
-import helpers.DirectiveHelper;
 import login.elements.User;
 
 import javax.servlet.ServletException;
@@ -169,37 +168,37 @@ public class Controller extends HttpServlet {
                 case (34):
                     response.getWriter().println(controllerHelper.getTicketClosedByUserCount(user));
                     break;
-                case(35):
+                case (35):
                     response.getWriter().println(controllerHelper.getTicketNeedToCloseCount(user));
                     break;
-                case(36):
+                case (36):
                     response.getWriter().println(controllerHelper.getRegionChartData());
                     break;
-                case(37):
+                case (37):
                     response.getWriter().println(controllerHelper.getTicketChartData());
                     break;
-                case(38):
+                case (38):
                     response.getWriter().println(controllerHelper.getDeviceChartData());
                     break;
-                case(39):
+                case (39):
                     controllerHelper.getDailyRegionTickets();
                     break;
-                case(40):
+                case (40):
                     response.getWriter().println(controllerHelper.getDailyTicketPerTimeData());
                     break;
-                case(41):
+                case (41):
                     response.getWriter().println(controllerHelper.getTicketBarChartData());
                     break;
-                case(42):
+                case (42):
                     response.getWriter().println(controllerHelper.recodingDevices());
                     break;
-                case(43):
+                case (43):
                     response.getWriter().println(controllerHelper.resetPassword());
                     break;
-                case(44):
+                case (44):
                     response.getWriter().println(controllerHelper.addAccessory());
                     break;
-                case(45):
+                case (45):
                     response.getWriter().println(controllerHelper.addAccount());
                     break;
                 case (46):
@@ -208,6 +207,9 @@ public class Controller extends HttpServlet {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+                    break;
+                case (47):
+                    response.getWriter().println(controllerHelper.suspenseAccount());
                     break;
 
             }

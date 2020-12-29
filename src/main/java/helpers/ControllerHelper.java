@@ -37,7 +37,7 @@ public class ControllerHelper extends HelperBase {
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        List<User> users = hibernateHelper.retreiveData("from User where username = '" + username + "' and password = '" + password + "'");
+        List<User> users = hibernateHelper.retreiveData("from User where suspended = false and username = '" + username + "' and password = '" + password + "'");
         if (users.size() == 1) {
             HttpSession session = request.getSession(true);
             //session.setMaxInactiveInterval(1800);
@@ -1906,6 +1906,13 @@ public class ControllerHelper extends HelperBase {
         user.setPassword("0000");
         hibernateHelper.updateData(user);
         Emails.resetPasswordEmail(user.getEmail(), user.getName());
+        return 0;
+    }
+
+    public int suspenseAccount() throws IOException {
+        User user = (User) hibernateHelper.retreiveData(User.class, Long.valueOf(request.getParameter("user")));
+        user.setSuspended(!user.isSuspended());
+        hibernateHelper.updateData(user);
         return 0;
     }
 

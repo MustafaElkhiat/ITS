@@ -47,7 +47,11 @@
                     </thead>
                     <tbody id="user_table_body">
                     <c:forEach items="${userList}" var="user" varStatus="userLoop">
-                        <tr class="${edit_user} ${reset_pass} link context-menu-one" user-id="${user.id}">
+                        <c:set var="suspended" value=""></c:set>
+                        <c:if test="${user.suspended}">
+                            <c:set var="suspended" value="bg-danger"></c:set>
+                        </c:if>
+                        <tr class="${edit_user} ${reset_pass} link context-menu-one ${suspended}" user-id="${user.id}">
                             <td>${userLoop.count}</td>
                             <td>${user.name}</td>
                             <td>${user.role.role}</td>

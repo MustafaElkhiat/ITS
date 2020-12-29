@@ -63,13 +63,15 @@ $(document).ready(function () {
                             if (key == "edit") {
                                 $("#content_place").load('Directive', {d: 41, user: $(this).attr("user-id")}, editUser);
                             } else if (key == "reset") {
-
                                 resetPasswordDialog(user);
+                            } else if (key == "suspense") {
+                                suspenseAccountDialog(user);
                             }
                         },
                         items: {
                             "edit": {name: "Edit User Data"},
                             "reset": {name: "Reset Password"},
+                            "suspense": {name: "Suspense / Unsuspense Account"}
 
                         }
                     });
@@ -1031,7 +1033,7 @@ var addUser = function () {
                     username: $("#username").val(),
                     phone_num: $("#phone_num").val(),
                     role: $("#role").val(),
-                    email:$("#email").val(),
+                    email: $("#email").val(),
                     privileges: privilege_array,
                     regions: region_array
                 },
@@ -1112,7 +1114,7 @@ var editUser = function () {
                     username: $("#username").val(),
                     phone_num: $("#phone_num").val(),
                     role: $("#role").val(),
-                    email:$("#email").val(),
+                    email: $("#email").val(),
                     privileges: privilege_array,
                     regions: region_array
                 },
