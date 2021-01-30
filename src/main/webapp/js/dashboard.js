@@ -783,6 +783,7 @@ var action_submit = function () {
                     problem: $("#problem").val(),
                     caller_name: $("#caller_name").val(),
                     caller_num: $("#caller_num").val(),
+                    caller_email: $("#caller_email").val(),
                     device_: $("#device_").val(),
                     sub_category_: $("#sub_category_").val(),
                     comment: $("#comment").val(),
