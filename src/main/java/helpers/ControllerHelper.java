@@ -468,9 +468,11 @@ public class ControllerHelper extends HelperBase {
         String reporterName = request.getParameter("caller_name");
         String reporterNum = request.getParameter("caller_num");
         Date actual_date = null;
-        if (!request.getParameter("actual_date").equals("")) {
-            actual_date = convert12TO24(request.getParameter("actual_date"));
-        }
+		/*
+		 * if (request.getParameter("actual_date")!= null &&
+		 * !request.getParameter("actual_date").equals("")) { actual_date =
+		 * convert12TO24(request.getParameter("actual_date")); }
+		 */
         System.out.println("Date : " + actual_date);
         Device device = (Device) hibernateHelper.retreiveData(Device.class, Long.valueOf(request.getParameter("device_")));
         User l1_user = (User) request.getSession().getAttribute("user");
@@ -593,7 +595,9 @@ public class ControllerHelper extends HelperBase {
         }
         TicketStatus ticketStatus = new TicketStatus(steps, ticket, solved_status, user);
         hibernateHelper.saveData(ticketStatus);
+        System.out.println("managers length:"+getManagerBranch(getRegionOfTicket(ticket)).size());
         for (User manager : (List<User>) getManagerBranch(getRegionOfTicket(ticket))) {
+        	System.out.println(manager.getName());
             Emails.solvedEmail(manager.getEmail(), manager.getName(), user.getName(), ticket.getId());
         }
         return ticket.getId();

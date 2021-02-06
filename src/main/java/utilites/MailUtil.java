@@ -30,6 +30,7 @@ public class MailUtil {
         Message message = new MimeMessage(session);
         try {
             message.setFrom(new InternetAddress(accountEmail));
+            System.out.println("recipient:"+recipient);
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
             message.setSubject(subject);
             //message.setText(text);
