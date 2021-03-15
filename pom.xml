@@ -37,10 +37,12 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>5.2.11.Final</version>
+      <version>5.4.27.Final</version>
     </dependency>
 
     <dependency>
@@ -153,7 +155,11 @@
       <artifactId>javax.mail</artifactId>
       <version>1.6.0</version>
     </dependency>
-
+    <!--<dependency>
+      <groupId>m.m</groupId>
+      <artifactId>login</artifactId>
+      <version>1.0</version>
+    </dependency>-->
   </dependencies>
   <properties>
 
