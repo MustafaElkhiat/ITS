@@ -30,6 +30,14 @@
                 </div>
             </div>
             <div class="col-lg-4 col-sm-12">
+                <div class="form-label-group mb-0 mb-md-2">
+                    <input type="email" id="caller_email" name="caller_email" class="form-control"
+                           placeholder="Caller Email"
+                           required="">
+                    <label for="caller_email">Caller Email</label>
+                </div>
+            </div>
+            <%--<div class="col-lg-4 col-sm-12">
                 <div class="form-label-group mb-0">
                     <input id="actual_date"
                            autocomplete="off"
@@ -40,7 +48,8 @@
 
                     <label for="actual_date">Actual Date</label>
                 </div>
-            </div>
+            </div>--%>
+
         </div>
         <div class="form-group row mx-0 my-2 form-label-group">
 
