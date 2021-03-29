@@ -67,9 +67,28 @@
                             <td>${device.locationDepartment.department.department}</td>
                             <td>${device.office}</td>
                             <td>${device.serialNum}</td>
-                            <td>${device.employee.name}</td>
+                            <%--<td>${device.employee.name}</td>
                             <td>${device.employee.staffID}</td>
-                            <td>${device.employee.position}</td>
+                            <td>${device.employee.position}</td>--%>
+                            <c:set var="not_break" value="true"/>
+                            <c:forEach var="employees" items="${employeesList}" varStatus="loop">
+                                <c:if test="${not_break}">
+                                    <c:choose>
+                                        <c:when test="${device.employeeCode == employees.employeeCode}">
+                                            <td>${employees.employeeName}</td>
+                                            <td>${employees.employeeCode}</td>
+                                            <td>${employees.position}</td>
+                                            <c:set var="not_break" value="false"/>
+                                        </c:when>
+                                        <c:when test="${loop.last && device.employeeCode != employees.employeeCode}">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </c:when>
+                                    </c:choose>
+                                </c:if>
+                            </c:forEach>
+
                             <td>${device.printerConnection.connection}</td>
                             <td>${device.purchaseDate}</td>
                             <td>${need_to_upgrade}</td>

@@ -36,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div class="col-3">
+    <%--<div class="col-3">
         <div class="select-wrap">
             <label>Employee</label>
             <div class="input-group">
@@ -55,7 +55,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--%>
     <div class="col-3">
         <div class="select-wrap">
             <label>Operating System</label>
@@ -74,6 +74,15 @@
                             data-target="#os_modal"><i class="fas fa-plus"></i></button>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="col-3 mt-2">
+        <div class="form-label-group">
+            <input type="text" id="employee_" name="employee_" class="form-control"
+                   placeholder="Employee" value="${device.employeeCode}"
+                   required=""
+                   autofocus="">
+            <label for="employee_">Employee</label>
         </div>
     </div>
     <div class="col-3 mt-2">

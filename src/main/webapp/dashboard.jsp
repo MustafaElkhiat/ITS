@@ -79,6 +79,8 @@
                        aria-selected="false"><i class="fas fa-bullseye"></i> Accounts</a>
                     <a class="nav-link font-weight-bold mr-1" id="recoding_devices" data-toggle="pill" role="tab"
                        aria-selected="false"><i class="fas fa-laptop-code"></i> Recoding Devices</a>
+                    <a class="nav-link font-weight-bold mr-1" id="employee_ticket" data-toggle="pill" role="tab"
+                       aria-selected="false"><i class="fas fa-laptop-code"></i> Employee Ticket</a>
                 </c:if>
                 <c:if test="${current_user.role.id == 6 || current_user.role.id == 2 || current_user.role.id == 1}">
                     <a class="nav-link font-weight-bold mr-1" id="weekly" data-toggle="pill" role="tab"

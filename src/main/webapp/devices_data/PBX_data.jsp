@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="row">
-    <div class="col-3">
+    <%--<div class="col-3">
         <div class="select-wrap">
             <label>Employee</label>
             <div class="input-group">
@@ -26,7 +26,16 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--%>
+        <div class="col-3 mt-2">
+            <div class="form-label-group">
+                <input type="text" id="employee_" name="employee_" class="form-control"
+                       placeholder="Employee" value="${device.employeeCode}"
+                       required=""
+                       autofocus="">
+                <label for="employee_">Employee</label>
+            </div>
+        </div>
     <div class="col-3 mt-2">
         <div class="form-label-group">
             <input type="text" id="device_num" name="device_num" class="form-control"

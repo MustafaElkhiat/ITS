@@ -310,6 +310,9 @@ $(document).ready(function () {
             ticket_edit();
         });
     });
+    $("#employee_ticket").click(function () {
+        $("#content_place").load('Directive', {d: 70},);
+    })
     $("#fab_btn").click(function () {
         if ($("#sidebar_menu").hasClass("d-block")) {
             $("#sidebar_menu").removeClass("d-block");

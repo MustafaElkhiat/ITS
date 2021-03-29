@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 public class PBX extends Device {
     @Column(name="device_num")
     private String deviceNum;
+    @Column(name = "employee_code")
+    private String employeeCode;
     @ManyToOne
     private Employee employee;
 
@@ -20,6 +22,12 @@ public class PBX extends Device {
         super(device, mac_address, ip_address, locationDepartment, deviceType);
         this.deviceNum = deviceNum;
         this.employee = employee;
+    }
+
+    public PBX(String device, String mac_address, String ip_address, LocationDepartment locationDepartment, DeviceType deviceType, String deviceNum, String employeeCode) {
+        super(device, mac_address, ip_address, locationDepartment, deviceType);
+        this.deviceNum = deviceNum;
+        this.employeeCode = employeeCode;
     }
 
     public String getDeviceNum() {
@@ -36,5 +44,13 @@ public class PBX extends Device {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public String getEmployeeCode() {
+        return employeeCode;
+    }
+
+    public void setEmployeeCode(String employeeCode) {
+        this.employeeCode = employeeCode;
     }
 }

@@ -14,66 +14,106 @@ import javax.persistence.Table;
 public class Employees {
     @Id
     @Column(name = "Employee_Code")
-    private String Employee_Code;
+    private String employeeCode;
     @Column(name = "Employee_Name_1_English")
-    private String Employee_Name_1_English;
+    private String employeeName;
     @Column(name = "Manager_Name_2_English")
-    private String Manager_Name_2_English;
+    private String managerName;
     @Column(name = "Email")
-    private String Email;
+    private String email;
     @Column(name = "Mobile")
-    private String Mobile;
+    private String mobile;
     @Column(name = "Site_1_English")
-    private String Site_1_English;
+    private String site;
     @Column(name = "Department_1_English")
-    private String Department_1_English;
+    private String department;
     @Column(name = "Section_1_English")
-    private String Section_1_English;
+    private String section;
     @Column(name = "Division_1_English")
-    private String Division_1_English;
+    private String division;
     @Column(name = "Position_2_English")
-    private String Position_2_English;
+    private String position;
 
     public Employees() {
     }
 
-    public String getEmployee_Code() {
-        return Employee_Code;
+    public String getEmployeeCode() {
+        return employeeCode;
     }
 
-    public String getEmployee_Name_1_English() {
-        return Employee_Name_1_English;
+    public void setEmployeeCode(String employeeCode) {
+        this.employeeCode = employeeCode;
     }
 
-    public String getManager_Name_2_English() {
-        return Manager_Name_2_English;
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public String getManagerName() {
+        return managerName;
+    }
+
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getMobile() {
-        return Mobile;
+        return mobile;
     }
 
-    public String getSite_1_English() {
-        return Site_1_English;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
-    public String getDepartment_1_English() {
-        return Department_1_English;
+    public String getSite() {
+        return site;
     }
 
-    public String getSection_1_English() {
-        return Section_1_English;
+    public void setSite(String site) {
+        this.site = site;
     }
 
-    public String getDivision_1_English() {
-        return Division_1_English;
+    public String getDepartment() {
+        return department;
     }
 
-    public String getPosition_2_English() {
-        return Position_2_English;
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getSection() {
+        return section;
+    }
+
+    public void setSection(String section) {
+        this.section = section;
+    }
+
+    public String getDivision() {
+        return division;
+    }
+
+    public void setDivision(String division) {
+        this.division = division;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 }

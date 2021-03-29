@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import elements.*;
 import login.elements.Role;
 import login.elements.User;
+import sqlserver_elements.Employees;
 import utilites.Emails;
 
 import javax.servlet.ServletException;
@@ -20,11 +21,13 @@ import java.util.List;
 
 public class ControllerHelper extends HelperBase {
     HibernateHelper hibernateHelper;
+    private SQLServerHibernateHelper sqlServerHibernateHelper;
 
     public ControllerHelper(HttpServletRequest request, HttpServletResponse response) {
 
         super(request, response);
         hibernateHelper = new HibernateHelper(request, response);
+        sqlServerHibernateHelper = new SQLServerHibernateHelper(request, response);
         // init shiro - place this e.g. in the constructor
         //Factory<SecurityManager> factory = new IniSecurityManagerFactory();
         //org.apache.shiro.mgt.SecurityManager securityManager = factory.getInstance();
@@ -468,11 +471,11 @@ public class ControllerHelper extends HelperBase {
         String reporterName = request.getParameter("caller_name");
         String reporterNum = request.getParameter("caller_num");
         Date actual_date = null;
-		/*
-		 * if (request.getParameter("actual_date")!= null &&
-		 * !request.getParameter("actual_date").equals("")) { actual_date =
-		 * convert12TO24(request.getParameter("actual_date")); }
-		 */
+        /*
+         * if (request.getParameter("actual_date")!= null &&
+         * !request.getParameter("actual_date").equals("")) { actual_date =
+         * convert12TO24(request.getParameter("actual_date")); }
+         */
         System.out.println("Date : " + actual_date);
         Device device = (Device) hibernateHelper.retreiveData(Device.class, Long.valueOf(request.getParameter("device_")));
         User l1_user = (User) request.getSession().getAttribute("user");
@@ -595,9 +598,9 @@ public class ControllerHelper extends HelperBase {
         }
         TicketStatus ticketStatus = new TicketStatus(steps, ticket, solved_status, user);
         hibernateHelper.saveData(ticketStatus);
-        System.out.println("managers length:"+getManagerBranch(getRegionOfTicket(ticket)).size());
+        System.out.println("managers length:" + getManagerBranch(getRegionOfTicket(ticket)).size());
         for (User manager : (List<User>) getManagerBranch(getRegionOfTicket(ticket))) {
-        	System.out.println(manager.getName());
+            System.out.println(manager.getName());
             Emails.solvedEmail(manager.getEmail(), manager.getName(), user.getName(), ticket.getId());
         }
         return ticket.getId();
@@ -1460,7 +1463,8 @@ public class ControllerHelper extends HelperBase {
         List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
         DeviceType deviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, Long.valueOf(request.getParameter("device_type")));
         PCType pcType = (PCType) hibernateHelper.retreiveData(PCType.class, Long.valueOf(request.getParameter("pc_type")));
-        Employee employee = (Employee) hibernateHelper.retreiveData(Employee.class, Long.valueOf(request.getParameter("employee")));
+        //Employee employee = (Employee) hibernateHelper.retreiveData(Employee.class, Long.valueOf(request.getParameter("employee")));
+
         OS os = (OS) hibernateHelper.retreiveData(OS.class, Long.valueOf(request.getParameter("os")));
         String device = request.getParameter("device");
         String vendor = request.getParameter("vendor");
@@ -1471,6 +1475,7 @@ public class ControllerHelper extends HelperBase {
         String office = request.getParameter("office");
         String login_name = request.getParameter("login_name");
         String computer_name = request.getParameter("computer_name");
+        String employeeCode = request.getParameter("employee");
         String hd = request.getParameter("HD");
         String ram = request.getParameter("ram");
         String cpu = request.getParameter("cpu");
@@ -1486,7 +1491,7 @@ public class ControllerHelper extends HelperBase {
         System.out.println("device_id : " + request.getParameter("device_id"));
         PC pc = null;
         if (request.getParameter("device_id") == null) {
-            pc = new PC(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType, login_name, computer_name, hd, ram, cpu, monitor, monitor_serial, internet, employee, os, pcType);
+            pc = new PC(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType, login_name, computer_name, hd, ram, cpu, monitor, monitor_serial, internet, employeeCode, pcType, os);
         } else {
             pc = (PC) hibernateHelper.retreiveData(PC.class, Long.valueOf(request.getParameter("device_id")));
         }
@@ -1515,7 +1520,8 @@ public class ControllerHelper extends HelperBase {
             pc.setMonitor(monitor);
             pc.setMonitorSerialNum(monitor_serial);
             pc.setInternet(internet);
-            pc.setEmployee(employee);
+            pc.setEmployeeCode(employeeCode);
+            //pc.setEmployee(employee);
             pc.setOs(os);
             pc.setPcType(pcType);
             hibernateHelper.updateData(pc);
@@ -1530,11 +1536,11 @@ public class ControllerHelper extends HelperBase {
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
         List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
         DeviceType deviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, Long.valueOf(request.getParameter("device_type")));
-        Employee employee = null;
+        /*Employee employee = null;
         if (!request.getParameter("employee").equals("")) {
             employee = (Employee) hibernateHelper.retreiveData(Employee.class, Long.valueOf(request.getParameter("employee")));
-        }
-
+        }*/
+        String employeeCode = request.getParameter("employee");
         PrinterConnection connection = (PrinterConnection) hibernateHelper.retreiveData(PrinterConnection.class, Long.valueOf(request.getParameter("printer_connection")));
         String device = request.getParameter("device");
         String vendor = request.getParameter("vendor");
@@ -1552,7 +1558,8 @@ public class ControllerHelper extends HelperBase {
         boolean need_to_upgrade = Boolean.valueOf(request.getParameter("need_to_upgrade"));
         Printer printer = null;
         if (request.getParameter("device_id") == null) {
-            printer = new Printer(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType, toner_num, connection, employee);
+            //printer = new Printer(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType, toner_num, connection, employee);
+            printer = new Printer(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType, toner_num, employeeCode, connection);
         } else {
             printer = (Printer) hibernateHelper.retreiveData(Printer.class, Long.valueOf(request.getParameter("device_id")));
         }
@@ -1575,7 +1582,8 @@ public class ControllerHelper extends HelperBase {
             printer.setDeviceType(deviceType);
             printer.setTonerNumber(toner_num);
             printer.setPrinterConnection(connection);
-            printer.setEmployee(employee);
+            //printer.setEmployee(employee);
+            printer.setEmployeeCode(employeeCode);
             hibernateHelper.updateData(printer);
             return 0;
         }
@@ -1637,10 +1645,10 @@ public class ControllerHelper extends HelperBase {
         Department department = (Department) hibernateHelper.retreiveData(Department.class, Long.valueOf(request.getParameter("department")));
         List<LocationDepartment> locationDepartmentList = hibernateHelper.retreiveData("from LocationDepartment where location = " + location.getId() + " and department = " + department.getId());
         DeviceType deviceType = (DeviceType) hibernateHelper.retreiveData(DeviceType.class, Long.valueOf(request.getParameter("device_type")));
-        Employee employee = null;
+        /*Employee employee = null;
         if (!request.getParameter("employee").equals("")) {
             employee = (Employee) hibernateHelper.retreiveData(Employee.class, Long.valueOf(request.getParameter("employee")));
-        }
+        }*/
         String device = request.getParameter("device");
         String vendor = request.getParameter("vendor");
         String model = request.getParameter("model");
@@ -1649,6 +1657,7 @@ public class ControllerHelper extends HelperBase {
         String ip_address = request.getParameter("ip_address");
         String office = request.getParameter("office");
         String device_num = request.getParameter("device_num");
+        String employeeCode = request.getParameter("employee");
         String purchase_date_string = request.getParameter("purchase_date");
         Date purchase_date = null;
         if (!purchase_date_string.equals("")) {
@@ -1657,7 +1666,8 @@ public class ControllerHelper extends HelperBase {
         boolean need_to_upgrade = Boolean.valueOf(request.getParameter("need_to_upgrade"));
         PBX pbx = null;
         if (request.getParameter("device_id") == null) {
-            pbx = new PBX(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType, device_num, employee);
+            //pbx = new PBX(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType, device_num, employee);
+            pbx = new PBX(device, mac_address, ip_address, locationDepartmentList.get(0), deviceType, device_num, employeeCode);
         } else {
             pbx = (PBX) hibernateHelper.retreiveData(PBX.class, Long.valueOf(request.getParameter("device_id")));
         }
@@ -1679,7 +1689,8 @@ public class ControllerHelper extends HelperBase {
 
             pbx.setDeviceType(deviceType);
             pbx.setDeviceNum(device_num);
-            pbx.setEmployee(employee);
+            //pbx.setEmployee(employee);
+            pbx.setEmployeeCode(employeeCode);
             hibernateHelper.updateData(pbx);
             return 0;
         }

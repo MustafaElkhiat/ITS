@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 public class Printer extends Device {
     @Column(name = "toner_num")
     private String tonerNumber;
+    @Column(name = "employee_code")
+    private String employeeCode;
     @ManyToOne
     private PrinterConnection printerConnection;
     @ManyToOne
@@ -23,6 +25,13 @@ public class Printer extends Device {
         this.tonerNumber = tonerNumber;
         this.printerConnection = printerConnection;
         this.employee = employee;
+    }
+
+    public Printer(String device, String mac_address, String ip_address, LocationDepartment locationDepartment, DeviceType deviceType, String tonerNumber, String employeeCode, PrinterConnection printerConnection) {
+        super(device, mac_address, ip_address, locationDepartment, deviceType);
+        this.tonerNumber = tonerNumber;
+        this.employeeCode = employeeCode;
+        this.printerConnection = printerConnection;
     }
 
     public String getTonerNumber() {
@@ -47,5 +56,13 @@ public class Printer extends Device {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public String getEmployeeCode() {
+        return employeeCode;
+    }
+
+    public void setEmployeeCode(String employeeCode) {
+        this.employeeCode = employeeCode;
     }
 }

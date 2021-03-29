@@ -11,6 +11,8 @@ import java.util.Date;
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue(value = "device")
 public class Device {
+    @Column(name = "type", insertable=false, updatable=false, nullable = false)
+    private String type;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -163,4 +165,11 @@ public class Device {
         this.deviceNumCode = deviceNumCode;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

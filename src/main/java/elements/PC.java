@@ -24,6 +24,8 @@ public class PC extends Device {
     @Type(type = "true_false")
     @Column(name = "internet")
     private boolean internet;
+    @Column(name = "employee_code")
+    private String employeeCode;
     @ManyToOne
     private PCType pcType;
     @ManyToOne
@@ -63,6 +65,21 @@ public class PC extends Device {
         this.pcType = pcType;
     }
 
+    public PC(String device, String mac_address, String ip_address, LocationDepartment locationDepartment, DeviceType deviceType, String loginName, String computerName, String HD, String RAM, String CPU, String monitor, String monitorSerialNum, boolean internet, String employeeCode, PCType pcType, OS os) {
+        super(device, mac_address, ip_address, locationDepartment, deviceType);
+        this.loginName = loginName;
+        this.computerName = computerName;
+        this.HD = HD;
+        this.RAM = RAM;
+        this.CPU = CPU;
+        this.monitor = monitor;
+        this.monitorSerialNum = monitorSerialNum;
+        this.internet = internet;
+        this.employeeCode = employeeCode;
+        this.pcType = pcType;
+        this.os = os;
+    }
+
     public PC(String device, LocationDepartment locationDepartment, DeviceType deviceType, String loginName, String computerName, String HD, String RAM, String CPU, String monitor, String monitorSerialNum, boolean internet, Employee employee, OS os, PCType pcType) {
         super(device, locationDepartment, deviceType);
         this.loginName = loginName;
@@ -77,6 +94,7 @@ public class PC extends Device {
         this.os = os;
         this.pcType = pcType;
     }
+
 
     public String getLoginName() {
         return loginName;
@@ -149,6 +167,14 @@ public class PC extends Device {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public String getEmployeeCode() {
+        return employeeCode;
+    }
+
+    public void setEmployeeCode(String employeeCode) {
+        this.employeeCode = employeeCode;
     }
 
     public OS getOs() {
