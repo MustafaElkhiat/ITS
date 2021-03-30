@@ -97,7 +97,7 @@ $(document).ready(function () {
         $("#content_place").load('Directive', {d: 46}, function () {
             $("#search_employee").searchTable("employee_table_body");
             $("#employee_table").sortTableNow();
-            $("#add_employee").click(function () {
+            /*$("#add_employee").click(function () {
                 $("#content_place").load('Directive', {d: 67}, function () {
                     document.title = documentTitle + "Add Employee";
                     $("#location_section,#department_section").empty();
@@ -106,8 +106,8 @@ $(document).ready(function () {
                     editEmployee();
                     afterLoadingRegionSection();
                 });
-            });
-            if ($(".context-menu-one").hasClass("edit_employee") && $(".context-menu-one").hasClass("release_employee")) {
+            });*/
+            /*if ($(".context-menu-one").hasClass("edit_employee") && $(".context-menu-one").hasClass("release_employee")) {
                 $(function () {
                     $('#employee_table_body').contextMenu({
                         selector: '.context-menu-one',
@@ -154,7 +154,7 @@ $(document).ready(function () {
                 $(".release_employee").click(function () {
                     release_employee($(this).attr("employee-id"));
                 });
-            }
+            }*/
 
         });
     });

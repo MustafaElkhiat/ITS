@@ -1053,6 +1053,15 @@ public class DirectiveHelper extends HelperBase {
     public void goToEmployees() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
 
+        List<Employees> employeeList = sqlServerHibernateHelper.retreiveData("from Employees where site != 'Damietta - GSF'");
+
+            request.setAttribute("employeeList", employeeList);
+
+        request.getRequestDispatcher("tables/employees.jsp").forward(request, response);
+    }
+    /*public void goToEmployees() throws ServletException, IOException {
+        request = getUserPrivilege(user, request);
+
         List<Employee> regionEmployeeList = new ArrayList<>();
         List<Employee> employeeList = hibernateHelper.retreiveData("from Employee order by name");
         if (user.getRole().getId() == 1 || user.getRole().getId() == 3 || user.getRole().getId() == 6) {
@@ -1078,6 +1087,7 @@ public class DirectiveHelper extends HelperBase {
         }
         request.getRequestDispatcher("tables/employees.jsp").forward(request, response);
     }
+    */
 
     public void goToEditUser() throws ServletException, IOException {
 
