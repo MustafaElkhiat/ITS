@@ -228,9 +228,8 @@ public class Directive extends HttpServlet {
                 case (69):
                     directiveHelper.goToMyTickets();
                     break;
-                case (70):
-                    directiveHelper.goToEmployeeTicket();
-                    break;
+
+
 
             }
         }

@@ -31,14 +31,16 @@
 
             </div>
         </c:if>
+        <c:if test="${not empty param.region}">
+            <div class="form-inline ml-auto my-2 my-lg-0">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item text-white mr-2 table-style"><i
+                            class="mr-2 fas fa-2x fa-map-marker-alt"></i><span
+                            class="my-auto table-cell-style pr-2 font-weight-bold">${param.region}</span></li>
+                </ul>
 
-        <div class="form-inline ml-auto my-2 my-lg-0">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item text-white mr-2 table-style"><i class="mr-2 fas fa-2x fa-map-marker-alt"></i><span
-                        class="my-auto table-cell-style pr-2 font-weight-bold">${param.region}</span></li>
-            </ul>
-
-        </div>
+            </div>
+        </c:if>
         <%--<div class="ml-auto mr-2">
             <jsp:include page="notification_section.jsp"/>
         </div>--%>

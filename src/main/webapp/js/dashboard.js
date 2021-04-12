@@ -11,6 +11,35 @@ $(document).ready(function () {
         stopTimers();
         $("#content_place").load('Directive', {d: 1}, function () {
             afterLoadingRegionSection();
+            $("#device").change(function () {
+                $("#device_info").load('Directive', {d: 7, device: $(this).val()}, function () {
+                    $("#problem_section").removeClass('sr-only');
+                    $("#new_ticket_employee_submit").click(function () {
+                        if ($(".needs-validation")[1].checkValidity() === true) {
+
+                            $.ajax({
+                                url: "Controller",
+                                data: {
+                                    n: "48",
+                                    problem: $("#problem").val(),
+                                    device: $("#device").val(),
+                                },
+                                type: "POST",
+
+                                success: function (result, status, xhr) {
+                                    if (result > 0) {
+                                        $(".needs-validation").removeClass("was-validated");
+                                        success("Ticket has been added", "");
+                                        $("#content_place").load('Directive', {d: 15, ticket: result.trim()});
+                                    }
+                                }
+                            });
+
+                        }
+                        $(".needs-validation").addClass("was-validated");
+                    });
+                });
+            });
 
         });
     });
@@ -97,6 +126,55 @@ $(document).ready(function () {
         $("#content_place").load('Directive', {d: 46}, function () {
             $("#search_employee").searchTable("employee_table_body");
             $("#employee_table").sortTableNow();
+            $(function () {
+                $('#employee_table_body').contextMenu({
+                    selector: '.context-menu-one',
+                    trigger: 'left',
+                    callback: function (key, options) {
+                        var employee = $(this).attr("employee-code");
+                        if (key == "create_user") {
+
+                            $("#employees").removeClass("active");
+                            $.ajax({
+                                url: "Controller",
+                                data: {
+                                    n: "25",
+                                    employee_code: employee
+                                },
+                                type: "POST",
+
+                                success: function (result, status, xhr) {
+                                    if (result > 0) {
+
+                                        success("User has been added", "");
+                                    } else if (result == -1) {
+                                        error("User hasn't been added", "The username is not available");
+                                    } else if (result == -2) {
+                                        error("User hasn't been added", "The phone number is used for another user");
+                                    } else if (result == -3) {
+                                        error("User hasn't been added", "The username is not available and phone number is used for another user");
+                                    }
+                                }
+                            });
+                            /*$("#content_place").load('Controller', {
+                                n: 25,
+                                employee_code: employee
+                            }, function () {
+                                document.title = documentTitle + "Add User";
+                                checkbox_accessories();
+                                checkbox_accounts();
+                                editEmployee();
+                                afterLoadingRegionSection();
+                            });*/
+
+                        }
+                    },
+                    items: {
+                        "create_user": {name: "Create Employee User"},
+
+                    }
+                });
+            });
             /*$("#add_employee").click(function () {
                 $("#content_place").load('Directive', {d: 67}, function () {
                     document.title = documentTitle + "Add Employee";

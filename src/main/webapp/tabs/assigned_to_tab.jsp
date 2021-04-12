@@ -13,6 +13,7 @@
         <h5 class="card-title">Assigned To</h5>
         <c:if test="${fn:length(ticketsAssignedByList) > 0}">
             <c:forEach items="${ticketsAssignedByList}" var="ticketAssignedBy">
+
                 <button type="button" class="btn btn-outline-primary ticket mt-1"
                         ticket-id="${ticketAssignedBy.ticket.id}">
                     Ticket ID ${ticketAssignedBy.ticket.id}</button>

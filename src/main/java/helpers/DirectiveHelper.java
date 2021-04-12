@@ -27,30 +27,36 @@ public class DirectiveHelper extends HelperBase {
     }
 
     public void goToNewTicketSection() throws ServletException, IOException {
-        List<TSUserRegion> tsUserRegionList = hibernateHelper
-                .retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
-        request = getUserPrivilege(user, request);
-        /*
-         * if (tsUserRegionList.size() == 1) { List<Location> locationList =
-         * hibernateHelper.retreiveData("from Location where region = " +
-         * tsUserRegionList.get(0).getRegion().getId() + " order by location");
-         * request.setAttribute("locationList", locationList); List<Category>
-         * categoryList =
-         * hibernateHelper.retreiveData("from Category order by category");
-         * request.setAttribute("categoryList", categoryList);
-         * request.getRequestDispatcher("new_ticket.jsp").forward(request, response); }
-         * else if (tsUserRegionList.size() > 1) {
-         *
-         *
-         * }
-         */
-        request.setAttribute("regionList", tsUserRegionList);
-        List<Department> departmentList = hibernateHelper.retreiveData("from Department order by department");
-        List<Category> categoryList = hibernateHelper.retreiveData("from Category order by category");
-        request.setAttribute("categoryList", categoryList);
-        request.setAttribute("departmentList", departmentList);
+        if (user.getRole().getId() == 9) {
+            List<Device> deviceList = hibernateHelper.retreiveData("from Device where employeeCode = " + user.getUserName());
+            request.setAttribute("deviceList", deviceList);
+            request.getRequestDispatcher("new_ticket/new_ticket_employee.jsp").forward(request, response);
+        } else {
+            List<TSUserRegion> tsUserRegionList = hibernateHelper
+                    .retreiveData("from TSUserRegion where valid = true and TSUser = " + user.getId() + " order by region");
+            request = getUserPrivilege(user, request);
+            /*
+             * if (tsUserRegionList.size() == 1) { List<Location> locationList =
+             * hibernateHelper.retreiveData("from Location where region = " +
+             * tsUserRegionList.get(0).getRegion().getId() + " order by location");
+             * request.setAttribute("locationList", locationList); List<Category>
+             * categoryList =
+             * hibernateHelper.retreiveData("from Category order by category");
+             * request.setAttribute("categoryList", categoryList);
+             * request.getRequestDispatcher("new_ticket.jsp").forward(request, response); }
+             * else if (tsUserRegionList.size() > 1) {
+             *
+             *
+             * }
+             */
+            request.setAttribute("regionList", tsUserRegionList);
+            List<Department> departmentList = hibernateHelper.retreiveData("from Department order by department");
+            List<Category> categoryList = hibernateHelper.retreiveData("from Category order by category");
+            request.setAttribute("categoryList", categoryList);
+            request.setAttribute("departmentList", departmentList);
 
-        request.getRequestDispatcher("new_ticket/new_ticket.jsp").forward(request, response);
+            request.getRequestDispatcher("new_ticket/new_ticket.jsp").forward(request, response);
+        }
     }
 
     public void goToLocationSection() throws ServletException, IOException {
@@ -82,8 +88,17 @@ public class DirectiveHelper extends HelperBase {
 
     public void goToMyTickets() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
-        request.setAttribute("user", user);
-        request.getRequestDispatcher("new_ticket/ticket_details.jsp").forward(request, response);
+        if (user.getRole().getId() != 9) {
+            request.setAttribute("user", user);
+
+            request.getRequestDispatcher("new_ticket/ticket_details.jsp").forward(request, response);
+        } else {
+            User user = (User) request.getSession().getAttribute("user");
+            request.setAttribute("user", user);
+            request.setAttribute("employeeTickets", getEmployeeTickets(user));
+            request.setAttribute("ticketStatusList", getTicketStatusList());
+            request.getRequestDispatcher("reports/employee_tickets.jsp").forward(request, response);
+        }
     }
 
     public void goToDeviceTypeSection() throws ServletException, IOException {
@@ -278,6 +293,14 @@ public class DirectiveHelper extends HelperBase {
         return hibernateHelper.retreiveData("from Ticket");
     }
 
+    private List getEmployeeTickets(User user) {
+        return hibernateHelper.retreiveData("from Ticket where l1_user = " + user.getId());
+    }
+
+    private List getTicketStatusList() {
+        return hibernateHelper.retreiveData("from TicketStatus where done = false");
+    }
+
     private List getTicketsAssignedByUser(User user) {
         return hibernateHelper.retreiveData("from TicketAssignedTo where assignedBy = " + user.getId());
     }
@@ -430,6 +453,11 @@ public class DirectiveHelper extends HelperBase {
         request.setAttribute("openedTicketsList", getOpenedTickets(tsUserRegionList));
         request.setAttribute("openedTicketStatusList", getOpenedTicketsStatus(tsUserRegionList));
         request.getRequestDispatcher("reports/opened_tickets.jsp").forward(request, response);
+    }
+
+    public void goToEmployeeTickets() throws ServletException, IOException {
+
+
     }
 
     public void goToNeedToCloseTab() throws ServletException, IOException {
@@ -701,7 +729,7 @@ public class DirectiveHelper extends HelperBase {
          * cameraType.getId() + " order by location");
          *
          */
-        request.setAttribute("employeesList",employeesList);
+        request.setAttribute("employeesList", employeesList);
         request.setAttribute("regionList", tsUserRegionList);
         request.setAttribute("attendanceList", attendanceList);
         // request.setAttribute("locationList", locationList);
@@ -1055,7 +1083,7 @@ public class DirectiveHelper extends HelperBase {
 
         List<Employees> employeeList = sqlServerHibernateHelper.retreiveData("from Employees where site != 'Damietta - GSF'");
 
-            request.setAttribute("employeeList", employeeList);
+        request.setAttribute("employeeList", employeeList);
 
         request.getRequestDispatcher("tables/employees.jsp").forward(request, response);
     }
@@ -1275,14 +1303,14 @@ public class DirectiveHelper extends HelperBase {
         request.getRequestDispatcher("reports/weekly_report_preview.jsp").forward(request, response);
     }
 
-    public void goToEmployeeTicket() {
+    /*public void goToEmployeeTicket() {
         List<Employees> employeesList = sqlServerHibernateHelper.retreiveData("from Employees");
         System.out.println("employees list size : " + employeesList.size());
-        Employees employees = (Employees) sqlServerHibernateHelper.retreiveData(Employees.class,"51189");
+        Employees employees = (Employees) sqlServerHibernateHelper.retreiveData(Employees.class, "51189");
         //System.out.println("Employee Name : "+employees.getEmployee_Name_1_English());
         List<Device> deviceList = hibernateHelper.retreiveData("from Device where employee = " + 12);
         for (Device device : deviceList) {
             System.out.println(device.getType() + " - " + device.getVendor());
         }
-    }
+    }*/
 }

@@ -42,6 +42,39 @@ public class Emails {
         }
     }
 
+    public static void addAccountEmail(String emailAddress, String name, String username, String role) {
+        String subject = "User Login Details at ITS";
+        String text = "<div dir=\"ltr\">" +
+                "Dear Mr. " + name + "," +
+                "<div>" +
+                "<div>After Greetings.&nbsp;</div>" +
+                "</div>" +
+                "<div><br></div>" +
+                "<div>This is the details of your user login at ITS&nbsp;&nbsp;<br></div>" +
+                "<div>" +
+                "<ul>" +
+                "<li style=\"margin-left:15px\">&nbsp;<b>URL :</b>&nbsp;&nbsp;&nbsp;<a href=\"" + ip + port + "/ITS\" target=\"_blank\" data-saferedirecturl=\"https://www.google.com/url?q=" + ip + port + "/ITS&amp;source=gmail&amp;ust=1608036904886000&amp;usg=AFQjCNHA5nESt08lsnFGG_TRA8nJKM3_EA\">" + ip + port + "/<wbr>ITS</a></li>" +
+                "<li style=\"margin-left:15px\">&nbsp;<b>UserName :&nbsp;</b>" + username + "<br></li>" +
+                "<li style=\"margin-left:15px\"><b>&nbsp;Role</b>&nbsp;: " + role + "</li>" +
+                "<li style=\"margin-left:15px\">&nbsp;<b>Default Password :</b>&nbsp;0000</li>" +
+                /*"<li style=\"margin-left:15px\">&nbsp;<b>Regions :</b></li>" +
+                "<ol>" + getRegions(regionList) + "</ol>" +
+                "<li style=\"margin-left:15px\">&nbsp;<b>Privileges :&nbsp;</b></li>" +
+                "<ol>" + getPrivileges(privilegeList) + "</ol>" +
+                "</ul>" +*/
+                "<div>After signing in for the first time with default password create your own password to activate your user .&nbsp;&nbsp;<br></div></div><div><br></div>" +
+                "<div>Best Regards.&nbsp;</div><div><br></div>-- " +
+                "</div>" +
+                "</div>" +
+                "</div>";
+
+        try {
+            MailUtil.sendMail(emailAddress, subject, text);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void resetPasswordEmail(String emailAddress, String name) {
         String subject = "Reset Your Password";
         String text = "<div dir=\"ltr\">" +

@@ -96,7 +96,10 @@
         <div class="col-10">
 
             <div id="content_place" class="mx-3 no-margin-print pt-2">
-                <jsp:include page="dashboard_details.jsp"/>
+                <c:if test="${current_user.role.id != 9}">
+                    <jsp:include page="dashboard_details.jsp"/>
+                </c:if>
+
             </div>
         </div>
     </div>

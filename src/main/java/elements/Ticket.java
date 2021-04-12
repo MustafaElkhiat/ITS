@@ -73,6 +73,15 @@ public class Ticket {
         this.actualTime = actualTime;
     }
 
+    public Ticket(String problem, String reporterName, String reporterNum, Device device, Status currentStatus, User l1_user) {
+        this.problem = problem;
+        this.reporterName = reporterName;
+        this.reporterNum = reporterNum;
+        this.device = device;
+        this.currentStatus = currentStatus;
+        this.l1_user = l1_user;
+    }
+
     public long getId() {
         return id;
     }

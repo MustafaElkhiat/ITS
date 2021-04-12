@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="../page_header.jsp">
     <jsp:param name="title" value="My Tickets"/>
 </jsp:include>
@@ -13,10 +14,15 @@
     <div class="card-body">
         <div class="row">
             <div class="col-12">
-                <jsp:include page="ticket_tab_header.jsp"/>
-                <jsp:include page="ticket_tab_content.jsp"/>
-            </div>
+                <c:if test="${currentUser.role.id != 9}">
+                    <jsp:include page="ticket_tab_header.jsp"/>
+                    <jsp:include page="ticket_tab_content.jsp"/>
+                </c:if>
+                <c:if test="${currentUser.role.id == 9}">
+                    <jsp:include page="/reports/employee_tickets.jsp"/>
+                </c:if>
 
+            </div>
         </div>
 
     </div>

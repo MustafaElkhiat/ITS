@@ -9,9 +9,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <jsp:include page="page_header.jsp">
-    <jsp:param name="title" value="Dashboard   From 2020-02-25 - Until Now"/>
+
+    <jsp:param name="title" value="Dashboard    From 2020-02-25 - Until Now"/>
 </jsp:include>
-<c:if test="${current_user.role.id != 1 && current_user.role.id !=3}">
+<c:if test="${current_user.role.id != 1 && current_user.role.id !=3 && current_user.role.id !=9}">
     <jsp:include page="sections/ticket_section.jsp">
         <jsp:param name="user" value="${current_user.id}"/>
     </jsp:include>
