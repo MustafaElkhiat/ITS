@@ -99,6 +99,7 @@ Contributor(s):
         <mapping class="elements.Accessory"/>
         <mapping class="elements.EmployeeAccessory"/>
         <mapping class="elements.EmployeeAccount"/>
+        <mapping class="elements.ProblemCommentModification"/>
         <mapping class="login.elements.Role"/>
         <mapping class="login.elements.User"/>
 

@@ -707,6 +707,22 @@ public class ControllerHelper extends HelperBase {
         return assignToAllL2(ticket);
     }
 
+
+    public long editProblemCommentTicket() throws IOException {
+
+        User user = (User) request.getSession().getAttribute("user");
+        Ticket ticket = (Ticket) hibernateHelper.retreiveData(Ticket.class, Long.valueOf(request.getParameter("ticket")));
+        SubCategory subCategory = (SubCategory) hibernateHelper.retreiveData(SubCategory.class, Long.valueOf(request.getParameter("subCategory")));
+        List<ProblemCommentModification> problemCommentModificationList = hibernateHelper.retreiveData("from ProblemCommentModification where ticket=" + ticket.getId());
+        for (ProblemCommentModification problemCommentModification : problemCommentModificationList) {
+            problemCommentModification.setEdited(true);
+            hibernateHelper.updateData(problemCommentModification);
+        }
+        ProblemCommentModification problemCommentModification = new ProblemCommentModification(request.getParameter("problem"), request.getParameter("comment"), subCategory, user, ticket);
+        hibernateHelper.saveData(problemCommentModification);
+        return problemCommentModification.getId();
+    }
+
     public long editTicket() throws IOException {
         Ticket ticket = (Ticket) hibernateHelper.retreiveData(Ticket.class, Long.valueOf(request.getParameter("ticket")));
         Status status = (Status) hibernateHelper.retreiveData(Status.class, Long.valueOf(request.getParameter("status")));

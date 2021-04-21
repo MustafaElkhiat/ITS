@@ -27,8 +27,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <jsp:include page="../new_ticket/problem_comment_info.jsp"/>
+            <div id="problem_comment_info" class="col">
+                <%--<jsp:include page="../new_ticket/problem_comment_info.jsp"/>--%>
             </div>
         </div>
         <div class="row">
@@ -87,6 +87,7 @@
 
         chart.draw(dataTable, options);
     }
+
 
 
 </script>

@@ -8,6 +8,7 @@ import sqlserver_elements.Employees;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.StyledEditorKit;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -201,11 +202,39 @@ public class DirectiveHelper extends HelperBase {
         request.getRequestDispatcher("select_options/category_options.jsp").forward(request, response);
     }
 
+    public void goToProblemCommentInfo() throws ServletException, IOException {
+        Ticket ticket = (Ticket) hibernateHelper.retreiveData(Ticket.class, Long.valueOf(request.getParameter("ticket")));
+        List<ProblemCommentModification> problemCommentModificationList = hibernateHelper.retreiveData("from ProblemCommentModification where edited = false and ticket = " + ticket.getId());
+        if (problemCommentModificationList.size() == 1) {
+            request.setAttribute("subCategory", problemCommentModificationList.get(0).getSubCategory());
+            request.setAttribute("problem", problemCommentModificationList.get(0).getProblem());
+            request.setAttribute("comment", problemCommentModificationList.get(0).getComment());
+            request.setAttribute("user", problemCommentModificationList.get(0).getUser().getName());
+            request.setAttribute("date", problemCommentModificationList.get(0).getDate());
+            request.setAttribute("time", problemCommentModificationList.get(0).getTime());
+            request.setAttribute("showFromTicket", true);
+        } else if (problemCommentModificationList.size() == 0) {
+            request.setAttribute("subCategory", ticket.getSubCategory());
+            request.setAttribute("problem", ticket.getProblem());
+            request.setAttribute("comment", ticket.getComment());
+            request.setAttribute("user", ticket.getL1_user().getName());
+            request.setAttribute("date", ticket.getStartDate());
+            request.setAttribute("time", ticket.getStartTime());
+            request.setAttribute("showFromTicket", false);
+        }
+        List<ProblemCommentModification> editedProblemCommentModificationList = hibernateHelper.retreiveData("from ProblemCommentModification where edited = true and ticket = " + ticket.getId());
+        request.setAttribute("editedProblemCommentModificationList", editedProblemCommentModificationList);
+        request.setAttribute("ticket", ticket);
+        request.getRequestDispatcher("new_ticket/problem_comment_info.jsp").forward(request, response);
+
+    }
+
     public void goToSubCategorySection() throws ServletException, IOException {
         request = getUserPrivilege(user, request);
         List<SubCategory> subCategoryList = hibernateHelper.retreiveData(
                 "from SubCategory where category = " + request.getParameter("category") + " order by sub_category");
         request.setAttribute("subCategoryList", subCategoryList);
+        request.setAttribute("selected", request.getParameter("selected"));
         request.getRequestDispatcher("sections/sub_category_section.jsp").forward(request, response);
     }
 

@@ -214,6 +214,9 @@ public class Controller extends HttpServlet {
                 case (48):
                     response.getWriter().println(controllerHelper.addEmployeeTicket());
                     break;
+                case (49):
+                    response.getWriter().println(controllerHelper.editProblemCommentTicket());
+                    break;
 
             }
         }

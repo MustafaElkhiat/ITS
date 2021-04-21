@@ -38,7 +38,8 @@
         <div class="card-header" id="headingTwo">
             <h2 class="mb-0">
                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo"
-                        aria-expanded="false" aria-controls="collapseTwo" onclick="loadL2EngineersTicketRatioSection();">
+                        aria-expanded="false" aria-controls="collapseTwo"
+                        onclick="loadL2EngineersTicketRatioSection();">
                     <h5 class="card-title"><i class="fas fa-chart-pie"></i> L2 Engineers Ticket Ratio</h5>
                 </button>
             </h2>

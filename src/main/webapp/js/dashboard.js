@@ -30,7 +30,10 @@ $(document).ready(function () {
                                     if (result > 0) {
                                         $(".needs-validation").removeClass("was-validated");
                                         success("Ticket has been added", "");
-                                        $("#content_place").load('Directive', {d: 15, ticket: result.trim()});
+                                        $("#content_place").load('Directive', {
+                                            d: 15,
+                                            ticket: result.trim()
+                                        }, problem_comment_info);
                                     }
                                 }
                             });
@@ -777,7 +780,11 @@ var afterLoadingDeviceSection = function () {
     $("#device_").change(function () {
         var device = $("#device_info").parent().find("#device_").val();
         $("#device_info").load('Directive', {d: 7, device: device}, function () {
-            $("#problem_comment_section").load('Directive', {d: 10}, function () {
+            $("#problem_comment_section").load('Directive', {
+                d: 10,
+                isCallerEnabled: true,
+                isSubmitButtonEnabled: false
+            }, function () {
                 $('#actual_date').datepicker();
                 $("#category_").change(function () {
 
@@ -878,7 +885,10 @@ var action_submit = function () {
                     if (result > 0) {
                         $(".needs-validation").removeClass("was-validated");
                         success("Ticket has been added", "");
-                        $("#content_place").load('Directive', {d: 15, ticket: result.trim()});
+                        $("#content_place").load('Directive', {
+                            d: 15,
+                            ticket: result.trim()
+                        }, problem_comment_info);
                     }
                 }
             });
@@ -907,7 +917,10 @@ var action_edit_submit = function () {
                     if (result > 0) {
                         $(".needs-validation").removeClass("was-validated");
                         success("Ticket has been edited", "");
-                        $("#content_place").load('Directive', {d: 15, ticket: result.trim()});
+                        $("#content_place").load('Directive', {
+                            d: 15,
+                            ticket: result.trim()
+                        }, problem_comment_info);
                     }
                 }
             });
@@ -1254,6 +1267,89 @@ var loadRegionDevicesRatioSection = function () {
 }
 var clearClass = function (Class) {
     $("." + Class).empty();
+}
+let problem_comment_info_icons = function () {
+    $("#problem_comment_info").hover(function () {
+        $(this).find(".fa-edit").removeClass("sr-only");
+        if ($(this).find(".fa-eye-slash").hasClass("sr-only"))
+            $(this).find(".fa-eye").removeClass("sr-only");
+    }, function () {
+        $(this).find(".fa-edit").addClass("sr-only");
+        $(this).find(".fa-eye").addClass("sr-only");
+        $(this).find(".fa-eye-slash").addClass("sr-only");
+    });
+
+
+}
+let problem_comment_info = function () {
+    problem_comment_info_icons();
+    $("#problem_comment_info").load('Directive', {d: 70, ticket: $("#ticket").val()},
+        function () {
+            $(".fa-edit").click(function () {
+                let category = $("#category").attr('category-id');
+                let subCategory = $("#sub_category").attr('sub-category-id');
+                $("#problem_comment_info").load('Directive', {
+                    d: 10,
+                    isCallerEnabled: false,
+                    isSubmitButtonEnabled: true,
+                    problem: $('#problem').html(),
+                    comment: $("#comment").html(),
+                    category: category,
+                    //sub_category: $("#sub_category").attr('sub-category-id'),
+                }, function () {
+                    $("#sub_category_section").load('Directive', {
+                        d: 12,
+                        category: category,
+                        selected: subCategory
+                    });
+                    $("#category_").change(function () {
+                        $("#sub_category_section").load('Directive', {d: 12, category: $(this).val()});
+                    });
+                    $("#edit_problem_comment_cancel").click(function () {
+                        problem_comment_info();
+                    });
+                    $('#edit_problem_comment_submit').click(function () {
+                        editProblemComment();
+                    });
+                });
+            });
+            $(".fa-eye").click(function () {
+                $(this).addClass("sr-only");
+                $(".fa-eye-slash").removeClass("sr-only");
+                $("#edited_problem_comment").removeClass("sr-only");
+            });
+            $(".fa-eye-slash").click(function () {
+                $(this).addClass("sr-only");
+                $(".fa-eye").removeClass("sr-only");
+                $("#edited_problem_comment").addClass("sr-only");
+            });
+
+        });
+}
+
+let editProblemComment = function () {
+    $.ajax({
+        url: "Controller",
+        data: {
+            n: "49",
+            ticket: $("#ticket").val(),
+            problem: $("#problem").val(),
+            comment: $("#comment").val(),
+            subCategory: $("#sub_category_").val(),
+
+        },
+        type: "POST",
+
+        success: function (result, status, xhr) {
+            if (result > 0) {
+
+                success("Ticket has been edited", "");
+                problem_comment_info();
+            }
+
+
+        }
+    });
 }
 /*var resetPassword = function (user) {
     $.ajax({

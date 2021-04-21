@@ -11,7 +11,9 @@
     <label>Sub-Category</label>
     <div class="input-group">
         <select class="form-control" id="sub_category_" name="sub_category" required autofocus>
-            <jsp:include page="../select_options/sub_category_options.jsp"/>
+            <jsp:include page="../select_options/sub_category_options.jsp">
+                <jsp:param name="selected" value="${selected}"/>
+            </jsp:include>
         </select>
         <c:if test="${P_12}">  <%-- 12 Add Sub-Catgory--%>
             <div class="input-group-append">

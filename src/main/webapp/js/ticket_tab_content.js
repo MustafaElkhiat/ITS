@@ -107,6 +107,7 @@ var ticket_click = function () {
         $("#content_place").load('Directive', {d: 15, ticket: ticket_id}, function () {
             $("#dashboard").removeClass("active");
             $("#my_ticket").removeClass("active");
+            problem_comment_info();
             stopTimers();
         });
     });
@@ -118,6 +119,7 @@ var ticket_edit = function () {
             afterLoadingActionSection(false);
             $("#dashboard").removeClass("active");
             $("#my_ticket").removeClass("active");
+            problem_comment_info();
             stopTimers();
         });
     });
